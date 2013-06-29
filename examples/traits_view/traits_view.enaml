@@ -1,0 +1,16 @@
+#
+# (C) Copyright 2013 Enthought, Inc., Austin, TX
+# All right reserved.
+#
+# This file is open source software distributed according to the terms in
+# LICENSE.txt
+#
+from enaml.widgets.api import Window, Container
+from traits_enaml.widgets.traits_view import TraitsView
+
+enamldef PersonView(Window):
+    attr person
+    
+    Container:
+        TraitsView:
+            model := person

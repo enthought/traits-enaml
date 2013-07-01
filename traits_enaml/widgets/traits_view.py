@@ -23,17 +23,14 @@ class TraitsView(RawWidget):
     #: The HasTraits instance that we are using
     model = d_(Typed(HasTraits))
 
-    #: A list of traits to view. All traits will be shown if unspecified
-    traits = d_(List())
+    #: The View instance that we are using
+    view = d_(Typed(View))
 
     #: TraitsViews hug their contents' width weakly by default.
     hug_width = set_default('weak')
 
     def create_widget(self, parent):
-        if len(self.traits) > 0:
-            ui = self.model.edit_traits(View(*self.traits), kind='subpanel')
-        else:
-            ui = self.model.edit_traits(kind='subpanel')
+        ui = self.model.edit_traits(self.view, kind='subpanel')
         # XXX this is dodgy, probably should have a proxy which holds the UI instance
         ui.control.setParent(parent)
         return ui.control

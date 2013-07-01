@@ -8,7 +8,7 @@
 from traits.api import HasTraits
 from traitsui.api import View
 
-from atom.api import Typed, List, set_default
+from atom.api import Typed, set_default
 
 from enaml.core.declarative import d_
 from enaml.widgets.raw_widget import RawWidget

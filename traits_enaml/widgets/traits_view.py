@@ -6,6 +6,7 @@
 # LICENSE.txt
 #
 from traits.api import HasTraits
+from traitsui.api import View
 
 from atom.api import Typed, set_default
 
@@ -18,16 +19,18 @@ class TraitsView(RawWidget):
 
     """
     # XXX should perhaps be subclassed from Control directly?
-    
+
     #: The HasTraits instance that we are using
     model = d_(Typed(HasTraits))
+
+    #: The View instance that we are using
+    view = d_(Typed(View))
 
     #: TraitsViews hug their contents' width weakly by default.
     hug_width = set_default('weak')
 
     def create_widget(self, parent):
-        ui = self.model.edit_traits(kind='subpanel')
+        ui = self.model.edit_traits(self.view, kind='subpanel')
         # XXX this is dodgy, probably should have a proxy which holds the UI instance
         ui.control.setParent(parent)
         return ui.control
-

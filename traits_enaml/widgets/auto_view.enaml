@@ -39,94 +39,94 @@ def model_traits(model):
     return traits
 
 
-enamldef BoolEditor(Conditional): bool_edit:
+enamldef BoolEditor(Conditional): _cond:
     attr loop_item
-    condition = isinstance(bool_edit.loop_item.trait_type, Bool)
+    condition = isinstance(_cond.loop_item.trait_type, Bool)
     CheckBox:
-        checked << getattr(model, bool_edit.loop_item.name)
-        checked :: setattr(model, bool_edit.loop_item.name, self.checked)
+        checked << getattr(model, _cond.loop_item.name)
+        checked :: setattr(model, _cond.loop_item.name, self.checked)
 
 
-enamldef DateEditor(Conditional): date_edit:
+enamldef DateEditor(Conditional): _cond:
     attr loop_item
-    condition = (isinstance(date_edit.loop_item.trait_type, BaseInstance) and
-                 date_edit.loop_item.trait_type.klass is date)
+    condition = (isinstance(_cond.loop_item.trait_type, BaseInstance) and
+                 _cond.loop_item.trait_type.klass is date)
     DateSelector:
-        date << getattr(model, date_edit.loop_item.name)
-        date :: setattr(model, date_edit.loop_item.name, self.date)
+        date << getattr(model, _cond.loop_item.name)
+        date :: setattr(model, _cond.loop_item.name, self.date)
 
 
-enamldef EnumEditor(Conditional): enum_edit:
+enamldef EnumEditor(Conditional): _cond:
     attr loop_item
-    condition = isinstance(enum_edit.loop_item.trait_type, Enum)
+    condition = isinstance(_cond.loop_item.trait_type, Enum)
     ComboBox:
-        index << enum_edit.loop_item.trait_type.values.index(getattr(model,
-                                                                     enum_edit.loop_item.name))
+        index << _cond.loop_item.trait_type.values.index(getattr(model,
+                                                                 _cond.loop_item.name))
         index ::
-            item_value = enum_edit.loop_item.trait_type.values[self.index]
-            setattr(model, enum_edit.loop_item.name, item_value)
-        items = list(enum_edit.loop_item.trait_type.values)
+            item_value = _cond.loop_item.trait_type.values[self.index]
+            setattr(model, _cond.loop_item.name, item_value)
+        items = list(_cond.loop_item.trait_type.values)
 
 
-enamldef FloatEditor(Conditional): flt_edit:
+enamldef FloatEditor(Conditional): _cond:
     attr loop_item
-    condition = isinstance(flt_edit.loop_item.trait_type, Float)
+    condition = isinstance(_cond.loop_item.trait_type, Float)
     FloatField:
-        value << getattr(model, flt_edit.loop_item.name)
-        value :: setattr(model, flt_edit.loop_item.name, self.value)
+        value << getattr(model, _cond.loop_item.name)
+        value :: setattr(model, _cond.loop_item.name, self.value)
 
 
-enamldef FloatRangeEditor(Conditional): flt_edit:
+enamldef FloatRangeEditor(Conditional): _cond:
     attr loop_item
     condition = (
-        isinstance(flt_edit.loop_item.trait_type, Range) and
-        (isinstance(flt_edit.loop_item.trait_type._low, float) or
-         isinstance(flt_edit.loop_item.trait_type._high, float))
+        isinstance(_cond.loop_item.trait_type, Range) and
+        (isinstance(_cond.loop_item.trait_type._low, float) or
+         isinstance(_cond.loop_item.trait_type._high, float))
     )
     FloatField:
-        value << getattr(model, flt_edit.loop_item.name)
-        value :: setattr(model, flt_edit.loop_item.name, self.value)
-        minimum = flt_edit.loop_item.trait_type._low
-        maximum = flt_edit.loop_item.trait_type._high
+        value << getattr(model, _cond.loop_item.name)
+        value :: setattr(model, _cond.loop_item.name, self.value)
+        minimum = _cond.loop_item.trait_type._low
+        maximum = _cond.loop_item.trait_type._high
 
 
-enamldef IntEditor(Conditional): int_edit:
+enamldef IntEditor(Conditional): _cond:
     attr loop_item
-    condition = isinstance(int_edit.loop_item.trait_type, Int)
+    condition = isinstance(_cond.loop_item.trait_type, Int)
     IntField:
-        value << getattr(model, int_edit.loop_item.name)
-        value :: setattr(model, int_edit.loop_item.name, self.value)
+        value << getattr(model, _cond.loop_item.name)
+        value :: setattr(model, _cond.loop_item.name, self.value)
 
 
-enamldef IntRangeEditor(Conditional): int_edit:
+enamldef IntRangeEditor(Conditional): _cond:
     attr loop_item
     condition = (
-        isinstance(int_edit.loop_item.trait_type, Range) and 
-        isinstance(int_edit.loop_item.trait_type._low, int) and
-        isinstance(int_edit.loop_item.trait_type._high, int)
+        isinstance(_cond.loop_item.trait_type, Range) and 
+        isinstance(_cond.loop_item.trait_type._low, int) and
+        isinstance(_cond.loop_item.trait_type._high, int)
     )
     SpinBox:
-        value << getattr(model, int_edit.loop_item.name)
-        value :: setattr(model, int_edit.loop_item.name, self.value)
-        minimum = int_edit.loop_item.trait_type._low
-        maximum = int_edit.loop_item.trait_type._high
+        value << getattr(model, _cond.loop_item.name)
+        value :: setattr(model, _cond.loop_item.name, self.value)
+        minimum = _cond.loop_item.trait_type._low
+        maximum = _cond.loop_item.trait_type._high
 
 
-enamldef StrEditor(Conditional): str_edit:
+enamldef StrEditor(Conditional): _cond:
     attr loop_item
-    condition = isinstance(str_edit.loop_item.trait_type, Str)
+    condition = isinstance(_cond.loop_item.trait_type, Str)
     Field:
-        text << getattr(model, str_edit.loop_item.name)
-        text :: setattr(model, str_edit.loop_item.name, self.text)
+        text << getattr(model, _cond.loop_item.name)
+        text :: setattr(model, _cond.loop_item.name, self.text)
 
 
-enamldef TimeEditor(Conditional): time_edit:
+enamldef TimeEditor(Conditional): _cond:
     attr loop_item
-    condition = (isinstance(time_edit.loop_item.trait_type, BaseInstance) and
-                 time_edit.loop_item.trait_type.klass is time)
+    condition = (isinstance(_cond.loop_item.trait_type, BaseInstance) and
+                 _cond.loop_item.trait_type.klass is time)
     TimeSelector:
-        time << getattr(model, time_edit.loop_item.name)
-        time :: setattr(model, time_edit.loop_item.name, self.time)
+        time << getattr(model, _cond.loop_item.name)
+        time :: setattr(model, _cond.loop_item.name, self.time)
 
 
 enamldef AutoView(Form): _view:

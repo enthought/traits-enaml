@@ -21,6 +21,12 @@ TraitDesc = namedtuple('TraitDesc', 'name trait_type ui_label')
 def auto_view(model):
     """ Generate a view directly from a `HasTraits` instance.
     """
+    return AutoView(_model=model)
+
+
+def auto_window(model):
+    """ Generate a window directly from a `HasTraits` instance.
+    """
     return AutoWindow(_model=model)
 
 

@@ -32,12 +32,12 @@ class Person(HasTraits):
 
 if __name__ == '__main__':
     with enaml.imports():
-        from traits_enaml.widgets.auto_view import auto_view
+        from traits_enaml.widgets.auto_view import auto_window
 
     john = Person(first_name='John', last_name='Doe', age=42)
 
     app = QtApplication()
-    view = auto_view(john)
+    view = auto_window(john)
     view.show()
 
     app.start()

@@ -10,7 +10,7 @@ import datetime
 
 import enaml
 from enaml.qt.qt_application import QtApplication
-from traits.api import (HasTraits, Bool, Button, Date, Enum, Float, Int,
+from traits.api import (HasTraits, Bool, Button, Date, Enum, Float, Int, List,
                         Range, Str, Time)
 
 
@@ -25,6 +25,7 @@ class AllTypes(HasTraits):
     enum_value = Enum("foo", "bar", "baz", "qux")
     int_range_value = Range(low=0, high=10)
     float_range_value = Range(low=0.0, high=1.0)
+    list_value = List([0, 1, 2])
     str_value = Str("Word")
     date_value = Date(datetime.date.today())
     time_value = Time(datetime.time())

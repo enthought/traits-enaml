@@ -6,9 +6,11 @@
 # LICENSE.txt
 #
 
+import datetime
+
 import enaml
 from enaml.qt.qt_application import QtApplication
-from traits.api import HasTraits, Str, Range
+from traits.api import HasTraits, Str, Range, Date, Time
 
 
 class Person(HasTraits):
@@ -20,6 +22,10 @@ class Person(HasTraits):
     first_name = Str()
 
     age = Range(low=0, high=120)
+
+    birthday = Date(datetime.date.today())
+
+    bedtime = Time(datetime.time())
 
     def _anytrait_changed(self, name, old, new):
         print name, "changed from", old, "to", new

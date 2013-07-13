@@ -7,12 +7,13 @@
 #
 
 from collections import namedtuple
+from datetime import date, time
 
 from enaml.core.api import Conditional, Looper
 from enaml.stdlib.fields import IntField, FloatField
-from enaml.widgets.api import (CheckBox, ComboBox, Field, Form, Label, SpinBox,
-                               Window)
-from traits.api import Bool, Enum, Float, Int, Range, Str
+from enaml.widgets.api import (CheckBox, ComboBox, DateSelector, Field,
+                               Form, Label, SpinBox, TimeSelector, Window)
+from traits.api import BaseInstance, Bool, Enum, Float, Int, Range, Str
 
 TraitDesc = namedtuple('TraitDesc', 'name trait_type ui_label')
 
@@ -74,6 +75,20 @@ enamldef AutoView(Form): auto_view:
                     item_value = loop_item.trait_type.values[self.index]
                     setattr(auto_view._model, loop_item.name, item_value)
                 items = list(loop_item.trait_type.values)
+
+        Conditional:
+            condition = (isinstance(loop_item.trait_type, BaseInstance) and
+                         loop_item.trait_type.klass is date)
+            DateSelector:
+                date << getattr(auto_view._model, loop_item.name)
+                date :: setattr(auto_view._model, loop_item.name, self.date)
+
+        Conditional:
+            condition = (isinstance(loop_item.trait_type, BaseInstance) and
+                         loop_item.trait_type.klass is time)
+            TimeSelector:
+                time << getattr(auto_view._model, loop_item.name)
+                time :: setattr(auto_view._model, loop_item.name, self.time)
 
         Conditional:
             condition = (

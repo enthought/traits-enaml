@@ -1,0 +1,107 @@
+#
+# (C) Copyright 2013 Enthought, Inc., Austin, TX
+# All right reserved.
+#
+# This file is open source software distributed according to the terms in
+# LICENSE.txt
+#
+
+from collections import namedtuple
+
+from enaml.core.api import Conditional, Looper
+from enaml.stdlib.fields import IntField, FloatField
+from enaml.widgets.api import (CheckBox, ComboBox, Field, Form, Label, SpinBox,
+                               Window)
+from traits.api import Bool, Enum, Float, Int, Range, Str
+
+TraitDesc = namedtuple('TraitDesc', 'name trait_type ui_label')
+
+
+def auto_view(model):
+    """ Generate a view directly from a `HasTraits` instance.
+    """
+    return AutoWindow(_model=model)
+
+
+def model_traits(model):
+    traits = []
+    for name in model.editable_traits():
+        trait = model.trait(name)
+        ui_label = " ".join(name.split('_')).capitalize()
+        traits.append(TraitDesc(name, trait.trait_type, ui_label))
+    return traits
+
+
+enamldef AutoView(Form): auto_view:
+    attr _model
+
+    Looper:
+        iterable << model_traits(auto_view._model)
+
+        Label:
+            text = loop_item.ui_label
+
+        Conditional:
+            condition = isinstance(loop_item.trait_type, Bool)
+            CheckBox:
+                checked << getattr(auto_view._model, loop_item.name)
+                checked :: setattr(auto_view._model, loop_item.name, self.checked)
+
+        Conditional:
+            condition = isinstance(loop_item.trait_type, Int)
+            IntField:
+                value << getattr(auto_view._model, loop_item.name)
+                value :: setattr(auto_view._model, loop_item.name, self.value)
+
+        Conditional:
+            condition = isinstance(loop_item.trait_type, Float)
+            FloatField:
+                value << getattr(auto_view._model, loop_item.name)
+                value :: setattr(auto_view._model, loop_item.name, self.value)
+
+        Conditional:
+            condition = isinstance(loop_item.trait_type, Str)
+            Field:
+                text << getattr(auto_view._model, loop_item.name)
+                text :: setattr(auto_view._model, loop_item.name, self.text)
+
+        Conditional:
+            condition = isinstance(loop_item.trait_type, Enum)
+            ComboBox:
+                index << loop_item.trait_type.values.index(getattr(auto_view._model,
+                                                                   loop_item.name))
+                index ::
+                    item_value = loop_item.trait_type.values[self.index]
+                    setattr(auto_view._model, loop_item.name, item_value)
+                items = list(loop_item.trait_type.values)
+
+        Conditional:
+            condition = (
+                isinstance(loop_item.trait_type, Range) and 
+                isinstance(loop_item.trait_type._low, int) and
+                isinstance(loop_item.trait_type._high, int)
+            )
+            SpinBox:
+                value << getattr(auto_view._model, loop_item.name)
+                value :: setattr(auto_view._model, loop_item.name, self.value)
+                minimum = loop_item.trait_type._low
+                maximum = loop_item.trait_type._high
+
+        Conditional:
+            condition = (
+                isinstance(loop_item.trait_type, Range) and
+                (isinstance(loop_item.trait_type._low, float) or
+                 isinstance(loop_item.trait_type._high, float))
+            )
+            FloatField:
+                value << getattr(auto_view._model, loop_item.name)
+                value :: setattr(auto_view._model, loop_item.name, self.value)
+                minimum = loop_item.trait_type._low
+                maximum = loop_item.trait_type._high
+
+
+enamldef AutoWindow(Window): auto_win:
+    attr _model
+
+    AutoView:
+        _model << auto_win._model

@@ -10,8 +10,8 @@ import datetime
 
 import enaml
 from enaml.qt.qt_application import QtApplication
-from traits.api import (HasTraits, Bool, Date, Enum, Float, Int, Str, Range,
-                        Str, Time)
+from traits.api import (HasTraits, Bool, Button, Date, Enum, Float, Int,
+                        Range, Str, Time)
 
 
 class AllTypes(HasTraits):
@@ -19,6 +19,7 @@ class AllTypes(HasTraits):
 
     """
     boolean_value = Bool(True)
+    button_value = Button("I'm a button!")
     int_value = Int(42)
     float_value = Float(3.141592)
     enum_value = Enum("foo", "bar", "baz", "qux")
@@ -28,6 +29,9 @@ class AllTypes(HasTraits):
     date_value = Date(datetime.date.today())
     time_value = Time(datetime.time())
 
+    def _button_value_fired(self):
+        print "Button was pressed"
+
     def _anytrait_changed(self, name, old, new):
         print name, "changed from", old, "to", new
 
@@ -36,7 +40,6 @@ if __name__ == '__main__':
         from traits_enaml.widgets.auto_view import auto_window
 
     all = AllTypes()
-
     app = QtApplication()
     view = auto_window(all)
     view.show()

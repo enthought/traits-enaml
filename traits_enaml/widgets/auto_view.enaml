@@ -12,8 +12,10 @@ from datetime import date, time
 from enaml.core.api import Conditional, Looper
 from enaml.stdlib.fields import IntField, FloatField
 from enaml.widgets.api import (CheckBox, ComboBox, DateSelector, Field,
-                               Form, Label, SpinBox, TimeSelector, Window)
-from traits.api import BaseInstance, Bool, Enum, Float, Int, Range, Str
+                               Form, Label, PushButton, SpinBox, TimeSelector,
+                               Window)
+from traits.api import (BaseInstance, Bool, Button, Enum, Event, Float, Int,
+                        Range, Str)
 
 TraitDesc = namedtuple('TraitDesc', 'name trait_type ui_label')
 
@@ -32,8 +34,10 @@ def auto_window(model):
 
 def model_traits(model):
     traits = []
-    for name in model.editable_traits():
+    for name in model.class_trait_names():
         trait = model.trait(name)
+        if type(trait.trait_type) is Event:
+            continue
         ui_label = " ".join(name.split('_')).capitalize()
         traits.append(TraitDesc(name, trait.trait_type, ui_label))
     return traits
@@ -45,6 +49,14 @@ enamldef BoolEditor(Conditional): _cond:
     CheckBox:
         checked << getattr(model, _cond.loop_item.name)
         checked :: setattr(model, _cond.loop_item.name, self.checked)
+
+
+enamldef ButtonEditor(Conditional): _cond:
+    attr loop_item
+    condition = isinstance(_cond.loop_item.trait_type, Button)
+    PushButton:
+        text = _cond.loop_item.trait_type.label
+        clicked :: setattr(model, _cond.loop_item.name, True)
 
 
 enamldef DateEditor(Conditional): _cond:
@@ -142,21 +154,23 @@ enamldef AutoView(Form): _view:
         # Conditional
         BoolEditor:
             loop_item << loop_item
-        IntEditor:
-            loop_item << loop_item
-        FloatEditor:
-            loop_item << loop_item
-        StrEditor:
-            loop_item << loop_item
-        EnumEditor:
+        ButtonEditor:
             loop_item << loop_item
         DateEditor:
             loop_item << loop_item
-        TimeEditor:
+        EnumEditor:
+            loop_item << loop_item
+        FloatEditor:
+            loop_item << loop_item
+        FloatRangeEditor:
+            loop_item << loop_item
+        IntEditor:
             loop_item << loop_item
         IntRangeEditor:
             loop_item << loop_item
-        FloatRangeEditor:
+        StrEditor:
+            loop_item << loop_item
+        TimeEditor:
             loop_item << loop_item
 
 

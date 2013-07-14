@@ -18,9 +18,9 @@ class AllTypes(HasTraits):
     """ A simple class with all kinds of traits
 
     """
-    boolean_value = Bool(True)
+    boolean_value = Bool(True, label="Custom Bool Label:")
     button_value = Button("I'm a button!")
-    int_value = Int(42)
+    int_value = Int(42, tooltip="You can add a tooltip as well.")
     float_value = Float(3.141592)
     enum_value = Enum("foo", "bar", "baz", "qux")
     int_range_value = Range(low=0, high=10)

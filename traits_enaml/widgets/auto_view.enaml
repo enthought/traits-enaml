@@ -20,7 +20,7 @@ from traits_enaml.widgets.traits_view import TraitsView
 from traitsui.api import View, UItem
 
 
-TraitDesc = namedtuple('TraitDesc', 'name trait_type ui_label')
+TraitDesc = namedtuple('TraitDesc', 'name trait_type label tooltip')
 
 
 def auto_view(model):
@@ -41,8 +41,9 @@ def model_traits(model):
         trait = model.trait(name)
         if type(trait.trait_type) is Event:
             continue
-        ui_label = " ".join(name.split('_')).capitalize()
-        traits.append(TraitDesc(name, trait.trait_type, ui_label))
+        label = trait.label or " ".join(name.split('_')).capitalize()
+        tooltip = trait.tooltip
+        traits.append(TraitDesc(name, trait.trait_type, label, tooltip))
     return traits
 
 
@@ -131,6 +132,8 @@ enamldef DefaultEditor(TraitsView): _edit:
 
 def get_editor(model, loop_item):
     kwargs = {'model': model, 'loop_item': loop_item}
+    if loop_item.tooltip:
+        kwargs['tool_tip'] = loop_item.tooltip
 
     if isinstance(loop_item.trait_type, Bool):
         return BoolEditor(**kwargs)
@@ -178,7 +181,7 @@ enamldef AutoView(Form): _view:
         iterable << model_traits(_view.model)
 
         Label:
-            text = loop_item.ui_label
+            text = loop_item.label
         Include:
             objects = [get_editor(model, loop_item)]
 

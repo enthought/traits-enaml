@@ -10,15 +10,16 @@ from collections import namedtuple
 from datetime import date, time
 
 from enaml.core.api import Include, Looper
-from enaml.stdlib.fields import IntField, FloatField
-from enaml.widgets.api import (CheckBox, ComboBox, DateSelector, Field,
-                               Form, Label, PushButton, SpinBox,
-                               TimeSelector, Window)
+from enaml.widgets.api import Form, Label, Window
 from traits.api import (BaseInstance, Bool, Button, Enum, Event, Float, Int,
                         Range, Str)
-from traits_enaml.widgets.traits_view import TraitsView
-from traitsui.api import View, UItem
 
+from traits_enaml.widgets.auto_editors import (BoolEditor, ButtonEditor,
+                                               DateEditor, EnumEditor,
+                                               FloatEditor, FloatRangeEditor,
+                                               IntEditor, IntRangeEditor,
+                                               StrEditor, TimeEditor,
+                                               DefaultEditor)
 
 TraitDesc = namedtuple('TraitDesc', 'name trait_type label tooltip')
 
@@ -47,128 +48,45 @@ def model_traits(model):
     return traits
 
 
-enamldef BoolEditor(CheckBox): _edit:
-    attr model
-    attr loop_item
-    checked << getattr(model, _edit.loop_item.name)
-    checked :: setattr(model, _edit.loop_item.name, self.checked)
+def get_editor(model, trait_desc):
+    kwargs = {'model': model, 'trait_desc': trait_desc}
+    if trait_desc.tooltip:
+        kwargs['tool_tip'] = trait_desc.tooltip
 
-
-enamldef ButtonEditor(PushButton): _edit:
-    attr model
-    attr loop_item
-    text = _edit.loop_item.trait_type.label
-    clicked :: setattr(model, _edit.loop_item.name, True)
-
-
-enamldef DateEditor(DateSelector): _edit:
-    attr model
-    attr loop_item
-    date << getattr(model, _edit.loop_item.name)
-    date :: setattr(model, _edit.loop_item.name, self.date)
-
-
-enamldef EnumEditor(ComboBox): _edit:
-    attr model
-    attr loop_item
-    index << _edit.loop_item.trait_type.values.index(getattr(model,
-                                                             _edit.loop_item.name))
-    index ::
-        item_value = _edit.loop_item.trait_type.values[self.index]
-        setattr(model, _edit.loop_item.name, item_value)
-    items = list(_edit.loop_item.trait_type.values)
-
-
-enamldef FloatEditor(FloatField): _edit:
-    attr model
-    attr loop_item
-    value << getattr(model, _edit.loop_item.name)
-    value :: setattr(model, _edit.loop_item.name, self.value)
-
-
-enamldef FloatRangeEditor(FloatField): _edit:
-    attr model
-    attr loop_item
-    value << getattr(model, _edit.loop_item.name)
-    value :: setattr(model, _edit.loop_item.name, self.value)
-    minimum = _edit.loop_item.trait_type._low
-    maximum = _edit.loop_item.trait_type._high
-
-
-enamldef IntEditor(IntField): _edit:
-    attr model
-    attr loop_item
-    value << getattr(model, _edit.loop_item.name)
-    value :: setattr(model, _edit.loop_item.name, self.value)
-
-
-enamldef IntRangeEditor(SpinBox): _edit:
-    attr model
-    attr loop_item
-    value << getattr(model, _edit.loop_item.name)
-    value :: setattr(model, _edit.loop_item.name, self.value)
-    minimum = _edit.loop_item.trait_type._low
-    maximum = _edit.loop_item.trait_type._high
-
-
-enamldef StrEditor(Field): _edit:
-    attr model
-    attr loop_item
-    text << getattr(model, _edit.loop_item.name)
-    text :: setattr(model, _edit.loop_item.name, self.text)
-
-
-enamldef TimeEditor(TimeSelector): _edit:
-    attr model
-    attr loop_item
-    time << getattr(model, _edit.loop_item.name)
-    time :: setattr(model, _edit.loop_item.name, self.time)
-
-
-enamldef DefaultEditor(TraitsView): _edit:
-    attr loop_item
-    view = View(UItem(_edit.loop_item.name))
-
-
-def get_editor(model, loop_item):
-    kwargs = {'model': model, 'loop_item': loop_item}
-    if loop_item.tooltip:
-        kwargs['tool_tip'] = loop_item.tooltip
-
-    if isinstance(loop_item.trait_type, Bool):
+    if isinstance(trait_desc.trait_type, Bool):
         return BoolEditor(**kwargs)
 
-    elif isinstance(loop_item.trait_type, Button):
+    elif isinstance(trait_desc.trait_type, Button):
         return ButtonEditor(**kwargs)
 
-    elif (isinstance(loop_item.trait_type, BaseInstance) and
-            loop_item.trait_type.klass is date):
+    elif (isinstance(trait_desc.trait_type, BaseInstance) and
+            trait_desc.trait_type.klass is date):
         return DateEditor(**kwargs)
 
-    elif isinstance(loop_item.trait_type, Enum):
+    elif isinstance(trait_desc.trait_type, Enum):
         return EnumEditor(**kwargs)
 
-    elif isinstance(loop_item.trait_type, Float):
+    elif isinstance(trait_desc.trait_type, Float):
         return FloatEditor(**kwargs)
 
-    elif (isinstance(loop_item.trait_type, Range) and
-            (isinstance(loop_item.trait_type._low, float) or
-             isinstance(loop_item.trait_type._high, float))):
+    elif (isinstance(trait_desc.trait_type, Range) and
+            (isinstance(trait_desc.trait_type._low, float) or
+             isinstance(trait_desc.trait_type._high, float))):
         return FloatRangeEditor(**kwargs)
 
-    elif isinstance(loop_item.trait_type, Int):
+    elif isinstance(trait_desc.trait_type, Int):
         return IntEditor(**kwargs)
 
-    elif (isinstance(loop_item.trait_type, Range) and 
-            isinstance(loop_item.trait_type._low, int) and
-            isinstance(loop_item.trait_type._high, int)):
+    elif (isinstance(trait_desc.trait_type, Range) and 
+            isinstance(trait_desc.trait_type._low, int) and
+            isinstance(trait_desc.trait_type._high, int)):
         return IntRangeEditor(**kwargs)
 
-    elif isinstance(loop_item.trait_type, Str):
+    elif isinstance(trait_desc.trait_type, Str):
         return StrEditor(**kwargs)
 
-    elif (isinstance(loop_item.trait_type, BaseInstance) and
-            loop_item.trait_type.klass is time):
+    elif (isinstance(trait_desc.trait_type, BaseInstance) and
+            trait_desc.trait_type.klass is time):
         return TimeEditor(**kwargs)
 
     return DefaultEditor(**kwargs)

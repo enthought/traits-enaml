@@ -8,10 +8,10 @@
 
 import datetime
 
-import enaml
 from enaml.qt.qt_application import QtApplication
 from traits.api import (HasTraits, Bool, Button, Date, Enum, Float, Int, List,
                         Range, Str, Time)
+from traits_enaml.widgets.auto_view import auto_window
 
 
 class AllTypes(HasTraits):
@@ -37,9 +37,6 @@ class AllTypes(HasTraits):
         print name, "changed from", old, "to", new
 
 if __name__ == '__main__':
-    with enaml.imports():
-        from traits_enaml.widgets.auto_view import auto_window
-
     all = AllTypes()
     app = QtApplication()
     view = auto_window(all)

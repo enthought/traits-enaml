@@ -9,17 +9,19 @@
 from collections import namedtuple
 from datetime import date, time
 
-from enaml.core.api import Include, Looper
-from enaml.widgets.api import Form, Label, Window
 from traits.api import (BaseInstance, Bool, Button, Enum, Event, Float, Int,
                         Range, Str)
+import traits_enaml
 
-from traits_enaml.widgets.auto_editors import (BoolEditor, ButtonEditor,
-                                               DateEditor, EnumEditor,
-                                               FloatEditor, FloatRangeEditor,
-                                               IntEditor, IntRangeEditor,
-                                               StrEditor, TimeEditor,
-                                               DefaultEditor)
+with traits_enaml.imports():
+    from enaml.widgets.api import Label
+    from traits_enaml.widgets.auto_editors import (AutoView, AutoWindow,
+                                                   BoolEditor, ButtonEditor,
+                                                   DateEditor, EnumEditor,
+                                                   FloatEditor,
+                                                   FloatRangeEditor, IntEditor,
+                                                   IntRangeEditor, StrEditor,
+                                                   TimeEditor, DefaultEditor)
 
 TraitDesc = namedtuple('TraitDesc', 'name trait_type label tooltip')
 
@@ -27,28 +29,20 @@ TraitDesc = namedtuple('TraitDesc', 'name trait_type label tooltip')
 def auto_view(model):
     """ Generate a view directly from a `HasTraits` instance.
     """
-    return AutoView(model=model)
+    descriptions = _model_traits(model)
+    labels = [Label(text=desc.label) for desc in descriptions]
+    editors = [_get_editor(model, desc) for desc in descriptions]
+    objects = [widget for pair in zip(labels, editors) for widget in pair]
+    return AutoView(objects=objects)
 
 
 def auto_window(model):
     """ Generate a window directly from a `HasTraits` instance.
     """
-    return AutoWindow(model=model)
+    return AutoWindow(view=auto_view(model))
 
 
-def model_traits(model):
-    traits = []
-    for name in model.class_trait_names():
-        trait = model.trait(name)
-        if type(trait.trait_type) is Event:
-            continue
-        label = trait.label or " ".join(name.split('_')).capitalize()
-        tooltip = trait.tooltip
-        traits.append(TraitDesc(name, trait.trait_type, label, tooltip))
-    return traits
-
-
-def get_editor(model, trait_desc):
+def _get_editor(model, trait_desc):
     kwargs = {'model': model, 'trait_desc': trait_desc}
     if trait_desc.tooltip:
         kwargs['tool_tip'] = trait_desc.tooltip
@@ -77,7 +71,7 @@ def get_editor(model, trait_desc):
     elif isinstance(trait_desc.trait_type, Int):
         return IntEditor(**kwargs)
 
-    elif (isinstance(trait_desc.trait_type, Range) and 
+    elif (isinstance(trait_desc.trait_type, Range) and
             isinstance(trait_desc.trait_type._low, int) and
             isinstance(trait_desc.trait_type._high, int)):
         return IntRangeEditor(**kwargs)
@@ -92,22 +86,13 @@ def get_editor(model, trait_desc):
     return DefaultEditor(**kwargs)
 
 
-enamldef AutoView(Form): _view:
-    attr model
-
-    Looper:
-        iterable << model_traits(_view.model)
-
-        Label:
-            text = loop_item.label
-        Include:
-            objects = [get_editor(model, loop_item)]
-
-
-enamldef AutoWindow(Window): auto_win:
-    attr model
-
-    title = "Edit Properties"
-
-    AutoView:
-        model << auto_win.model
+def _model_traits(model):
+    traits = []
+    for name in model.class_trait_names():
+        trait = model.trait(name)
+        if type(trait.trait_type) is Event:
+            continue
+        label = trait.label or " ".join(name.split('_')).capitalize()
+        tooltip = trait.tooltip
+        traits.append(TraitDesc(name, trait.trait_type, label, tooltip))
+    return traits

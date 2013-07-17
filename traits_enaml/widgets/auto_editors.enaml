@@ -8,11 +8,26 @@
 
 from datetime import date, time
 
+from enaml.core.api import Include
 from enaml.stdlib.fields import IntField, FloatField
-from enaml.widgets.api import (CheckBox, ComboBox, DateSelector, Field,
-                               PushButton, SpinBox, TimeSelector)
+from enaml.widgets.api import (CheckBox, ComboBox, DateSelector, Field, Form,
+                               Label, PushButton, SpinBox, TimeSelector,
+                               Window)
 from traits_enaml.widgets.traits_view import TraitsView
 from traitsui.api import View, UItem
+
+
+enamldef AutoView(Form): _view:
+    attr objects
+    Include:
+        objects << _view.objects
+
+
+enamldef AutoWindow(Window): _win:
+    attr view
+    title = "Edit Properties"
+    Include:
+        objects << [_win.view]
 
 
 enamldef BoolEditor(CheckBox):

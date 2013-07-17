@@ -11,7 +11,10 @@ import datetime
 from enaml.qt.qt_application import QtApplication
 from traits.api import (HasTraits, Bool, Button, Date, Enum, Float, Int, List,
                         Range, Str, Time)
+import traits_enaml
 from traits_enaml.widgets.auto_view import auto_window
+with traits_enaml.imports():
+    from traits_enaml.widgets.auto_editors import DefaultEditor
 
 
 class AllTypes(HasTraits):
@@ -29,6 +32,9 @@ class AllTypes(HasTraits):
     str_value = Str("Word")
     date_value = Date(datetime.date.today())
     time_value = Time(datetime.time())
+    range_value = Range(low=0, high=100,
+                        label="Traits Range Editor:",
+                        enaml_editor=DefaultEditor)
 
     def _button_value_fired(self):
         print "Button was pressed"

@@ -33,8 +33,7 @@ enamldef AutoWindow(Window): _win:
 enamldef BoolEditor(CheckBox):
     attr model
     attr trait_desc
-    checked << getattr(model, trait_desc.name)
-    checked :: setattr(model, trait_desc.name, self.checked)
+    checked := getattr(model, trait_desc.name)
 
 
 enamldef ButtonEditor(PushButton):
@@ -47,8 +46,7 @@ enamldef ButtonEditor(PushButton):
 enamldef DateEditor(DateSelector):
     attr model
     attr trait_desc
-    date << getattr(model, trait_desc.name)
-    date :: setattr(model, trait_desc.name, self.date)
+    date := getattr(model, trait_desc.name)
 
 
 enamldef EnumEditor(ComboBox):
@@ -64,15 +62,13 @@ enamldef EnumEditor(ComboBox):
 enamldef FloatEditor(FloatField):
     attr model
     attr trait_desc
-    value << getattr(model, trait_desc.name)
-    value :: setattr(model, trait_desc.name, self.value)
+    value := getattr(model, trait_desc.name)
 
 
 enamldef FloatRangeEditor(FloatField):
     attr model
     attr trait_desc
-    value << getattr(model, trait_desc.name)
-    value :: setattr(model, trait_desc.name, self.value)
+    value := getattr(model, trait_desc.name)
     minimum = trait_desc.trait_type._low
     maximum = trait_desc.trait_type._high
 
@@ -80,15 +76,13 @@ enamldef FloatRangeEditor(FloatField):
 enamldef IntEditor(IntField):
     attr model
     attr trait_desc
-    value << getattr(model, trait_desc.name)
-    value :: setattr(model, trait_desc.name, self.value)
+    value := getattr(model, trait_desc.name)
 
 
 enamldef IntRangeEditor(SpinBox):
     attr model
     attr trait_desc
-    value << getattr(model, trait_desc.name)
-    value :: setattr(model, trait_desc.name, self.value)
+    value := getattr(model, trait_desc.name)
     minimum = trait_desc.trait_type._low
     maximum = trait_desc.trait_type._high
 
@@ -96,15 +90,13 @@ enamldef IntRangeEditor(SpinBox):
 enamldef StrEditor(Field):
     attr model
     attr trait_desc
-    text << getattr(model, trait_desc.name)
-    text :: setattr(model, trait_desc.name, self.text)
+    text := getattr(model, trait_desc.name)
 
 
 enamldef TimeEditor(TimeSelector):
     attr model
     attr trait_desc
-    time << getattr(model, trait_desc.name)
-    time :: setattr(model, trait_desc.name, self.time)
+    time := getattr(model, trait_desc.name)
 
 
 enamldef DefaultEditor(TraitsView):

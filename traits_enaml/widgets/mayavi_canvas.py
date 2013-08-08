@@ -8,7 +8,7 @@ from enaml.widgets.api import RawWidget
 from enaml.core.declarative import d_
 
 from traits.api import HasTraits, Instance
-from traitsui.api import View, Group, Item
+from traitsui.api import View, Item
 
 from tvtk.pyface.scene_editor import SceneEditor
 from tvtk.pyface.scene_model import SceneModel

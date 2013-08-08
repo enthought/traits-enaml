@@ -16,10 +16,9 @@ from tvtk.pyface.scene_model import SceneModel
 
 class MayaviModel(HasTraits):
     scene = Instance(SceneModel, ())
-    view = View(Group(
-                Item('scene', editor=SceneEditor()),
-                show_labels=False)
-                )
+    view = View(Item('scene', editor=SceneEditor(), resizable=True,
+                     show_label=False),
+                resizable=True)
 
 
 class MayaviCanvas(RawWidget):

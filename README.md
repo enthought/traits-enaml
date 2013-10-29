@@ -1,7 +1,8 @@
 traits-enaml
 ============
 
-A library to facilitate interoperation of Traits with Enaml 0.7.x (0.8 compatibility pending).
+A library to facilitate interoperation of Traits with Enaml 0.7.x (0.8 compatibility pending)
+from https://github.com/nucleic/enaml.
 
 Initially this repo should include wrappers for embedding TraitsUIs in Enaml UIs
 and vice-versa.

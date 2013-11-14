@@ -3,7 +3,7 @@ python:
   - "2.7"
 virtualenv:
   system_site_packages: true
-before _install:
+before_install:
    - export DISPLAY=:99.0
    - sh -e /etc/init.d/xvfb start
 install:

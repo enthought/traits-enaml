@@ -8,4 +8,5 @@ before_install:
 install:
   - pip install unittest2
   - python setup.py develop
-script: unit2 discover -v
+script:
+  unit2 discover -v

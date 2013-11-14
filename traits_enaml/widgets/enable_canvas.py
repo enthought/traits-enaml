@@ -36,4 +36,5 @@ class EnableCanvas(RawWidget):
 
     @observe('component')
     def component_changed(self, new):
-        self._window.component = new['value']
+        if self._window is not None:
+            self._window.component = new['value']

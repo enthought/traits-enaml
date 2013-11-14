@@ -46,8 +46,8 @@ enamldef MainView(MainWindow):
         self.view = view
 
     def tearDown(self):
-        self.enaml_widget = None
-        self.toolkit_widget = None
+        self.view = None
+        self.model = None
         EnamlTestAssistant.tearDown(self)
 
 

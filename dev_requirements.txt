@@ -1,6 +1,6 @@
 unittest2
-cython
 ply
+http://cython.org/release/Cython-0.19.2.tar.gz#egg=Cython
 https://github.com/nucleic/enaml/archive/0.8.8.tar.gz#egg=enaml
 https://github.com/nucleic/atom/archive/0.3.4.tar.gz#egg=atom
 -e git+http://github.com/enthought/casuarius.git#egg=casuarius

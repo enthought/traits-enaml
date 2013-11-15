@@ -24,14 +24,10 @@ class GuiTestAssistant(TestAssistant):
         self.event_loop_helper = EventLoopHelper(qt_app=self.qt_app)
 
     def tearDown(self):
-        # FIXME: DP commented this during the enaml 0.8 transition. This causes
-        # segfaults. The suspicition is that it would deallocate PySide object
-        # on the C++ side while keeping the objects on the Python side ... but
-        # nothing sure.
-        #with self.event_loop_with_timeout(repeat=5):
-        #    print 'Deferred call'
-        #    deferred_call(self.qt_app.closeAllWindows)
-        #del self.event_loop_helper
+        with self.event_loop_with_timeout(repeat=5):
+            print 'Deferred call'
+            deferred_call(self.qt_app.closeAllWindows)
+        del self.event_loop_helper
         self.enaml_app.destroy()
         del self.enaml_app
         del self.qt_app

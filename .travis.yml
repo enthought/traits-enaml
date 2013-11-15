@@ -8,6 +8,7 @@ before_install:
    - sh -e /etc/init.d/xvfb start
 install:
   - sudo apt-get install python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools
+  - pip install cython
   - pip install -r dev_requirements.txt --use-mirrors
   - python setup.py develop
 script:

@@ -1,5 +1,4 @@
 unittest2
-cython
 ply
 https://github.com/nucleic/enaml/archive/0.8.8.tar.gz#egg=enaml
 https://github.com/nucleic/atom/archive/0.3.4.tar.gz#egg=atom

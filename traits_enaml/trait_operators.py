@@ -5,110 +5,89 @@
 # This file is open source software distributed according to the terms in
 # LICENSE.txt
 #
-from enaml.core.operators import SubscriptionObserver, OperatorBase, op_simple, \
-    op_notify, op_update, bind_write_operator, bind_read_operator, \
-    add_operator_storage
+from enaml.core.dynamicscope import DynamicScope
+from enaml.core.expression_engine import HandlerPair, ReadHandler
 from enaml.core.funchelper import call_func
-from enaml.core.dynamic_scope import DynamicScope, Nonlocals
-from enaml.core.standard_inverter import StandardInverter
-
-from atom.datastructures.api import sortedmap
+from enaml.core.operators import gen_tracer, op_notify, op_simple, op_update
+from enaml.core.standard_handlers import HandlerMixin
 
 from .traits_tracer import TraitsTracer
 
 
-class TraitsObserver(SubscriptionObserver):
+class TraitsTracedReadHandler(ReadHandler, HandlerMixin):
+    """ An expression read handler which traces code execution.
 
-    __slots__ = '__weakref__'
-
-    def handler(self):
-        owner = self.owner
-        if owner is not None:
-            name = self.name
-            setattr(owner, name, owner._run_eval_operator(name))
-
-
-class OpSubscribe(OperatorBase):
-
-    __slots__ = 'observers'
-
-    def __init__(self, binding):
-        super(OpSubscribe, self).__init__(binding)
-        self.observers = sortedmap()
-
-    def release(self, owner):
-        super(OpSubscribe, self).release(owner)
-        obs = self.observers.pop(owner, None)
-        if obs is not None:
-            atom_ob, traits_ob = obs
-            atom_ob.owner = None
-            traits_ob.owner = None
-
-    def eval(self, owner):
-        tracer = TraitsTracer()
-        overrides = {'nonlocals': Nonlocals(owner, tracer), 'self': owner}
-        f_locals = self.get_locals(owner)
-        func = self.binding.func
-        scope = DynamicScope(
-            owner, f_locals, overrides, func.func_globals, tracer
-        )
-        result = call_func(func, (tracer,), {}, scope)
-        observers = self.observers
-        old = observers.get(owner)
-        if old is not None:
-            atom_ob, traits_ob = old
-            atom_ob.owner = None
-            traits_ob.owner = None
-        atom_ob = SubscriptionObserver(owner, self.binding.name)
-        traits_ob = TraitsObserver(owner, self.binding.name)
-        observers[owner] = (atom_ob, traits_ob)
-        for obj, name in tracer.traced_items:
-            obj.observe(name, atom_ob)
-        for obj, name in tracer.traced_traits:
-            obj.on_trait_change(traits_ob.handler, name)
-        return result
-
-
-class OpDelegate(OpSubscribe):
-    """ An operator class which implements the `:=` operator semantics.
+    This handler is used in conjuction with the standard '<<' operator.
 
     """
-    __slots__ = ()
-
-    def notify(self, change):
-        """ Run the notification code bound to the operator.
-
-        This method is called by the '_run_notify_operator()' method on
-        a Declarative instance.
-
-        Parameters
-        ----------
-        change : dict
-            The change dict for the change on the requestor.
+    def __call__(self, owner, name):
+        """ Evaluate and return the expression value.
 
         """
-        owner = change['object']
-        nonlocals = Nonlocals(owner, None)
-        inverter = StandardInverter(nonlocals)
-        overrides = {'nonlocals': nonlocals, 'self': owner}
+        func = self.func
+        f_globals = func.func_globals
+        f_builtins = f_globals['__builtins__']
         f_locals = self.get_locals(owner)
-        func = self.binding.auxfunc
-        scope = DynamicScope(
-            owner, f_locals, overrides, func.func_globals, None
-        )
-        call_func(func, (inverter, change.get('value')), {}, scope)
+        tr = TraitsTracer(owner, name)
+        scope = DynamicScope(owner, f_locals, f_globals, f_builtins, None, tr)
+        return call_func(func, (tr,), {}, scope)
 
 
-def trait_op_subscribe(klass, binding):
-    bind_write_operator(klass, binding, OpSubscribe(binding))
-    add_operator_storage(klass)
+def trait_op_subscribe(code, scope_key, f_globals):
+    """ The Traits Enaml operator function for the `<<` operator.
 
+    This operator generates a tracer function with optimized local
+    access and hooks it up to a TraitsTracedReadHandler. This
+    operator does not support write semantics.
 
-def trait_op_delegate(klass, binding):
-    operator = OpDelegate(binding)
-    bind_read_operator(klass, binding, operator)
-    bind_write_operator(klass, binding, operator)
-    add_operator_storage(klass)
+    Parameters
+    ----------
+    code : CodeType
+        The code object created by the Enaml compiler.
+
+    scope_key : object
+        The block scope key created by the Enaml compiler.
+
+    f_globals : dict
+        The global scope for the for code execution.
+
+    Returns
+    -------
+    result : HandlerPair
+        A pair with the reader set to a TraitsTracedReadHandler.
+
+    """
+    func = gen_tracer(code, f_globals)
+    reader = TraitsTracedReadHandler(func=func, scope_key=scope_key)
+    return HandlerPair(reader=reader)
+
+def trait_op_delegate(code, scope_key, f_globals):
+    """ The Traits Enaml operator function for the `:=` operator.
+
+    This operator combines the '<<' and the '>>' operators into a
+    single operator. It supports both read and write semantics.
+
+    Parameters
+    ----------
+    code : CodeType
+        The code object created by the Enaml compiler.
+
+    scope_key : object
+        The block scope key created by the Enaml compiler.
+
+    f_globals : dict
+        The global scope for the for code execution.
+
+    Returns
+    -------
+    result : HandlerPair
+        A pair with the reader set to a TraitsTracedReadHandler and
+        the writer set to a StandardInvertedWriteHandler.
+
+    """
+    p1 = trait_op_subscribe(code, scope_key, f_globals)
+    p2 = op_update(code, scope_key, f_globals)
+    return HandlerPair(reader=p1.reader, writer=p2.writer)
 
 
 TRAIT_OPERATORS = {

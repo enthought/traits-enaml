@@ -7,7 +7,16 @@
 #
 from traits.api import HasTraits, Disallow, TraitListObject, TraitDictObject
 
-from enaml.core.standard_tracer import StandardTracer
+from enaml.core.standard_tracer import StandardTracer, SubscriptionObserver
+
+
+class TraitsObserver(SubscriptionObserver):
+    """ An observer object which manages a tracer subscription.
+
+    Subclassed to allow weak-referencing.
+
+    """
+    __slots__ = ('__weakref__',)
 
 
 class TraitsTracer(StandardTracer):
@@ -19,11 +28,11 @@ class TraitsTracer(StandardTracer):
     """
     __slots__ = 'traced_traits'
 
-    def __init__(self):
+    def __init__(self, owner, name):
         """ Initialize a TraitsTracer.
 
         """
-        super(TraitsTracer, self).__init__()
+        super(TraitsTracer, self).__init__(owner, name)
         self.traced_traits = set()
 
     #--------------------------------------------------------------------------
@@ -117,3 +126,32 @@ class TraitsTracer(StandardTracer):
             if traits_obj is not None:
                 if obj.name_items:
                     self._trace_trait(traits_obj, obj.name_items)
+
+    #--------------------------------------------------------------------------
+    # StandardTracer Interface
+    #--------------------------------------------------------------------------
+    def finalize(self):
+        """ Finalize the tracing process.
+
+        This method will discard the old observer and attach a new
+        observer to the traced dependencies.
+
+        """
+        owner = self.owner
+        name = self.name
+        key = '_[%s|trace]' % name
+        storage = owner._d_storage
+
+        # invalidate the old observer so that it can be collected
+        old_observer = storage.get(key)
+        if old_observer is not None:
+            old_observer.ref = None
+
+        # create a new observer and subscribe it to the dependencies
+        if self.items or self.traced_traits:
+            observer = TraitsObserver(owner, name)
+            storage[key] = observer
+            for obj, d_name in self.items:
+                obj.observe(d_name, observer)
+            for obj, d_name in self.traced_traits:
+                obj.on_trait_change(observer.__call__, d_name)

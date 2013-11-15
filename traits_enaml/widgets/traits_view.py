@@ -13,6 +13,7 @@ from atom.api import Typed, set_default
 from enaml.core.declarative import d_
 from enaml.widgets.raw_widget import RawWidget
 
+
 class TraitsView(RawWidget):
     """ A widget which wraps a TraitsUI View on an object.
 

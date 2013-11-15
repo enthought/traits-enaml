@@ -31,6 +31,15 @@ class EnamlTestAssistant(GuiTestAssistant):
 
         return None
 
+    def find_all_enaml_widgets(self, root, type_name):
+        """ A simple function that recursively walks a widget tree and returns
+        a list of all widgets of a particular type.
+
+        """
+
+        return [child for child in root.traverse()
+                if type_name in [cls.__name__ for cls in type(child).__mro__]]
+
     def find_enaml_widget(self, root, type_name):
         """ A simple function that recursively walks a widget tree until it
         finds a widget of a particular type.

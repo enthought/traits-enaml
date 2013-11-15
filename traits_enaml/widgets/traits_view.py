@@ -13,12 +13,10 @@ from atom.api import Typed, set_default
 from enaml.core.declarative import d_
 from enaml.widgets.raw_widget import RawWidget
 
-
 class TraitsView(RawWidget):
     """ A widget which wraps a TraitsUI View on an object.
 
     """
-    # XXX should perhaps be subclassed from Control directly?
 
     #: The HasTraits instance that we are using
     model = d_(Typed(HasTraits))
@@ -26,11 +24,26 @@ class TraitsView(RawWidget):
     #: The View instance that we are using
     view = d_(Typed(View))
 
+    #: A reference to the TraitsUI UI object.
+    ui = Typed(HasTraits)
+
     #: TraitsViews hug their contents' width weakly by default.
     hug_width = set_default('weak')
 
     def create_widget(self, parent):
-        ui = self.model.edit_traits(self.view, kind='subpanel')
-        # XXX this is dodgy, probably should have a proxy which holds the UI instance
-        ui.control.setParent(parent)
-        return ui.control
+        self.ui = self.model.edit_traits(self.view, kind='subpanel')
+        self.ui.control.setParent(parent)
+        return self.ui.control
+
+    def destroy_widget(self):
+        self.ui.dispose()
+
+    def destroy(self):
+        """ A reimplemented destructor.
+
+        This destructor disposes the TraitsUI object before proceeding with
+        the regular Enaml destruction.
+
+        """
+        self.destroy_widget()
+        super(TraitsView, self).destroy()

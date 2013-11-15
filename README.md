@@ -1,7 +1,7 @@
 traits-enaml
 ============
 
-A library to facilitate interoperation of Traits with Enaml 0.8.x:
+A library to facilitate interoperation of Traits with `Enaml 0.8.x`
 
     https://github.com/nucleic/enaml
 

@@ -2,6 +2,7 @@
 import contextlib
 import threading
 
+from enaml.application import deferred_call
 from enaml.qt.qt_application import QtApplication
 from enaml.qt.QtGui import QApplication
 from traits.testing.unittest_tools import _TraitsChangeCollector as TraitsChangeCollector
@@ -25,7 +26,6 @@ class GuiTestAssistant(TestAssistant):
 
     def tearDown(self):
         with self.event_loop_with_timeout(repeat=5):
-            print 'Deferred call'
             deferred_call(self.qt_app.closeAllWindows)
         del self.event_loop_helper
         self.enaml_app.destroy()

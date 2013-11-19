@@ -37,7 +37,10 @@ class TraitsView(RawWidget):
         return self.ui.control
 
     def destroy_widget(self):
-        self.ui.dispose()
+        control = self.ui.control
+        if control is not None:
+            control.setParent(None)
+            self.ui.dispose()
 
     def destroy(self):
         """ A reimplemented destructor.

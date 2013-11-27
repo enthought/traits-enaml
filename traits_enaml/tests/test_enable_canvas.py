@@ -5,6 +5,7 @@ from traits.api import HasTraits, Instance
 
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
+
 class Model(HasTraits):
 
     component = Instance(Component)
@@ -52,3 +53,10 @@ enamldef MainView(MainWindow):
 
         canvas = None
 
+    def test_enable_canvas_proxy(self):
+
+        from enaml.qt.qt_raw_widget import QtRawWidget
+
+        canvas = self.view.find('canvas')
+        # Check that the proxy is strictly a QtRawWidget (not a subclass).
+        self.assertEqual(type(canvas.proxy), QtRawWidget)

@@ -5,3 +5,4 @@ https://github.com/nucleic/atom/archive/0.3.4.tar.gz#egg=atom
 -e git+http://github.com/enthought/casuarius.git#egg=casuarius
 -e git+http://github.com/enthought/traits.git#egg=traits
 -e git+http://github.com/enthought/enable.git#egg=enable
+-e git+http://github.com/enthought/traitsui.git#egg=traitsui

@@ -1,12 +1,17 @@
 traits-enaml
 ============
 
-A library to facilitate interoperation of Traits with `Enaml 0.8.x`
+Traits is an extension library to facilitate interoperation of `Enaml 0.8.x`
+with `Traits` and allow a programmer to drive enaml views using
+traits models, enable components and mayavi 3D views.
 
-    https://github.com/nucleic/enaml
 
-Initially this repo should include wrappers for embedding TraitsUIs in Enaml UIs
-and vice-versa.
+References
+==========
 
-This is where we might build a replacement for the type of functionality provided
-by TraitsUI (eg. default UIs for HasTraits objects).
+Traits  https://github.com/enthought/traits
+Enable https://github.com/enthought/enable
+Mayavi https://github.com/enthought/mayavi
+Enaml   https://github.com/nucleic/enaml
+
+

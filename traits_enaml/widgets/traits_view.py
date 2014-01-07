@@ -17,12 +17,22 @@ from enaml.widgets.raw_widget import RawWidget
 class TraitsView(RawWidget):
     """ A widget which wraps a TraitsUI View on an object.
 
+    :Attributes:
+        **model** = `d_(Typed(HasTraits))`
+            The HasTraits instance that we are using.
+        **view** = `d_(Typed(View))`
+            The View instance that we are using.
+        **ui** = `Typed(HasTraits)`
+            A reference to the TraitsUI UI object.
+        **hug_width** = `set_default('weak')`
+            TraitsViews hug their contents' width weakly by default.
+
     """
 
-    #: The HasTraits instance that we are using
+    #: The HasTraits instance that we are using.
     model = d_(Typed(HasTraits))
 
-    #: The View instance that we are using
+    #: The View instance that we are using.
     view = d_(Typed(View))
 
     #: A reference to the TraitsUI UI object.

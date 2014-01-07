@@ -24,6 +24,10 @@ class MayaviModel(HasTraits):
 class MayaviCanvas(RawWidget):
     """ A widget that displays a mayavi scene.
 
+    :Attributes:
+        **scene** = *d_(Typed(SceneModel))*
+            The mayavi scene model to be displayed.
+
     """
     #: The mayavi scene model to be displayed.
     scene = d_(Typed(SceneModel))

@@ -12,6 +12,10 @@ from enaml.core.declarative import d_
 class EnableCanvas(RawWidget):
     """ A widget that displays an enable component
 
+    :Attributes:
+        **component** = *d_(Typed(Component))*
+            The enable component to be displayed
+
     """
     #: The enable component to be displayed
     component = d_(Typed(Component))

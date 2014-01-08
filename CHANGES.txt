@@ -1,0 +1,11 @@
+Traits-Enaml CHANGELOG
+======================
+
+
+Release 0.2.0
+-------------
+
+Support enaml 0.8.x
+Better test framework including enaml and gui testing helpers
+Basic documentation
+Integrate with Travis-CI

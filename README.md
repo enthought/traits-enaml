@@ -8,8 +8,8 @@ traits models, enable/chaco components and mayavi 3D scenes.
 References
 ==========
 
-Traits  https://github.com/enthought/traits
+Traits https://github.com/enthought/traits
 Enable https://github.com/enthought/enable
 Mayavi https://github.com/enthought/mayavi
-Enaml   https://github.com/nucleic/enaml
+Enaml  https://github.com/nucleic/enaml
 

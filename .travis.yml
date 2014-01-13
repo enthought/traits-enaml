@@ -13,3 +13,6 @@ install:
   - python setup.py develop
 script:
   unit2 discover -v
+notifications:
+  email:
+    - travis-ci@enthought.com

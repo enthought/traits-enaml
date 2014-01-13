@@ -2,13 +2,13 @@
 #  Copyright (c) 2013, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from atom.api import Typed, observe, set_default
+from atom.api import Bool, Typed, observe, set_default
 
 from enaml.widgets.api import RawWidget
 from enaml.core.declarative import d_
 
-from traits.api import HasTraits, Instance
-from traitsui.api import View, Item
+from traits.api import HasTraits, Instance, Bool as BoolTrait
+from traitsui.api import View, Item, Handler
 
 from tvtk.pyface.scene_editor import SceneEditor
 from tvtk.pyface.scene_model import SceneModel
@@ -21,6 +21,15 @@ class MayaviModel(HasTraits):
                 resizable=True)
 
 
+class ToolbarVisibilityHandler(Handler):
+    #: Should the toolbar be visible?
+    visible = BoolTrait
+
+    def position(self, info):
+        editor = info.ui.get_editors('scene')[0]
+        editor._scene._tool_bar.setVisible(self.visible)
+
+
 class MayaviCanvas(RawWidget):
     """ A widget that displays a mayavi scene.
 
@@ -31,6 +40,9 @@ class MayaviCanvas(RawWidget):
     """
     #: The mayavi scene model to be displayed.
     scene = d_(Typed(SceneModel))
+
+    #: If True, show the Mayavi toolbar
+    show_toolbar = d_(Bool(True))
 
     #: The traits model that is used to create the mayavi UI
     _model = MayaviModel()
@@ -45,7 +57,8 @@ class MayaviCanvas(RawWidget):
             self._model.scene = self.scene
 
     def create_widget(self, parent):
-        ui = self._model.edit_traits(kind='subpanel')
+        handler = ToolbarVisibilityHandler(visible=self.show_toolbar)
+        ui = self._model.edit_traits(kind='subpanel', handler=handler)
         widget = ui.control
         widget.setParent(parent)
 

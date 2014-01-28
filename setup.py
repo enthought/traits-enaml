@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='traits-enaml',
-    version='0.2dev',
+    version='0.2.1dev',
     author='Enthought, Inc',
     author_email='info@enthought.com',
     url='https://github.com/enthought/traits-enaml',

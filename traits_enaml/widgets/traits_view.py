@@ -42,7 +42,8 @@ class TraitsView(RawWidget):
     hug_width = set_default('weak')
 
     def create_widget(self, parent):
-        self.ui = self.model.edit_traits(self.view, kind='subpanel')
+        self.ui = self.model.edit_traits(
+            self.view, parent=parent, kind='subpanel')
         self.ui.control.setParent(parent)
         return self.ui.control
 

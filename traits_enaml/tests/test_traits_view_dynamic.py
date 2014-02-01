@@ -18,7 +18,7 @@ class Model(HasTraits):
     txt = Str('foo')
 
 
-class TestTraitsView(EnamlTestAssistant, unittest.TestCase):
+class TestTraitsViewDynamic(EnamlTestAssistant, unittest.TestCase):
 
     def setUp(self):
 

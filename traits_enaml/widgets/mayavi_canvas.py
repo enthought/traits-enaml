@@ -2,11 +2,11 @@
 #  Copyright (c) 2013, Enthought, Inc.
 #  All rights reserved.
 #------------------------------------------------------------------------------
-from atom.api import Bool, Typed, observe, set_default, Constant
+from atom.api import Bool, Typed, observe, set_default
 from enaml.core.declarative import d_
 
 from traits.api import Instance, HasStrictTraits
-from traitsui.api import View, Item, UI
+from traitsui.api import View, Item
 from tvtk.pyface.scene_editor import SceneEditor
 from tvtk.pyface.scene_model import SceneModel
 

@@ -1,10 +1,8 @@
 import unittest
 
 from mayavi.core.ui.api import MlabSceneModel
-from traits.api import HasTraits, Instance
 
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
-from traits_enaml.widgets.mayavi_canvas import MayaviCanvas
 
 
 class MayaviCanvasTestCase(EnamlTestAssistant, unittest.TestCase):

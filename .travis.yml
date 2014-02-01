@@ -12,7 +12,9 @@ install:
   - pip install -r dev_requirements.txt --use-mirrors
   - python setup.py develop
 script:
-  unit2 discover -v
+  coverage unit2 discover -v
 notifications:
   email:
     - travis-ci@enthought.com
+after_success:
+  coveralls

@@ -10,7 +10,8 @@ import unittest
 from traits.api import HasTraits, Str
 
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
-
+from traits_enaml.widgets.traits_view import TraitsView
+from traitsui.qt4.toolkit import GUIToolkit
 
 class Model(HasTraits):
 
@@ -26,45 +27,32 @@ class TestTraitsView(EnamlTestAssistant, unittest.TestCase):
         enaml_source = """
 from enaml.widgets.api import MainWindow
 from enaml.core.api import Include
-from traits_enaml.widgets.traits_view import TraitsView
 
 enamldef MainView(MainWindow): win:
-    attr model
+    attr traits_view
 
 
     Include:
-        TraitsView:
-            model = win.model
+        objects << [traits_view] if traits_view is not None else []
 """
 
-        self.model = Model()
-
-        view, toolkit_view = self.parse_and_create(enaml_source,
-                                                   model=self.model)
-
-
+        view, toolkit_view = self.parse_and_create(enaml_source)
         self.view = view
-        print view.widget()
-        self.traits_view = self.find_enaml_widget(view, "TraitsView")
 
     def tearDown(self):
-        self.traits_view = None
         self.view = None
         self.model = None
 
         EnamlTestAssistant.tearDown(self)
 
-    def test_disposing_traits_view(self):
-        traits_view = self.traits_view
+    def test_add_traits_view(self):
+        view = self.view
+        traits_view = TraitsView(model=Model())
         with self.event_loop():
-            with self.assertAtomChanges():
-                self.view.show()
-                control = self.traits_view.ui.control
-
-        self.view.destroy()
-        self.assertEqual(self.traits_view.ui.control, None)
-
-        self.assertEqual(control.parent(), None)
+            self.view.show()
+        with self.event_loop():
+            self.view.traits_view = traits_view
+        self.assertEqual(traits_view.ui.rebuild.__name__, 'ui_subpanel')
 
 
 if __name__ == "__main__":

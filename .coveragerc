@@ -1,7 +1,7 @@
 [run]
 branch = True
 source = traits_enaml
-omit = *test*
+omit = */tests/*
 
 [report]
 # Regexes for lines to exclude from consideration

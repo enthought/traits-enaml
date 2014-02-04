@@ -13,3 +13,13 @@ Enable https://github.com/enthought/enable
 Mayavi https://github.com/enthought/mayavi
 Enaml  https://github.com/nucleic/enaml
 
+Status
+======
+
+.. image:: https://api.travis-ci.org/enthought/traits-enaml.png?branch=master
+   :target: https://travis-ci.org/enthought/traits-enaml
+   :alt: Build status
+
+.. image:: https://coveralls.io/repos/enthought/traits-enaml/badge.png
+   :target: https://coveralls.io/r/enthought/traits-enaml
+   :alt: Coverage status

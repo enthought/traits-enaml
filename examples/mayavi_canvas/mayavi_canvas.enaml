@@ -39,13 +39,19 @@ def create_scene():
 enamldef Main(MainWindow):
     Container:
         constraints = [
-            vbox(mcanvas, btn),
+            vbox(*widgets()),
         ]
 
         MayaviCanvas: mcanvas:
             scene = create_scene()
+            show_toolbar = False
 
-        PushButton: btn:
+        PushButton:
             text = 'Change'
             clicked ::
                 mcanvas.scene = create_scene()
+
+        PushButton:
+            text = 'Show/Hide Toolbar'
+            clicked ::
+                mcanvas.show_toolbar = not mcanvas.show_toolbar

@@ -11,7 +11,7 @@ setup(
     author_email='info@enthought.com',
     url='https://github.com/enthought/traits-enaml',
     description='Utilities for interoperation between Traits and Enaml',
-    long_description=open('README.md').read(),
+    long_description=open('README.rst').read(),
     packages=find_packages(),
     package_data={'traits_enaml.testing.tests': ['*.enaml'],
                   'traits_enaml.widgets': ['*.enaml']},

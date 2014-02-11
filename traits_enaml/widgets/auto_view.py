@@ -16,15 +16,24 @@ import traits_enaml
 
 with traits_enaml.imports():
     from enaml.widgets.api import Label
-    from traits_enaml.widgets.auto_editors import (AutoView, AutoWindow,
-                                                   BoolEditor, ButtonEditor,
-                                                   DateEditor, EnumEditor,
-                                                   FloatEditor,
-                                                   FloatRangeEditor, IntEditor,
-                                                   IntRangeEditor, StrEditor,
-                                                   TimeEditor, DefaultEditor)
+    from traits_enaml.widgets.auto_editors import (
+        AutoView, AutoWindow, BoolEditor, ButtonEditor,
+        DateEditor, EnumEditor, FloatEditor, FloatRangeEditor,
+        IntEditor, IntRangeEditor, StrEditor, TimeEditor,
+        DefaultEditor)
 
 TraitDesc = namedtuple('TraitDesc', 'name trait_type label tooltip editor')
+
+# Dictionary from trait_type -> enaml component factories.
+TRAIT2ENAML = {
+    Bool: lambda trait_type: BoolEditor,
+    Button: lambda trait_type: ButtonEditor,
+    Enum: lambda trait_type: EnumEditor,
+    Float: lambda trait_type: FloatEditor,
+    Int: lambda trait_type: IntEditor,
+    Str: lambda trait_type: StrEditor,
+    Range: lambda trait_type: _range_editor_factory(trait_type),
+    BaseInstance: lambda trait_type: _time_editor_factory(trait_type)}
 
 
 def auto_view(model):
@@ -50,34 +59,35 @@ def _get_editor(model, trait_desc):
 
     if trait_desc.editor:
         return trait_desc.editor(**kwargs)
-    elif isinstance(trait_desc.trait_type, Bool):
-        return BoolEditor(**kwargs)
-    elif isinstance(trait_desc.trait_type, Button):
-        return ButtonEditor(**kwargs)
-    elif (isinstance(trait_desc.trait_type, BaseInstance) and
-            trait_desc.trait_type.klass is date):
-        return DateEditor(**kwargs)
-    elif isinstance(trait_desc.trait_type, Enum):
-        return EnumEditor(**kwargs)
-    elif isinstance(trait_desc.trait_type, Float):
-        return FloatEditor(**kwargs)
-    elif (isinstance(trait_desc.trait_type, Range) and
-            (isinstance(trait_desc.trait_type._low, float) or
-             isinstance(trait_desc.trait_type._high, float))):
-        return FloatRangeEditor(**kwargs)
-    elif isinstance(trait_desc.trait_type, Int):
-        return IntEditor(**kwargs)
-    elif (isinstance(trait_desc.trait_type, Range) and
-            isinstance(trait_desc.trait_type._low, int) and
-            isinstance(trait_desc.trait_type._high, int)):
-        return IntRangeEditor(**kwargs)
-    elif isinstance(trait_desc.trait_type, Str):
-        return StrEditor(**kwargs)
-    elif (isinstance(trait_desc.trait_type, BaseInstance) and
-            trait_desc.trait_type.klass is time):
-        return TimeEditor(**kwargs)
+    else:
+        trait_type = trait_desc.trait_type
+        for key, factory in TRAIT2ENAML.iteritems():
+            if isinstance(trait_type, key):
+                break
+        else:
+            factory = lambda trait: DefaultEditor
+        editor = factory(trait_type)
+        return editor(**kwargs)
 
-    return DefaultEditor(**kwargs)
+
+def _range_editor_factory(trait_type):
+    low, high = trait_type._low, trait_type._high
+    if isinstance(low, float) and isinstance(high, float):
+        return FloatRangeEditor
+    elif isinstance(low, int) and isinstance(high, int):
+        return IntRangeEditor
+    else:
+        return DefaultEditor
+
+
+def _time_editor_factory(trait_type):
+    klass = trait_type.klass
+    if klass is time:
+        return TimeEditor
+    elif klass is date:
+        return DateEditor
+    else:
+        return DefaultEditor
 
 
 def _model_traits(model):

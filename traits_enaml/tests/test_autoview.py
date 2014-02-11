@@ -1,0 +1,82 @@
+#
+# (C) Copyright 2013 Enthought, Inc., Austin, TX
+# All right reserved.
+#
+# This file is open source software distributed according to the terms in
+# LICENSE.txt
+#
+import unittest
+import datetime
+
+
+from enaml.widgets.api import Window
+
+import traits_enaml
+from traits.api import (
+    Bool, Button, Date, Enum, Float, Int, HasTraits, List, Range, Str, Time,
+    Tuple)
+from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
+from traits_enaml.widgets.auto_view import auto_window, auto_view
+
+with traits_enaml.imports():
+    from traits_enaml.widgets.auto_editors import (
+        BoolEditor, ButtonEditor, DateEditor, EnumEditor,
+        FloatEditor, FloatRangeEditor, IntEditor, IntRangeEditor,
+        StrEditor, TimeEditor, DefaultEditor)
+
+
+class AllTypes(HasTraits):
+    """ A simple class with all kinds of traits
+
+    """
+    boolean_value = Bool(True, label="Custom Bool Label:")
+    button_value = Button("I'm a button!")
+    int_value = Int(42, tooltip="You can add a tooltip as well.")
+    float_value = Float(3.141592)
+    enum_value = Enum("foo", "bar", "baz", "qux")
+    int_range_value = Range(low=0, high=10)
+    float_range_value = Range(low=0.0, high=1.0)
+    list_value = List([0, 1, 2])
+    str_value = Str("Word")
+    date_value = Date(datetime.date.today())
+    time_value = Time(datetime.time())
+    range_value = Range(low=0, high=100,
+                        label="Traits Range Editor:",
+                        enaml_editor=DefaultEditor)
+
+    _notifications = List(Tuple)
+
+    def _anytrait_changed(self, name, old, new):
+        if name != '_notifications':
+            self._notifications = (name, old, new)
+
+class TestAutoView(EnamlTestAssistant, unittest.TestCase):
+
+    def test_auto_view(self):
+        model = AllTypes()
+        window = Window()
+        window.insert_children(None, (auto_view(model=model),))
+        with self.event_loop():
+            window.show()
+        self.check_component_counts(window)
+
+    def test_auto_window(self):
+        model = AllTypes()
+        window = auto_window(model=model)
+        with self.event_loop():
+            window.show()
+        self.check_component_counts(window)
+
+    def check_component_counts(self, view):
+        expected_counts = [1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 2, 12]
+        components = [
+            'BoolEditor', 'ButtonEditor', 'DateEditor',
+            'EnumEditor', 'FloatEditor', 'FloatRangeEditor',
+            'IntEditor', 'IntRangeEditor', 'StrEditor',
+            'TimeEditor', 'DefaultEditor', 'Label']
+        for index, component in enumerate(components):
+            items = self.find_all_enaml_widgets(view, component)
+            self.assertEqual(len(items), expected_counts[index])
+
+
+

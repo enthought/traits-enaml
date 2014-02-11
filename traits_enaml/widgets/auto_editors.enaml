@@ -5,14 +5,13 @@
 # This file is open source software distributed according to the terms in
 # LICENSE.txt
 #
-
 from datetime import date, time
 
 from enaml.core.api import Include
 from enaml.stdlib.fields import IntField, FloatField
-from enaml.widgets.api import (CheckBox, ComboBox, DateSelector, Field, Form,
-                               Label, PushButton, SpinBox, TimeSelector,
-                               Window)
+from enaml.widgets.api import (
+    CheckBox, ComboBox, DateSelector, Field, Form,
+    Label, PushButton, SpinBox, TimeSelector, Window)
 from traits_enaml.widgets.traits_view import TraitsView
 from traitsui.api import View, UItem
 

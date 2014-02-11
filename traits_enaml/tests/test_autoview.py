@@ -40,6 +40,7 @@ class AllTypes(HasTraits):
 
     _notifications = List(Tuple)
 
+
 class TestAutoView(EnamlTestAssistant, unittest.TestCase):
 
     def test_auto_view(self):

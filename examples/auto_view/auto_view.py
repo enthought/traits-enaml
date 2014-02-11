@@ -36,6 +36,8 @@ class AllTypes(HasTraits):
                         label="Traits Range Editor:",
                         enaml_editor=DefaultEditor)
 
+    _my_float = Float
+
     def _button_value_fired(self):
         print "Button was pressed"
 

@@ -8,9 +8,6 @@
 import unittest
 import datetime
 
-
-from enaml.widgets.api import Window
-
 import traits_enaml
 from traits.api import (
     Bool, Button, Date, Enum, Float, Int, HasTraits, List, Range, Str, Time,
@@ -19,10 +16,7 @@ from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 from traits_enaml.widgets.auto_view import auto_window, auto_view
 
 with traits_enaml.imports():
-    from traits_enaml.widgets.auto_editors import (
-        BoolEditor, ButtonEditor, DateEditor, EnumEditor,
-        FloatEditor, FloatRangeEditor, IntEditor, IntRangeEditor,
-        StrEditor, TimeEditor, DefaultEditor)
+    from traits_enaml.widgets.auto_view import DefaultEditor
 
 
 class AllTypes(HasTraits):
@@ -50,9 +44,13 @@ class AllTypes(HasTraits):
         if name != '_notifications':
             self._notifications = (name, old, new)
 
+
 class TestAutoView(EnamlTestAssistant, unittest.TestCase):
 
     def test_auto_view(self):
+        with traits_enaml.imports():
+            from enaml.widgets.api import Window
+
         model = AllTypes()
         window = Window()
         window.insert_children(None, (auto_view(model=model),))
@@ -68,7 +66,7 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
         self.check_component_counts(window)
 
     def check_component_counts(self, view):
-        expected_counts = [1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 2, 12]
+        expected_counts = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 12]
         components = [
             'BoolEditor', 'ButtonEditor', 'DateEditor',
             'EnumEditor', 'FloatEditor', 'FloatRangeEditor',
@@ -77,6 +75,3 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
         for index, component in enumerate(components):
             items = self.find_all_enaml_widgets(view, component)
             self.assertEqual(len(items), expected_counts[index])
-
-
-

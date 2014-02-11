@@ -75,3 +75,14 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
         for index, component in enumerate(components):
             items = self.find_all_enaml_widgets(view, component)
             self.assertEqual(len(items), expected_counts[index])
+
+    def check_label_text(self, view):
+        labels = [
+            'Boolean Value', 'Button Value', 'IntValue',
+            'Enum Value', 'Float Value', 'Float Range Value',
+            'Int Value', 'Int Range Value', 'Str Value',
+            'Time Value', 'Traits Range Editor:', 'List Value']
+        components = self.find_all_enaml_widgets(view, 'Label')
+        self.assertEqual(len(components), 12)
+        components_text = [component.text for component in components]
+        self.assertItemsEqual(components_text, labels)

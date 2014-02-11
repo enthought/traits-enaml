@@ -226,4 +226,3 @@ class FloatTransform(SliderTransform):
         """
         delta = self.maximum - self.minimum
         self.value = (val * delta / self.precision) + self.minimum
-

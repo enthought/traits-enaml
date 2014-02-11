@@ -16,5 +16,6 @@ if ETSConfig.toolkit not in ['', 'qt4']:
 
 ETSConfig.toolkit = 'qt4'
 
+
 def imports():
     return enaml.imports(operators=TRAIT_OPERATORS)

@@ -5,7 +5,8 @@ import threading
 from enaml.application import deferred_call
 from enaml.qt.qt_application import QtApplication
 from enaml.qt.QtGui import QApplication
-from traits.testing.unittest_tools import _TraitsChangeCollector as TraitsChangeCollector
+from traits.testing.unittest_tools import _TraitsChangeCollector as \
+    TraitsChangeCollector
 
 from .event_loop_helper import EventLoopHelper, ConditionTimeoutError
 from .test_assistant import TestAssistant
@@ -257,4 +258,3 @@ class GuiTestAssistant(TestAssistant):
         yield
         self.event_loop_helper.event_loop_with_timeout(
             repeat=repeat, timeout=timeout)
-

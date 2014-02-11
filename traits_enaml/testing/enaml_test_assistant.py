@@ -21,7 +21,7 @@ class EnamlTestAssistant(GuiTestAssistant):
 
         """
 
-        if type_name in [ cls.__name__ for cls in type(root).__mro__]:
+        if type_name in [cls.__name__ for cls in type(root).__mro__]:
             return root.widget
 
         for child in root.children():
@@ -86,7 +86,6 @@ class EnamlTestAssistant(GuiTestAssistant):
         enaml_view.initialize()
         if not enaml_view.proxy_is_active:
             enaml_view.activate_proxy()
-
 
         toolkit_view = enaml_view.proxy
 

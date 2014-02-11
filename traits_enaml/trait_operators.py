@@ -61,6 +61,7 @@ def trait_op_subscribe(code, scope_key, f_globals):
     reader = TraitsTracedReadHandler(func=func, scope_key=scope_key)
     return HandlerPair(reader=reader)
 
+
 def trait_op_delegate(code, scope_key, f_globals):
     """ The Traits Enaml operator function for the `:=` operator.
 

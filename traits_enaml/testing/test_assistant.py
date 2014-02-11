@@ -4,11 +4,7 @@ import contextlib
 import sys
 from unittest.case import _ExpectedFailure, _UnexpectedSuccess
 
-from traits.api import (
-    Any, Event, HasStrictTraits, Instance, Int, List, Property, Str,
-)
 from traits.testing.unittest_tools import UnittestTools, reverse_assertion
-
 
 
 @contextlib.contextmanager
@@ -27,6 +23,7 @@ def expected_failure():
         raise
     else:
         raise _UnexpectedSuccess
+
 
 class _AssertAtomChangesContext(object):
     """ Context manager used to implement TestAssistant.assertAtomChanges.
@@ -75,16 +72,17 @@ class _AssertAtomChangesContext(object):
 
         return False
 
+
 class TestAssistant(UnittestTools):
-    """Mixin class to augment the unittest.TestCase with useful traits and atom
-    assert methods.
+    """ Mixin class to augment the unittest.TestCase with useful traits and
+    atom assert methods.
 
     """
 
     ### Trait assertion methods ########################################
 
-    def assertAtomChanges(self, obj, trait, count=None, callableObj=None,
-                           *args, **kwargs):
+    def assertAtomChanges(
+            self, obj, trait, count=None, callableObj=None, *args, **kwargs):
         """ Same method as assertTraitChanges but for Atom based object ...
 
         """
@@ -95,8 +93,8 @@ class TestAssistant(UnittestTools):
         with context:
             callableObj(*args, **kwargs)
 
-    def assertAtomDoesNotChange(self, obj, atom, callableObj=None,
-                                 *args, **kwargs):
+    def assertAtomDoesNotChange(
+            self, obj, atom, callableObj=None, *args, **kwargs):
         """Assert an object atom does not change.
 
         Assert that the class atom does not change during execution of the
@@ -109,4 +107,3 @@ class TestAssistant(UnittestTools):
             return reverse_assertion(context, msg)
         with reverse_assertion(context, msg):
             callableObj(*args, **kwargs)
-

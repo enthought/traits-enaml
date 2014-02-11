@@ -3,12 +3,14 @@ import unittest
 from traits.api import Event, HasTraits, Str
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
+
 class TraitModel(HasTraits):
     value_delegate = Str()
     value_subscribe = Str()
     value_update = Str()
     value_simple = Str('simple_text')
     value_notify = Event()
+
 
 class TraitOperatorsTestCase(EnamlTestAssistant, unittest.TestCase):
 
@@ -49,7 +51,6 @@ enamldef MainView(MainWindow):
         self.view = None
         self.model = None
         EnamlTestAssistant.tearDown(self)
-
 
     def test_op_delegate(self):
 
@@ -115,4 +116,3 @@ enamldef MainView(MainWindow):
 
         with self.assertTraitChanges(self.model, 'value_notify'):
             enaml_widget.text = 'new text'
-

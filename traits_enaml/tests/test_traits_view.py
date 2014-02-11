@@ -56,5 +56,3 @@ enamldef MainView(MainWindow): win:
         self.assertEqual(self.traits_view.ui.control, None)
 
         self.assertEqual(control.parent(), None)
-
-

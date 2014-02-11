@@ -11,7 +11,7 @@ from traits.api import HasTraits, Str
 
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 from traits_enaml.widgets.traits_view import TraitsView
-from traitsui.qt4.toolkit import GUIToolkit
+
 
 class Model(HasTraits):
 
@@ -46,7 +46,6 @@ enamldef MainView(MainWindow): win:
         EnamlTestAssistant.tearDown(self)
 
     def test_add_traits_view(self):
-        view = self.view
         traits_view = TraitsView(model=Model())
         with self.event_loop():
             self.view.show()
@@ -57,4 +56,3 @@ enamldef MainView(MainWindow): win:
 
 if __name__ == "__main__":
     unittest.main()
-

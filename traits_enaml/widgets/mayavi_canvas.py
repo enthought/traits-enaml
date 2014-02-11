@@ -12,6 +12,7 @@ from tvtk.pyface.scene_model import SceneModel
 
 from .traits_view import TraitsView
 
+
 class MayaviModel(HasStrictTraits):
     scene = Instance(SceneModel, args=())
     view = View(

@@ -12,6 +12,7 @@ from traitsui.api import View
 import enaml
 from enaml.qt.qt_application import QtApplication
 
+
 class Person(HasTraits):
     """ A simple class representing a person object.
 
@@ -21,7 +22,7 @@ class Person(HasTraits):
     first_name = Str()
 
     age = Range(low=0)
-    
+
     traits_view = View('last_name', 'first_name', 'age', resizable=True)
 
 if __name__ == '__main__':

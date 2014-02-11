@@ -52,6 +52,7 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
         with self.event_loop():
             window.show()
         self.check_component_counts(window)
+        self.check_label_text(window)
 
     def test_auto_window(self):
         model = AllTypes()
@@ -59,6 +60,7 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
         with self.event_loop():
             window.show()
         self.check_component_counts(window)
+        self.check_label_text(window)
 
     def check_component_counts(self, view):
         expected_counts = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 12]
@@ -73,7 +75,7 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
 
     def check_label_text(self, view):
         labels = [
-            'Boolean Value', 'Button Value', 'IntValue',
+            'Custom Bool Label:', 'Button Value', 'Date Value',
             'Enum Value', 'Float Value', 'Float Range Value',
             'Int Value', 'Int Range Value', 'Str Value',
             'Time Value', 'Traits Range Editor:', 'List Value']

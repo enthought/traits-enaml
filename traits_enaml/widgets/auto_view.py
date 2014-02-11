@@ -81,7 +81,10 @@ def _get_editor(model, trait_desc):
 
 def _model_traits(model):
     traits = []
-    for name in model.class_trait_names():
+    names = [
+        name for name in model.class_trait_names()
+        if not name.startswith('_')]
+    for name in names:
         trait = model.trait(name)
         if type(trait.trait_type) is Event:
             continue

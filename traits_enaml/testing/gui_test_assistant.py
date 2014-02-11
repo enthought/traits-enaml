@@ -49,8 +49,8 @@ class GuiTestAssistant(TestAssistant):
         if level == 0:
             print
         print ' '*level, widget
-        for child in widget.children():
-            self._print_widget_tree(child, level=level)
+        for child in widget.children:
+            self.print_widget_tree(child, level=level)
         if level == 0:
             print
 

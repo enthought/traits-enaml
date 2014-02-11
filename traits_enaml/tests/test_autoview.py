@@ -40,11 +40,6 @@ class AllTypes(HasTraits):
 
     _notifications = List(Tuple)
 
-    def _anytrait_changed(self, name, old, new):
-        if name != '_notifications':
-            self._notifications = (name, old, new)
-
-
 class TestAutoView(EnamlTestAssistant, unittest.TestCase):
 
     def test_auto_view(self):

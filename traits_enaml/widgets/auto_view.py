@@ -8,6 +8,7 @@
 
 from collections import namedtuple
 from datetime import date, time
+from string import capwords
 
 from traits.api import (BaseInstance, Bool, Button, Enum, Event, Float, Int,
                         Range, Str)
@@ -88,7 +89,7 @@ def _model_traits(model):
         trait = model.trait(name)
         if type(trait.trait_type) is Event:
             continue
-        label = trait.label or " ".join(name.split('_')).capitalize()
+        label = trait.label or capwords(name.replace('_', ' '))
         tooltip = trait.tooltip
         editor = trait.enaml_editor
         desc = TraitDesc(name, trait.trait_type, label, tooltip, editor)

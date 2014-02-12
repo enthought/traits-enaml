@@ -7,6 +7,7 @@ from enaml.core.enaml_compiler import EnamlCompiler
 import traits_enaml
 
 from .gui_test_assistant import GuiTestAssistant
+from .atom_test_assistant import AtomTestAssistant
 
 
 def print_enaml_widget_tree(widget, level=0):
@@ -33,7 +34,7 @@ def print_enaml_widget_tree(widget, level=0):
 
 
 
-class EnamlTestAssistant(GuiTestAssistant):
+class EnamlTestAssistant(GuiTestAssistant, AtomTestAssistant):
 
     def tearDown(self):
         super(EnamlTestAssistant, self).tearDown()

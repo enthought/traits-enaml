@@ -5,11 +5,11 @@ import threading
 from enaml.application import deferred_call
 from enaml.qt.qt_application import QtApplication
 from enaml.qt.QtGui import QApplication
+from traits.testing.unittest_tools import UnittestTools
 from traits.testing.unittest_tools import _TraitsChangeCollector as \
     TraitsChangeCollector
 
 from .event_loop_helper import EventLoopHelper, ConditionTimeoutError
-from .test_assistant import TestAssistant
 
 
 def print_qt_widget_tree(widget, level=0):
@@ -35,7 +35,7 @@ def print_qt_widget_tree(widget, level=0):
         print
 
 
-class GuiTestAssistant(TestAssistant):
+class GuiTestAssistant(UnittestTools):
 
     def setUp(self):
         qt_app = QApplication.instance()

@@ -1,5 +1,5 @@
 # Copyright (c) 2012-2013 by Enthought Inc.
-from traits.testing.unittest_tools import UnittestTools, reverse_assertion
+from traits.testing.unittest_tools import reverse_assertion
 
 
 class _AssertAtomChangesContext(object):
@@ -50,9 +50,9 @@ class _AssertAtomChangesContext(object):
         return False
 
 
-class TestAssistant(UnittestTools):
-    """ Mixin class to augment the unittest.TestCase with useful traits and
-    atom assert methods.
+class AtomTestAssistant(object):
+    """ Mixin class to augment the unittest.TestCase with useful atom
+    assert methods.
 
     """
 

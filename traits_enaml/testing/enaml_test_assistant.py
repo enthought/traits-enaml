@@ -9,6 +9,30 @@ import traits_enaml
 from .gui_test_assistant import GuiTestAssistant
 
 
+def print_enaml_widget_tree(widget, level=0):
+    """ Debugging helper to print out the enaml widget tree starting at a
+    particular `widget`.
+
+    Parameters
+    ----------
+    widget: QObject
+        The root widget in the tree to print.
+    level: int
+        The current level in the tree. Used internally for displaying the
+        tree level.
+
+    """
+    level = level + 4
+    if level == 0:
+        print
+    print ' '*level, widget
+    for child in widget.children:
+        print_enaml_widget_tree(child, level=level)
+    if level == 0:
+        print
+
+
+
 class EnamlTestAssistant(GuiTestAssistant):
 
     def tearDown(self):

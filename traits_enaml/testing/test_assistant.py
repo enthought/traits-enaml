@@ -1,28 +1,5 @@
 # Copyright (c) 2012-2013 by Enthought Inc.
-
-import contextlib
-import sys
-from unittest.case import _ExpectedFailure, _UnexpectedSuccess
-
 from traits.testing.unittest_tools import UnittestTools, reverse_assertion
-
-
-@contextlib.contextmanager
-def expected_failure():
-    """ An expected failure context manager. The executed block will only be
-    considered an expected failure if there is an assertion raised. Else if
-    an exception is raised the error is re-raised. Finally if there was no
-    exception the block is marked as an unexpected success.
-
-    """
-    try:
-        yield
-    except AssertionError:
-        raise _ExpectedFailure(sys.exc_info())
-    except Exception:
-        raise
-    else:
-        raise _UnexpectedSuccess
 
 
 class _AssertAtomChangesContext(object):

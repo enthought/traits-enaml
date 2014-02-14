@@ -5,8 +5,11 @@ import time
 import unittest
 
 from enaml.application import deferred_call
-from traits.api import Float, HasTraits, Int, List, on_trait_change
+from enaml.qt import QtGui, QtCore
 
+from traits.api import Float, HasTraits, Int, List, on_trait_change
+from traits.testing.unittest_tools import reverse_assertion
+from traits_enaml.testing.event_loop_helper import ConditionTimeoutError
 from traits_enaml.testing.gui_test_assistant import (
     GuiTestAssistant, print_qt_widget_tree)
 
@@ -86,6 +89,40 @@ class TestGuiAssistantTestCase(GuiTestAssistant, unittest.TestCase):
         with self.assertRaises(RuntimeError):
             with self.event_loop_until_condition(condition, timeout=1.0):
                 raise RuntimeError()
+
+    def test_event_loop_until_trait_change(self):
+        with self.assertRaises(AssertionError):
+            with self.event_loop_until_traits_change(
+                    self.my_class, 'number', timeout=1.0):
+                pass
+
+        with reverse_assertion(
+                self.assertRaises(AssertionError),
+                'Assertion should not be raised'):
+            with self.event_loop_until_traits_change(
+                    self.my_class, 'number', timeout=1.0):
+                deferred_call(self._set_trait, 5.0)
+
+    def test_find_qt_widget(self):
+        app = self.qt_app
+        self.assertIsNone(self.find_qt_widget(app, QtGui.QDockWidget))
+        self.assertIsInstance(
+            self.find_qt_widget(app, QtGui.QSessionManager),
+            QtGui.QSessionManager)
+
+    def test_delete_widget(self):
+
+        class Widget(QtCore.QObject):
+            destroyed = QtCore.Signal(bool)
+
+        widget = Widget()
+
+        with self.assertRaises(AssertionError):
+            with self.delete_widget(widget, timeout=1.0):
+                pass
+
+        with self.delete_widget(widget, timeout=1.0):
+            deferred_call(widget.destroyed.emit, True)
 
 
 class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):

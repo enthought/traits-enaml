@@ -2,8 +2,8 @@ language: python
 python:
   - "2.7"
 env:
-  - ENALM_VERSION="dev"
-  - ENALM_VERSION="released"
+  - ENAML_VERSION="dev"
+  - ENAML_VERSION="released"
 virtualenv:
   system_site_packages: true
 before_install:
@@ -11,10 +11,10 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   - sudo apt-get update
   - sudo apt-get install python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
+install:
   - pip install cython
   - if [[ $ENAML_VERSION == 'dev' ]]; then pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL; fi
-  - if [[ $ENAML_VERSION == 'release' ]]; then pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL; fi
-install:
+  - if [[ $ENAML_VERSION == 'released' ]]; then pip install -r release_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL; fi
   - python setup.py develop
 script:
   - coverage run -m unittest2 discover -v

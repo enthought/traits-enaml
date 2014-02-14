@@ -1,5 +1,12 @@
 # Copyright (c) 2012-2013 by Enthought Inc.
+from collections import namedtuple
+
 from traits.testing.unittest_tools import reverse_assertion
+
+
+Change = namedtuple(
+    'Change',
+    ['object', 'type', 'name', 'operation', 'item', 'oldvalue', 'value'])
 
 
 class _AssertAtomChangesContext(object):
@@ -19,9 +26,14 @@ class _AssertAtomChangesContext(object):
 
         """
         obj = change['object']
+        type_ = change['type']
         name = change['name']
         value = change['value']
-        self.event = (obj, name, value)
+        old_value = change.get('oldvalue', None)
+        operation = change.get('operation', None)
+        item = change.get('item', None)
+        self.event = Change(
+            obj, type_, name, operation, item, old_value, value)
         self.events.append(self.event)
 
     def __enter__(self):
@@ -39,7 +51,7 @@ class _AssertAtomChangesContext(object):
             return False
 
         self.obj.unobserve(self.xname)
-        if self.event is None:
+        if self.event is None and self.count != 0:
             msg = 'A change event was not fired for: {0}'.format(self.xname)
             raise self.failureException(msg)
         elif self.count is not None and len(self.events) != self.count:

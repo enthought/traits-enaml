@@ -1,0 +1,15 @@
+--allow-external enable
+--allow-unverified enable
+--allow-external PIL
+--allow-unverified PIL
+unittest2
+ply
+coverage
+coveralls
+enaml
+atom
+casuarius
+traits
+enable
+traitsui
+mayavi

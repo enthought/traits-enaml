@@ -119,7 +119,6 @@ class TestAtomTestAssistant(unittest.TestCase, AtomTestAssistant):
         expected = (
             test_object, 'container', 'list_of_numbers',
             'append', -3.0,  None, [-3.0])
-        print result.event
         self.assertSequenceEqual(expected, result.event)
 
     def test_exception_inside_context(self):

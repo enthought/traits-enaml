@@ -14,7 +14,7 @@ before_install:
 install:
   - pip install cython
   - if [[ $BUILD_TYPE == 'dev' ]]; then pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL; fi
-  - if [[ $BUILD_TYPE == 'released' ]]; then pip install -r release_requirements.txt --use-mirrors --allow-external PIL, enable --allow-unverified PIL, enable; fi
+  - if [[ $BUILD_TYPE == 'released' ]]; then pip install -r release_requirements.txt --use-mirrors --allow-external=PIL,enable --allow-unverified=PIL,enable; fi
   - python setup.py develop
 script:
   - coverage run -m unittest2 discover -v

@@ -8,7 +8,7 @@ before_install:
    - sh -e /etc/init.d/xvfb start
    - pip install cython
 install:
-  - sudo apt-get install python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
+  - sudo apt-get -V install python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
   - pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL
   - python setup.py develop
 script:

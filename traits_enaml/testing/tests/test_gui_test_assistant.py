@@ -1,12 +1,14 @@
 # Copyright (c) 2012 by Enthought Inc.
-
+import StringIO
+import sys
 import time
 import unittest
 
 from enaml.application import deferred_call
 from traits.api import Float, HasTraits, Int, List, on_trait_change
 
-from ..gui_test_assistant import GuiTestAssistant
+from traits_enaml.testing.gui_test_assistant import (
+    GuiTestAssistant, print_qt_widget_tree)
 
 
 class MyClass(HasTraits):
@@ -84,3 +86,19 @@ class TestGuiAssistantTestCase(GuiTestAssistant, unittest.TestCase):
         with self.assertRaises(RuntimeError):
             with self.event_loop_until_condition(condition, timeout=1.0):
                 raise RuntimeError()
+
+
+class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
+
+    def test_print_qt_widget_tree(self):
+        stream = StringIO.StringIO()
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = stream
+            print_qt_widget_tree(self.qt_app)
+        finally:
+            sys.stdout = old_stdout
+            stream.close()
+        lines = ''.join(stream.buflist).splitlines()
+        # basic check we should have four items in the hierarchy.
+        self.assertEqual(len(lines), 4)

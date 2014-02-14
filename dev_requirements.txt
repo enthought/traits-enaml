@@ -1,3 +1,5 @@
+-allow-external PIL
+--allow-unverified PIL
 unittest2
 ply
 coverage

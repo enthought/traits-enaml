@@ -8,8 +8,9 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   - sudo apt-get update
   - sudo apt-get -V install python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
-install:
+  - pip install cython
   - pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL
+install:
   - python setup.py develop
 script:
   - coverage run -m unittest2 discover -v

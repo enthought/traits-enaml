@@ -1,4 +1,3 @@
-cython
 unittest2
 ply
 coverage

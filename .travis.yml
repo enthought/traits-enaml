@@ -7,13 +7,14 @@ env:
 virtualenv:
   system_site_packages: true
 before_install:
-   - export DISPLAY=:99.0
-   - sh -e /etc/init.d/xvfb start
-   - pip install cython
-install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sudo apt-get update
   - sudo apt-get install python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
+  - pip install cython
   - if [[ $ENAML_VERSION == 'dev' ]]; then pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL; fi
   - if [[ $ENAML_VERSION == 'release' ]]; then pip install -r dev_requirements.txt --use-mirrors --allow-external PIL --allow-unverified PIL; fi
+install:
   - python setup.py develop
 script:
   - coverage run -m unittest2 discover -v

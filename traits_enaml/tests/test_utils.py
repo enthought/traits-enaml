@@ -14,6 +14,7 @@ Unit tests for the LoopbackGuard class and LoopbackContext context manager.
 """
 import unittest
 
+from traits.api import HasTraits, Instance, List, on_trait_change
 from traits_enaml.utils import LoopbackGuard, LoopbackContext
 
 
@@ -78,3 +79,51 @@ class TestLoopbackContext(unittest.TestCase):
         guard = LoopbackGuard()
         cm = guard(*items)
         self._check_loopback_context_manager(cm, guard, items)
+
+
+class Dummy(object):
+    pass
+
+
+class E(HasTraits):
+
+    a = Instance(Dummy, ())
+
+    b = Instance(Dummy, ())
+
+    # List of traits that have updated.
+    updates = List
+
+    # Loopback guard to protect `a` from cyclic updates.
+    guard = Instance(LoopbackGuard, ())
+
+    @on_trait_change('a')
+    def _a_updated(self, new):
+        with self.guard(self.a):
+            self.updates.append('b')
+            self.b = new
+
+    @on_trait_change('b')
+    def _b_updated(self, new):
+        if self.a not in self.guard:
+            self.updates.append('a')
+            self.a = new
+
+
+class TestLoopbackGuardUseCase(unittest.TestCase):
+    """
+    Test suite for the common LoopbackGuard use case.
+
+    """
+    def test_loopback_prevents_cyclic_updates(self):
+        # Check that the loopback guard prevents cyclic updates in `a`.
+        e = E()
+        e.a = Dummy()
+        self.assertEqual(e.updates, ['b'])
+
+    def test_normal_cyclic_updates(self):
+        # Test that the loopback guard does not stand in the way of the
+        # normal traits behavior when `b` is updated.
+        e = E()
+        e.b = Dummy()  # The loopback guard does not protect `b`.
+        self.assertEqual(e.updates, ['a', 'b'])

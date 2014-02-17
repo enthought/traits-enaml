@@ -16,7 +16,7 @@ def print_enaml_widget_tree(widget, level=0):
 
     Parameters
     ----------
-    widget: :class:`~enaml.core.Object`
+    widget: :class:`~enaml.core.object.Object`
         The root widget in the tree to print.
     level: int
         The current level in the tree. Used internally for displaying the

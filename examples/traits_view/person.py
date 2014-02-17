@@ -5,12 +5,12 @@
 # This file is open source software distributed according to the terms in
 # LICENSE.txt
 #
+import enaml
+from enaml.qt.qt_application import QtApplication
 
 from traits.api import HasTraits, Str, Range
 from traitsui.api import View
 
-import enaml
-from enaml.qt.qt_application import QtApplication
 
 
 class Person(HasTraits):

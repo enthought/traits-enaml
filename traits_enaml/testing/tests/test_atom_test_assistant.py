@@ -8,13 +8,12 @@
 # is also available online at http://www.enthought.com/licenses/BSD.txt
 # Thanks for using Enthought open source!
 #------------------------------------------------------------------------------
-import threading
-import time
 import unittest
 
-from atom.api import Atom, Bool, Float, Event, ContainerList, observe
+from atom.api import Atom, Bool, Float, ContainerList, observe
 
 from traits_enaml.testing.atom_test_assistant import AtomTestAssistant
+
 
 class TestObject(Atom):
 
@@ -28,6 +27,7 @@ class TestObject(Atom):
 
     def add_to_number(self, value):
         self.number += value
+
 
 class TestAtomTestAssistant(unittest.TestCase, AtomTestAssistant):
 

@@ -83,4 +83,3 @@ class TestEnamlTestHelperFunctions(EnamlTestAssistant, unittest.TestCase):
         lines = ''.join(stream.buflist).splitlines()
         # basic check we should have four items in the hierarchy.
         self.assertEqual(len(lines), 4)
-

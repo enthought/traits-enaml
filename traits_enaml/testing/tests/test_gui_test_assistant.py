@@ -9,7 +9,6 @@ from enaml.qt import QtGui, QtCore
 
 from traits.api import Float, HasTraits, Int, List, on_trait_change
 from traits.testing.unittest_tools import reverse_assertion
-from traits_enaml.testing.event_loop_helper import ConditionTimeoutError
 from traits_enaml.testing.gui_test_assistant import (
     GuiTestAssistant, print_qt_widget_tree)
 

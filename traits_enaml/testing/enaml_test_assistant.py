@@ -33,7 +33,6 @@ def print_enaml_widget_tree(widget, level=0):
         print
 
 
-
 class EnamlTestAssistant(GuiTestAssistant, AtomTestAssistant):
 
     def tearDown(self):

@@ -73,7 +73,8 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
         obj = EventLoopUser()
         condition = lambda: obj.value == obj.maximum_value
         with self.event_loop_until_condition(condition, timeout=2.0):
-            deferred_call(obj.increase_value)
+            with self.event_loop():
+                deferred_call(obj.increase_value)
 
     def test_event_loop_until_condition_timeout(self):
         obj = EventLoopUser(value=10, maximum_value=1)
@@ -102,7 +103,6 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
                     self.my_class, 'number'):
                 with self.event_loop():
                     deferred_call(self._set_trait, 5.0)
-
 
     def test_find_qt_widget(self):
         app = self.qt_app

@@ -39,7 +39,7 @@ class EventLoopUser(HasTraits):
             deferred_call(self.increase_value)
 
 
-class TestGuiAssistantTestCase(GuiTestAssistant, unittest.TestCase):
+class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 
     def setUp(self):
         self.my_class = MyClass()
@@ -99,8 +99,10 @@ class TestGuiAssistantTestCase(GuiTestAssistant, unittest.TestCase):
                 self.assertRaises(AssertionError),
                 'Assertion should not be raised'):
             with self.event_loop_until_traits_change(
-                    self.my_class, 'number', timeout=1.0):
-                deferred_call(self._set_trait, 5.0)
+                    self.my_class, 'number'):
+                with self.event_loop():
+                    deferred_call(self._set_trait, 5.0)
+
 
     def test_find_qt_widget(self):
         app = self.qt_app

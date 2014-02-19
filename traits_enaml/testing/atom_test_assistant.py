@@ -1,28 +1,12 @@
 # Copyright (c) 2012-2013 by Enthought Inc.
+from collections import namedtuple
 
-import contextlib
-import sys
-from unittest.case import _ExpectedFailure, _UnexpectedSuccess
-
-from traits.testing.unittest_tools import UnittestTools, reverse_assertion
+from traits.testing.unittest_tools import reverse_assertion
 
 
-@contextlib.contextmanager
-def expected_failure():
-    """ An expected failure context manager. The executed block will only be
-    considered an expected failure if there is an assertion raised. Else if
-    an exception is raised the error is re-raised. Finally if there was no
-    exception the block is marked as an unexpected success.
-
-    """
-    try:
-        yield
-    except AssertionError:
-        raise _ExpectedFailure(sys.exc_info())
-    except Exception:
-        raise
-    else:
-        raise _UnexpectedSuccess
+Change = namedtuple(
+    'Change',
+    ['object', 'type', 'name', 'operation', 'item', 'oldvalue', 'value'])
 
 
 class _AssertAtomChangesContext(object):
@@ -42,9 +26,14 @@ class _AssertAtomChangesContext(object):
 
         """
         obj = change['object']
+        type_ = change['type']
         name = change['name']
         value = change['value']
-        self.event = (obj, name, value)
+        old_value = change.get('oldvalue', None)
+        operation = change.get('operation', None)
+        item = change.get('item', None)
+        self.event = Change(
+            obj, type_, name, operation, item, old_value, value)
         self.events.append(self.event)
 
     def __enter__(self):
@@ -62,7 +51,7 @@ class _AssertAtomChangesContext(object):
             return False
 
         self.obj.unobserve(self.xname)
-        if self.event is None:
+        if self.event is None and self.count != 0:
             msg = 'A change event was not fired for: {0}'.format(self.xname)
             raise self.failureException(msg)
         elif self.count is not None and len(self.events) != self.count:
@@ -73,9 +62,9 @@ class _AssertAtomChangesContext(object):
         return False
 
 
-class TestAssistant(UnittestTools):
-    """ Mixin class to augment the unittest.TestCase with useful traits and
-    atom assert methods.
+class AtomTestAssistant(object):
+    """ Mixin class to augment the unittest.TestCase with useful atom
+    assert methods.
 
     """
 

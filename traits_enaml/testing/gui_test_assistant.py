@@ -5,14 +5,37 @@ import threading
 from enaml.application import deferred_call
 from enaml.qt.qt_application import QtApplication
 from enaml.qt.QtGui import QApplication
+from traits.testing.unittest_tools import UnittestTools
 from traits.testing.unittest_tools import _TraitsChangeCollector as \
     TraitsChangeCollector
 
 from .event_loop_helper import EventLoopHelper, ConditionTimeoutError
-from .test_assistant import TestAssistant
 
 
-class GuiTestAssistant(TestAssistant):
+def print_qt_widget_tree(widget, level=0):
+    """ Debugging helper to print out the Qt widget tree starting at a
+    particular `widget`.
+
+    Parameters
+    ----------
+    widget: QObject
+        The root widget in the tree to print.
+    level: int
+        The current level in the tree. Used internally for displaying the
+        tree level.
+
+    """
+    level = level + 4
+    if level == 0:
+        print
+    print ' '*level, widget
+    for child in widget.children():
+        print_qt_widget_tree(child, level=level)
+    if level == 0:
+        print
+
+
+class GuiTestAssistant(UnittestTools):
 
     def setUp(self):
         qt_app = QApplication.instance()
@@ -32,28 +55,6 @@ class GuiTestAssistant(TestAssistant):
         self.enaml_app.destroy()
         del self.enaml_app
         del self.qt_app
-
-    def print_widget_tree(self, widget, level=0):
-        """Debugging helper to print out the Qt widget tree starting at a
-        particular `widget`.
-
-        Parameters
-        ----------
-        widget: QObject
-            The root widget in the tree to print
-        level: int
-            The current level in the tree. Used internally for displaying the
-            tree level
-
-        """
-        level = level + 4
-        if level == 0:
-            print
-        print ' '*level, widget
-        for child in widget.children:
-            self.print_widget_tree(child, level=level)
-        if level == 0:
-            print
 
     @contextlib.contextmanager
     def event_loop(self, repeat=1):

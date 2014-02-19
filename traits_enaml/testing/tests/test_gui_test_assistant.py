@@ -1,12 +1,16 @@
 # Copyright (c) 2012 by Enthought Inc.
-
+import StringIO
+import sys
 import time
 import unittest
 
 from enaml.application import deferred_call
-from traits.api import Float, HasTraits, Int, List, on_trait_change
+from enaml.qt import QtGui, QtCore
 
-from ..gui_test_assistant import GuiTestAssistant
+from traits.api import Float, HasTraits, Int, List, on_trait_change
+from traits.testing.unittest_tools import reverse_assertion
+from traits_enaml.testing.gui_test_assistant import (
+    GuiTestAssistant, print_qt_widget_tree)
 
 
 class MyClass(HasTraits):
@@ -35,7 +39,7 @@ class EventLoopUser(HasTraits):
             deferred_call(self.increase_value)
 
 
-class TestGuiAssistantTestCase(GuiTestAssistant, unittest.TestCase):
+class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 
     def setUp(self):
         self.my_class = MyClass()
@@ -84,3 +88,53 @@ class TestGuiAssistantTestCase(GuiTestAssistant, unittest.TestCase):
         with self.assertRaises(RuntimeError):
             with self.event_loop_until_condition(condition, timeout=1.0):
                 raise RuntimeError()
+
+    def test_event_loop_until_trait_change(self):
+        with self.assertRaises(AssertionError):
+            with self.event_loop_until_traits_change(
+                    self.my_class, 'number', timeout=1.0):
+                pass
+
+        with reverse_assertion(
+                self.assertRaises(AssertionError),
+                'Assertion should not be raised'):
+            with self.event_loop_until_traits_change(
+                    self.my_class, 'number'):
+                deferred_call(self._set_trait, 5.0)
+
+    def test_find_qt_widget(self):
+        app = self.qt_app
+        self.assertIsNone(self.find_qt_widget(app, QtGui.QDockWidget))
+        self.assertIsInstance(
+            self.find_qt_widget(app, QtGui.QSessionManager),
+            QtGui.QSessionManager)
+
+    def test_delete_widget(self):
+
+        class Widget(QtCore.QObject):
+            destroyed = QtCore.Signal(bool)
+
+        widget = Widget()
+
+        with self.assertRaises(AssertionError):
+            with self.delete_widget(widget, timeout=1.0):
+                pass
+
+        with self.delete_widget(widget, timeout=1.0):
+            deferred_call(widget.destroyed.emit, True)
+
+
+class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
+
+    def test_print_qt_widget_tree(self):
+        stream = StringIO.StringIO()
+        old_stdout = sys.stdout
+        try:
+            sys.stdout = stream
+            print_qt_widget_tree(self.qt_app)
+        finally:
+            sys.stdout = old_stdout
+            stream.close()
+        lines = ''.join(stream.buflist).splitlines()
+        # basic check we should have four items in the hierarchy.
+        self.assertEqual(len(lines), 4)

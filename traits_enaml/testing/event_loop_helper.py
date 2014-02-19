@@ -79,7 +79,7 @@ class EventLoopHelper(HasStrictTraits):
             if condition():
                 self.qt_app.quit()
         condition_timer = QtCore.QTimer()
-        condition_timer.setInterval(0.05)
+        condition_timer.setInterval(50)
         condition_timer.timeout.connect(handler)
         timeout_timer = QtCore.QTimer()
         timeout_timer.setSingleShot(True)

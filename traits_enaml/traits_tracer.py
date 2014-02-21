@@ -61,6 +61,9 @@ class TraitsTracer(StandardTracer):
         trait = obj.trait(name)
         if trait is not None and trait.trait_type is not Disallow:
             self.traced_traits.add((obj, name))
+            # Check for lists
+            if obj._is_list_trait(name):
+                self.traced_traits.add((obj, '{}_items'.format(name)))
 
     #--------------------------------------------------------------------------
     # AbstractScopeListener Interface

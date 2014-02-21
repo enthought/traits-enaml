@@ -62,7 +62,7 @@ class TraitsTracer(StandardTracer):
         if trait is not None and trait.trait_type is not Disallow:
             self.traced_traits.add((obj, name))
             # Check for lists
-            if obj._is_list_trait(name):
+            if trait.handler.has_items:
                 self.traced_traits.add((obj, '{}_items'.format(name)))
 
     #--------------------------------------------------------------------------

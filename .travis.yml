@@ -17,7 +17,7 @@ install:
   - pip install cython
   - if [[ $BUILD_TYPE == 'dev' ]]; then pip install -r dev_requirements.txt; fi
   - if [[ $BUILD_TYPE == 'released' ]]; then pip install -r release_requirements.txt; fi
-  - if [[ $BUILD_TYPE == '0.8.9' ]]; then pip install -r enaml_0.8.9_requirements.txt; fi
+  - if [[ $BUILD_TYPE == '0.8.9' ]]; then pip install -r enaml_0_8_9_requirements.txt; fi
   - python setup.py develop
 script:
   - coverage run -m unittest2 discover -v

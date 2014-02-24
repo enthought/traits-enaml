@@ -8,7 +8,7 @@ coverage
 coveralls
 enaml
 atom
-casuarius
+kiwisolver
 traits
 enable
 traitsui

@@ -14,7 +14,7 @@ before_install:
   - sudo apt-get install python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
 install:
   - pip install cython
-  - if [[ $BUILD_TYPE == 'dev' ]]; then git clone https://github.com/nucleic/kiwi; cd kiwi/py; python ./build.py install; cd ../..; rm -r kiwi; fi
+  - if [[ $BUILD_TYPE == 'dev' ]]; then git clone https://github.com/nucleic/kiwi; cd kiwi/py; python ./build.py install; cd ../..; fi
   - if [[ $BUILD_TYPE == 'dev' ]]; then pip install -r dev_requirements.txt; fi
   - if [[ $BUILD_TYPE == 'released' ]]; then pip install -r release_requirements.txt; fi
   - if [[ $BUILD_TYPE == '0.8.9' ]]; then pip install -r enaml_0_8_9_requirements.txt; fi

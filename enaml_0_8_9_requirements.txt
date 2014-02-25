@@ -10,6 +10,6 @@ casuarius
 enaml==0.8.9
 atom==0.3.5
 traits
-enable
 traitsui
+enable
 mayavi

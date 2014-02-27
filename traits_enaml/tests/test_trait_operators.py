@@ -42,6 +42,7 @@ class TraitModel(HasTraits):
         value = self.value
         return [value, value * 10]
 
+
 class TraitOperatorsTestCase(EnamlTestAssistant, unittest.TestCase):
 
     def setUp(self):

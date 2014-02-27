@@ -191,7 +191,7 @@ enamldef MainView(MainWindow):
 
         enaml_widget = self.view.find('test_dict_subscribe')
 
-        with self.assertTraitDoesNotChange(self.model, 'list_values'):
+        with self.assertTraitDoesNotChange(self.model, 'dict_values'):
             enaml_widget.text = 'new_value'
 
         # check on replace
@@ -214,7 +214,7 @@ enamldef MainView(MainWindow):
 
         enaml_widget = self.view.find('test_set_subscribe')
 
-        with self.assertTraitDoesNotChange(self.model, 'list_values'):
+        with self.assertTraitDoesNotChange(self.model, 'set_values'):
             enaml_widget.text = 'new_value'
 
         # check on replace

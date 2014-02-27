@@ -13,11 +13,13 @@
 #----------------------------------------------------------------------------
 import unittest
 
-from traits.api import Event, HasTraits, Str, List, Dict, Set
+from traits.api import (
+    Event, Float, HasTraits, Str, List, Dict, Set, Property)
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
 
 class TraitModel(HasTraits):
+    value = Float
     value_delegate = Str()
     value_subscribe = Str()
     value_update = Str()
@@ -26,6 +28,19 @@ class TraitModel(HasTraits):
     list_values = List(Str)
     dict_values = Dict(Str, Str)
     set_values = Set(Str)
+    property_value = Property(depends_on='value')
+    typed_property_value = Property(Float, depends_on='value')
+    collection_property_value = Property(List, depends_on='value')
+
+    def _get_property_value(self):
+        return self.value
+
+    def _get_typed_property_value(self):
+        return self.value
+
+    def _get_collection_property_value(self):
+        value = self.value
+        return [value, value * 10]
 
 
 class TraitOperatorsTestCase(EnamlTestAssistant, unittest.TestCase):
@@ -64,6 +79,15 @@ enamldef MainView(MainWindow):
     Field:
         name = 'test_set_subscribe'
         text << str(model.set_values)
+    Field:
+        name = 'test_property_subscribe'
+        text << str(model.property_value)
+    Field:
+        name = 'test_typed_property_subscribe'
+        text << str(model.typed_property_value)
+    Field:
+        name = 'test_collection_property_subscribe'
+        text << str(model.collection_property_value)
 """
         self.model = TraitModel()
         view, toolkit_view = self.parse_and_create(
@@ -168,7 +192,7 @@ enamldef MainView(MainWindow):
 
         enaml_widget = self.view.find('test_dict_subscribe')
 
-        with self.assertTraitDoesNotChange(self.model, 'list_values'):
+        with self.assertTraitDoesNotChange(self.model, 'dict_values'):
             enaml_widget.text = 'new_value'
 
         # check on replace
@@ -191,7 +215,7 @@ enamldef MainView(MainWindow):
 
         enaml_widget = self.view.find('test_set_subscribe')
 
-        with self.assertTraitDoesNotChange(self.model, 'list_values'):
+        with self.assertTraitDoesNotChange(self.model, 'set_values'):
             enaml_widget.text = 'new_value'
 
         # check on replace
@@ -208,3 +232,41 @@ enamldef MainView(MainWindow):
         with self.assertAtomChanges(enaml_widget, 'text', count=1):
             self.model.set_values.remove('1')
             self.assertEquals(enaml_widget.text, "TraitSetObject(['2'])")
+
+    def test_property_subscribe(self):
+
+        enaml_widget = self.view.find('test_property_subscribe')
+
+        with self.assertTraitDoesNotChange(self.model, 'property_value'):
+            enaml_widget.text = 'new_value'
+
+        # check on replace
+        with self.assertAtomChanges(enaml_widget, 'text', count=1):
+            self.model.value = 3.4
+            self.assertEquals(enaml_widget.text, u"3.4")
+
+    def test_typed_property_subscribe(self):
+
+        enaml_widget = self.view.find('test_typed_property_subscribe')
+
+        with self.assertTraitDoesNotChange(
+                self.model, 'typed_property_value'):
+            enaml_widget.text = 'new_value'
+
+        # check on replace
+        with self.assertAtomChanges(enaml_widget, 'text', count=1):
+            self.model.value = 4.5
+            self.assertEquals(enaml_widget.text, u"4.5")
+
+    def test_collection_property_subscribe(self):
+
+        enaml_widget = self.view.find('test_collection_property_subscribe')
+
+        with self.assertTraitDoesNotChange(
+                self.model, 'collection_property_value'):
+            enaml_widget.text = 'new_value'
+
+        # check on replace
+        with self.assertAtomChanges(enaml_widget, 'text', count=1):
+            self.model.value = 4.5
+            self.assertEquals(enaml_widget.text, u"[4.5, 45.0]")

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>traits_enaml.widgets.mayavi_canvas &mdash; traits-enaml 0.2.0 documentation</title>
+    <title>traits_enaml.widgets.mayavi_canvas &mdash; traits-enaml 0.2.1 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.2.0',
+        VERSION:     '0.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,8 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <link rel="top" title="traits-enaml 0.2.0 documentation" href="../../../index.html" />
+    <link rel="shortcut icon" href="../../../_static/et.ico"/>
+    <link rel="top" title="traits-enaml 0.2.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
@@ -35,7 +36,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="../../../index.html">traits-enaml 0.2.0 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">traits-enaml 0.2.1 documentation</a> &raquo;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
     </div>  
@@ -50,58 +51,71 @@
 <span class="c">#  Copyright (c) 2013, Enthought, Inc.</span>
 <span class="c">#  All rights reserved.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="kn">from</span> <span class="nn">atom.api</span> <span class="kn">import</span> <span class="n">Typed</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">set_default</span>
-
-<span class="kn">from</span> <span class="nn">enaml.widgets.api</span> <span class="kn">import</span> <span class="n">RawWidget</span>
+<span class="kn">from</span> <span class="nn">atom.api</span> <span class="kn">import</span> <span class="n">Bool</span><span class="p">,</span> <span class="n">Typed</span><span class="p">,</span> <span class="n">observe</span><span class="p">,</span> <span class="n">set_default</span>
 <span class="kn">from</span> <span class="nn">enaml.core.declarative</span> <span class="kn">import</span> <span class="n">d_</span>
 
-<span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Instance</span>
+<span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">Instance</span><span class="p">,</span> <span class="n">HasStrictTraits</span>
 <span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span><span class="p">,</span> <span class="n">Item</span>
-
 <span class="kn">from</span> <span class="nn">tvtk.pyface.scene_editor</span> <span class="kn">import</span> <span class="n">SceneEditor</span>
 <span class="kn">from</span> <span class="nn">tvtk.pyface.scene_model</span> <span class="kn">import</span> <span class="n">SceneModel</span>
 
-
-<span class="k">class</span> <span class="nc">MayaviModel</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
-    <span class="n">scene</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">SceneModel</span><span class="p">,</span> <span class="p">())</span>
-    <span class="n">view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span><span class="n">Item</span><span class="p">(</span><span class="s">&#39;scene&#39;</span><span class="p">,</span> <span class="n">editor</span><span class="o">=</span><span class="n">SceneEditor</span><span class="p">(),</span> <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                     <span class="n">show_label</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
-                <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.traits_view</span> <span class="kn">import</span> <span class="n">TraitsView</span>
 
 
-<div class="viewcode-block" id="MayaviCanvas"><a class="viewcode-back" href="../../../index.html#traits_enaml.widgets.mayavi_canvas.MayaviCanvas">[docs]</a><span class="k">class</span> <span class="nc">MayaviCanvas</span><span class="p">(</span><span class="n">RawWidget</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; A widget that displays a mayavi scene.</span>
+<span class="k">class</span> <span class="nc">MayaviModel</span><span class="p">(</span><span class="n">HasStrictTraits</span><span class="p">):</span>
+    <span class="n">scene</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">SceneModel</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">())</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span>
+        <span class="n">Item</span><span class="p">(</span><span class="s">&#39;scene&#39;</span><span class="p">,</span> <span class="n">editor</span><span class="o">=</span><span class="n">SceneEditor</span><span class="p">(),</span> <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">show_label</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+        <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MayaviCanvas"><a class="viewcode-back" href="../../../index.html#traits_enaml.widgets.mayavi_canvas.MayaviCanvas">[docs]</a><span class="k">class</span> <span class="nc">MayaviCanvas</span><span class="p">(</span><span class="n">TraitsView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A traits view widget that displays a mayavi scene.</span>
 
 <span class="sd">    :Attributes:</span>
 <span class="sd">        **scene** = *d_(Typed(SceneModel))*</span>
 <span class="sd">            The mayavi scene model to be displayed.</span>
+<span class="sd">        **show_toolbar** = *d_(Bool(True))*</span>
+<span class="sd">            If True, show the Mayavi toolbar.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c">#: The mayavi scene model to be displayed.</span>
     <span class="n">scene</span> <span class="o">=</span> <span class="n">d_</span><span class="p">(</span><span class="n">Typed</span><span class="p">(</span><span class="n">SceneModel</span><span class="p">))</span>
 
-    <span class="c">#: The traits model that is used to create the mayavi UI</span>
-    <span class="n">_model</span> <span class="o">=</span> <span class="n">MayaviModel</span><span class="p">()</span>
+    <span class="c">#: If True, show the Mayavi toolbar.</span>
+    <span class="n">show_toolbar</span> <span class="o">=</span> <span class="n">d_</span><span class="p">(</span><span class="n">Bool</span><span class="p">(</span><span class="bp">True</span><span class="p">))</span>
 
-    <span class="c">#: Mayavi canvas&#39; expand freely in width and height by default</span>
+    <span class="c">#: The readonly instance of the model used for the traits_view.</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">d_</span><span class="p">(</span><span class="n">Typed</span><span class="p">(</span><span class="n">MayaviModel</span><span class="p">),</span> <span class="n">writable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="c">#: The readonly instance of the view.</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">d_</span><span class="p">(</span><span class="n">Typed</span><span class="p">(</span><span class="n">View</span><span class="p">),</span> <span class="n">writable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="c">#: Mayavi canvas expands freely in width and height by default.</span>
     <span class="n">hug_width</span> <span class="o">=</span> <span class="n">set_default</span><span class="p">(</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
     <span class="n">hug_height</span> <span class="o">=</span> <span class="n">set_default</span><span class="p">(</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">MayaviCanvas</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span>
-
     <span class="k">def</span> <span class="nf">create_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-        <span class="n">ui</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">edit_traits</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;subpanel&#39;</span><span class="p">)</span>
-        <span class="n">widget</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">control</span>
-        <span class="n">widget</span><span class="o">.</span><span class="n">setParent</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">control</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MayaviCanvas</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">create_widget</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_toolbar_changed</span><span class="p">({</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_toolbar</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">control</span>
 
-        <span class="k">return</span> <span class="n">widget</span>
+    <span class="k">def</span> <span class="nf">_default_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MayaviModel</span><span class="p">(</span><span class="n">scene</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_default_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trait_view</span><span class="p">()</span>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s">&#39;scene&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">scene_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">change</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">change</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s">&#39;show_toolbar&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">show_toolbar_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
+        <span class="n">ui</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ui</span>
+        <span class="k">if</span> <span class="n">ui</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">ui</span><span class="o">.</span><span class="n">control</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">editor</span> <span class="o">=</span> <span class="n">ui</span><span class="o">.</span><span class="n">get_editors</span><span class="p">(</span><span class="s">&#39;scene&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">editor</span><span class="o">.</span><span class="n">_scene</span><span class="o">.</span><span class="n">_tool_bar</span><span class="o">.</span><span class="n">setVisible</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">])</span></div>
 </pre></div>
 
           </div>
@@ -109,6 +123,9 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/e-logo-rev.png" alt="Logo"/>
+            </a></p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../../../search.html" method="get">
@@ -132,7 +149,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../../../genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="../../../index.html">traits-enaml 0.2.0 documentation</a> &raquo;</li>
+        <li><a href="../../../index.html">traits-enaml 0.2.1 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li> 
       </ul>
     </div>

@@ -5,10 +5,11 @@ Release 0.2.1
 -------------
 
 * Fix TraitView parenting bug (#32)
-* Fix items subscription for trait collections (#55).
+* Fix items subscription for trait collections (#55 and #57).
 * Cleanup testing framework and improve test coverage.
 * Travis-CI now runs also on the latest enaml and atom versions
 * Test coverage is reported through Coveralls.io
+* Support enaml 0.9.x
 
 Release 0.2.0
 -------------

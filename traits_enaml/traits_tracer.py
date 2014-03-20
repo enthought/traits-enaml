@@ -1,10 +1,16 @@
+#----------------------------------------------------------------------------
 #
-# (C) Copyright 2013 Enthought, Inc., Austin, TX
-# All right reserved.
+#  Copyright (c) 2013-14, Enthought, Inc.
+#  All rights reserved.
 #
-# This file is open source software distributed according to the terms in
-# LICENSE.txt
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
 #
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 from traits.api import HasTraits, Disallow, TraitListObject, TraitDictObject
 
 from enaml.core.standard_tracer import StandardTracer, SubscriptionObserver
@@ -55,6 +61,9 @@ class TraitsTracer(StandardTracer):
         trait = obj.trait(name)
         if trait is not None and trait.trait_type is not Disallow:
             self.traced_traits.add((obj, name))
+            # Check for collections.
+            if trait.handler is not None and trait.handler.has_items:
+                self.traced_traits.add((obj, '{}_items'.format(name)))
 
     #--------------------------------------------------------------------------
     # AbstractScopeListener Interface

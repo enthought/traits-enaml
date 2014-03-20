@@ -1,11 +1,16 @@
+#----------------------------------------------------------------------------
 #
-# (C) Copyright 2013 Enthought, Inc., Austin, TX
-# All right reserved.
+#  Copyright (c) 2013-14, Enthought, Inc.
+#  All rights reserved.
 #
-# This file is open source software distributed according to the terms in
-# LICENSE.txt
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
 #
-
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 import datetime
 
 from enaml.qt.qt_application import QtApplication
@@ -35,6 +40,8 @@ class AllTypes(HasTraits):
     range_value = Range(low=0, high=100,
                         label="Traits Range Editor:",
                         enaml_editor=DefaultEditor)
+
+    _my_float = Float
 
     def _button_value_fired(self):
         print "Button was pressed"

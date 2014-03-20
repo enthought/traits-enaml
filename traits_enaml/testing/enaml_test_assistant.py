@@ -1,4 +1,16 @@
-# Copyright (c) 2012-2013 by Enthought Inc.
+#----------------------------------------------------------------------------
+#
+#  Copyright (c) 2012-14, Enthought, Inc.
+#  All rights reserved.
+#
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
+#
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 import types
 
 from enaml.core.parser import parse
@@ -7,9 +19,33 @@ from enaml.core.enaml_compiler import EnamlCompiler
 import traits_enaml
 
 from .gui_test_assistant import GuiTestAssistant
+from .atom_test_assistant import AtomTestAssistant
 
 
-class EnamlTestAssistant(GuiTestAssistant):
+def print_enaml_widget_tree(widget, level=0):
+    """ Debugging helper to print out the enaml widget tree starting at a
+    particular `widget`.
+
+    Parameters
+    ----------
+    widget: :class:`~enaml.core.object.Object`
+        The root widget in the tree to print.
+    level: int
+        The current level in the tree. Used internally for displaying the
+        tree level.
+
+    """
+    level = level + 4
+    if level == 0:
+        print
+    print ' '*level, widget
+    for child in widget.children:
+        print_enaml_widget_tree(child, level=level)
+    if level == 0:
+        print
+
+
+class EnamlTestAssistant(GuiTestAssistant, AtomTestAssistant):
 
     def tearDown(self):
         super(EnamlTestAssistant, self).tearDown()
@@ -21,7 +57,7 @@ class EnamlTestAssistant(GuiTestAssistant):
 
         """
 
-        if type_name in [ cls.__name__ for cls in type(root).__mro__]:
+        if type_name in [cls.__name__ for cls in type(root).__mro__]:
             return root.widget
 
         for child in root.children():
@@ -86,7 +122,6 @@ class EnamlTestAssistant(GuiTestAssistant):
         enaml_view.initialize()
         if not enaml_view.proxy_is_active:
             enaml_view.activate_proxy()
-
 
         toolkit_view = enaml_view.proxy
 

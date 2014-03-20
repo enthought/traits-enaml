@@ -1,10 +1,16 @@
+#----------------------------------------------------------------------------
 #
-# (C) Copyright 2013 Enthought, Inc., Austin, TX
-# All right reserved.
+#  Copyright (c) 2013-14, Enthought, Inc.
+#  All rights reserved.
 #
-# This file is open source software distributed according to the terms in
-# LICENSE.txt
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
 #
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 from enaml.core.dynamicscope import DynamicScope
 from enaml.core.expression_engine import HandlerPair, ReadHandler
 from enaml.core.funchelper import call_func
@@ -60,6 +66,7 @@ def trait_op_subscribe(code, scope_key, f_globals):
     func = gen_tracer(code, f_globals)
     reader = TraitsTracedReadHandler(func=func, scope_key=scope_key)
     return HandlerPair(reader=reader)
+
 
 def trait_op_delegate(code, scope_key, f_globals):
     """ The Traits Enaml operator function for the `:=` operator.

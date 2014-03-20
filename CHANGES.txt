@@ -1,11 +1,19 @@
 Traits-Enaml CHANGELOG
 ======================
 
+Release 0.2.1
+-------------
+
+* Fix TraitView parenting bug (#32)
+* Fix items subscription for trait collections (#55).
+* Cleanup testing framework and improve test coverage.
+* Travis-CI now runs also on the latest enaml and atom versions
+* Test coverage is reported through Coveralls.io
 
 Release 0.2.0
 -------------
 
-Support enaml 0.8.x
-Better test framework including enaml and gui testing helpers
-Basic documentation
-Integrate with Travis-CI
+* Support enaml 0.8.x
+* Better test framework including enaml and gui testing helpers
+* Basic documentation
+* Integrate with Travis-CI

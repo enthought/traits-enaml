@@ -1,17 +1,53 @@
-# Copyright (c) 2012-2013 by Enthought
+#---------------------------------------------------------------------------
+#
+#  Copyright (c) 2012-14, Enthought, Inc.
+#  All rights reserved.
+#
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
+#
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 import contextlib
 import threading
 
 from enaml.application import deferred_call
 from enaml.qt.qt_application import QtApplication
 from enaml.qt.QtGui import QApplication
-from traits.testing.unittest_tools import _TraitsChangeCollector as TraitsChangeCollector
+from traits.testing.unittest_tools import UnittestTools
+from traits.testing.unittest_tools import _TraitsChangeCollector as \
+    TraitsChangeCollector
 
 from .event_loop_helper import EventLoopHelper, ConditionTimeoutError
-from .test_assistant import TestAssistant
 
 
-class GuiTestAssistant(TestAssistant):
+def print_qt_widget_tree(widget, level=0):
+    """ Debugging helper to print out the Qt widget tree starting at a
+    particular `widget`.
+
+    Parameters
+    ----------
+    widget: QObject
+        The root widget in the tree to print.
+    level: int
+        The current level in the tree. Used internally for displaying the
+        tree level.
+
+    """
+    level = level + 4
+    if level == 0:
+        print
+    print ' '*level, widget
+    for child in widget.children():
+        print_qt_widget_tree(child, level=level)
+    if level == 0:
+        print
+
+
+class GuiTestAssistant(UnittestTools):
 
     def setUp(self):
         qt_app = QApplication.instance()
@@ -31,28 +67,6 @@ class GuiTestAssistant(TestAssistant):
         self.enaml_app.destroy()
         del self.enaml_app
         del self.qt_app
-
-    def print_widget_tree(self, widget, level=0):
-        """Debugging helper to print out the Qt widget tree starting at a
-        particular `widget`.
-
-        Parameters
-        ----------
-        widget: QObject
-            The root widget in the tree to print
-        level: int
-            The current level in the tree. Used internally for displaying the
-            tree level
-
-        """
-        level = level + 4
-        if level == 0:
-            print
-        print ' '*level, widget
-        for child in widget.children():
-            self._print_widget_tree(child, level=level)
-        if level == 0:
-            print
 
     @contextlib.contextmanager
     def event_loop(self, repeat=1):
@@ -257,4 +271,3 @@ class GuiTestAssistant(TestAssistant):
         yield
         self.event_loop_helper.event_loop_with_timeout(
             repeat=repeat, timeout=timeout)
-

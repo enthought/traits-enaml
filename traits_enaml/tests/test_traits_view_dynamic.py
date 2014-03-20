@@ -1,17 +1,23 @@
+#----------------------------------------------------------------------------
 #
-# (C) Copyright 2013 Enthought, Inc., Austin, TX
-# All right reserved.
+#  Copyright (c) 2013-14, Enthought, Inc.
+#  All rights reserved.
 #
-# This file is open source software distributed according to the terms in
-# LICENSE.txt
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
 #
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 import unittest
 
 from traits.api import HasTraits, Str
 
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 from traits_enaml.widgets.traits_view import TraitsView
-from traitsui.qt4.toolkit import GUIToolkit
+
 
 class Model(HasTraits):
 
@@ -46,7 +52,6 @@ enamldef MainView(MainWindow): win:
         EnamlTestAssistant.tearDown(self)
 
     def test_add_traits_view(self):
-        view = self.view
         traits_view = TraitsView(model=Model())
         with self.event_loop():
             self.view.show()
@@ -57,4 +62,3 @@ enamldef MainView(MainWindow): win:
 
 if __name__ == "__main__":
     unittest.main()
-

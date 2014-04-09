@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Traits-Enaml &mdash; traits-enaml 0.2.0 documentation</title>
+    <title>Traits-Enaml &mdash; traits-enaml 0.2.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.2.0',
+        VERSION:     '0.2.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,8 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="traits-enaml 0.2.0 documentation" href="#" /> 
+    <link rel="shortcut icon" href="_static/et.ico"/>
+    <link rel="top" title="traits-enaml 0.2.1 documentation" href="#" /> 
   </head>
   <body>
     <div class="related">
@@ -34,7 +35,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li><a href="#">traits-enaml 0.2.0 documentation</a> &raquo;</li> 
+        <li><a href="#">traits-enaml 0.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -53,19 +54,26 @@ traits models, enable/chaco components and mayavi 3D scenes.</p>
 <p>To use traits model classes to drive enaml components it is enough to
 use the <cite>with traits_enaml.imports():</cite> context manager.</p>
 <p>Example python code:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#</span>
-<span class="c"># (C) Copyright 2013 Enthought, Inc., Austin, TX</span>
-<span class="c"># All right reserved.</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#----------------------------------------------------------------------------</span>
 <span class="c">#</span>
-<span class="c"># This file is open source software distributed according to the terms in</span>
-<span class="c"># LICENSE.txt</span>
+<span class="c">#  Copyright (c) 2013-14, Enthought, Inc.</span>
+<span class="c">#  All rights reserved.</span>
 <span class="c">#</span>
+<span class="c">#  This software is provided without warranty under the terms of the BSD</span>
+<span class="c">#  license included in /LICENSE.txt and may be redistributed only</span>
+<span class="c">#  under the conditions described in the aforementioned license.  The license</span>
+<span class="c">#  is also available online at http://www.enthought.com/licenses/BSD.txt</span>
+<span class="c">#</span>
+<span class="c">#  Thanks for using Enthought open source!</span>
+<span class="c">#</span>
+<span class="c">#----------------------------------------------------------------------------</span>
+<span class="kn">import</span> <span class="nn">enaml</span>
+<span class="kn">from</span> <span class="nn">enaml.qt.qt_application</span> <span class="kn">import</span> <span class="n">QtApplication</span>
 
 <span class="kn">from</span> <span class="nn">traits.api</span> <span class="kn">import</span> <span class="n">HasTraits</span><span class="p">,</span> <span class="n">Str</span><span class="p">,</span> <span class="n">Range</span>
 <span class="kn">from</span> <span class="nn">traitsui.api</span> <span class="kn">import</span> <span class="n">View</span>
 
-<span class="kn">import</span> <span class="nn">enaml</span>
-<span class="kn">from</span> <span class="nn">enaml.qt.qt_application</span> <span class="kn">import</span> <span class="n">QtApplication</span>
+
 
 <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">HasTraits</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A simple class representing a person object.</span>
@@ -76,7 +84,7 @@ use the <cite>with traits_enaml.imports():</cite> context manager.</p>
     <span class="n">first_name</span> <span class="o">=</span> <span class="n">Str</span><span class="p">()</span>
 
     <span class="n">age</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    
+
     <span class="n">traits_view</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span><span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;age&#39;</span><span class="p">,</span> <span class="n">resizable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
@@ -93,13 +101,19 @@ use the <cite>with traits_enaml.imports():</cite> context manager.</p>
 </pre></div>
 </div>
 <p>And related Enaml definition:</p>
-<div class="highlight-python"><pre>#
-# (C) Copyright 2013 Enthought, Inc., Austin, TX
-# All right reserved.
+<div class="highlight-python"><pre>#----------------------------------------------------------------------------
 #
-# This file is open source software distributed according to the terms in
-# LICENSE.txt
+#  Copyright (c) 2013-14, Enthought, Inc.
+#  All rights reserved.
 #
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
+#
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 from enaml.widgets.api import Window, Container
 from traits_enaml.widgets.traits_view import TraitsView
 
@@ -124,14 +138,19 @@ in the <cite>widgets</cite> module.</p>
 components for <cite>HasTraits</cite> classes in an automatic way similar to the
 default TraitsUI views.</p>
 <p>Example python code using the <em>auto_window</em> factory:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#</span>
-<span class="c"># (C) Copyright 2013 Enthought, Inc., Austin, TX</span>
-<span class="c"># All right reserved.</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#----------------------------------------------------------------------------</span>
 <span class="c">#</span>
-<span class="c"># This file is open source software distributed according to the terms in</span>
-<span class="c"># LICENSE.txt</span>
+<span class="c">#  Copyright (c) 2013-14, Enthought, Inc.</span>
+<span class="c">#  All rights reserved.</span>
 <span class="c">#</span>
-
+<span class="c">#  This software is provided without warranty under the terms of the BSD</span>
+<span class="c">#  license included in /LICENSE.txt and may be redistributed only</span>
+<span class="c">#  under the conditions described in the aforementioned license.  The license</span>
+<span class="c">#  is also available online at http://www.enthought.com/licenses/BSD.txt</span>
+<span class="c">#</span>
+<span class="c">#  Thanks for using Enthought open source!</span>
+<span class="c">#</span>
+<span class="c">#----------------------------------------------------------------------------</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 
 <span class="kn">from</span> <span class="nn">enaml.qt.qt_application</span> <span class="kn">import</span> <span class="n">QtApplication</span>
@@ -161,6 +180,8 @@ default TraitsUI views.</p>
     <span class="n">range_value</span> <span class="o">=</span> <span class="n">Range</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
                         <span class="n">label</span><span class="o">=</span><span class="s">&quot;Traits Range Editor:&quot;</span><span class="p">,</span>
                         <span class="n">enaml_editor</span><span class="o">=</span><span class="n">DefaultEditor</span><span class="p">)</span>
+
+    <span class="n">_my_float</span> <span class="o">=</span> <span class="n">Float</span>
 
     <span class="k">def</span> <span class="nf">_button_value_fired</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">print</span> <span class="s">&quot;Button was pressed&quot;</span>
@@ -243,7 +264,7 @@ widget.</p>
 <dl class="class">
 <dt id="traits_enaml.widgets.mayavi_canvas.MayaviCanvas">
 <em class="property">class </em><tt class="descclassname">traits_enaml.widgets.mayavi_canvas.</tt><tt class="descname">MayaviCanvas</tt><big>(</big><em>parent=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/traits_enaml/widgets/mayavi_canvas.html#MayaviCanvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#traits_enaml.widgets.mayavi_canvas.MayaviCanvas" title="Permalink to this definition">¶</a></dt>
-<dd><p>A widget that displays a mayavi scene.</p>
+<dd><p>A traits view widget that displays a mayavi scene.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -251,6 +272,9 @@ widget.</p>
 <tr class="field-odd field"><th class="field-name">Attributes :</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>scene</strong> = <em>d_(Typed(SceneModel))</em></dt>
 <dd><p class="first last">The mayavi scene model to be displayed.</p>
+</dd>
+<dt><strong>show_toolbar</strong> = <em>d_(Bool(True))</em></dt>
+<dd><p class="first last">If True, show the Mayavi toolbar.</p>
 </dd>
 </dl>
 </td>
@@ -268,6 +292,9 @@ widget.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/e-logo-rev.png" alt="Logo"/>
+            </a></p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Traits-Enaml</a><ul>
@@ -311,7 +338,7 @@ widget.</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li><a href="#">traits-enaml 0.2.0 documentation</a> &raquo;</li> 
+        <li><a href="#">traits-enaml 0.2.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

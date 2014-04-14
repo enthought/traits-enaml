@@ -37,8 +37,7 @@ class EventLoopHelper(HasStrictTraits):
         repeat : int
             Number of times to process events. Default is 2.
         timeout: float, optional, keyword only
-            Number of seconds to run the event loop in the case that the trait
-            change does not occur. Default value is 10.0.
+            Number of seconds to run the event loop. Default value is 10.0.
 
         """
         def repeat_loop(condition, repeat):

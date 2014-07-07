@@ -22,4 +22,4 @@ enamldef Main(MainWindow): main:
     initial_size = (600, 400)
     Container:
         EnableCanvas: ecanvas:
-            component = main.model.plot
+            component << main.model.plot

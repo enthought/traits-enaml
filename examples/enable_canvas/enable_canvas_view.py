@@ -22,7 +22,7 @@ from chaco.api import ArrayPlotData, jet, Plot
 
 class Model(HasStrictTraits):
 
-    plot = Instance(Plot, ())
+    plot = Instance(Plot)
 
     def _plot_default(self):
         # Create a scalar field to colormap

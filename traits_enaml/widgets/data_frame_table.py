@@ -12,9 +12,9 @@ from atom.api import Typed, set_default, observe
 from enaml.core.declarative import d_
 from enaml.widgets.api import RawWidget
 
-from PySide.QtCore import QAbstractTableModel, QModelIndex, Qt
-from PySide.QtGui import (QTableView, QHeaderView, QAbstractItemView,
-                          QFontMetrics)
+from pyface.qt.QtCore import QAbstractTableModel, QModelIndex, Qt
+from pyface.qt.QtGui import (QTableView, QHeaderView, QAbstractItemView,
+                             QFontMetrics)
 
 
 class ColumnCache(object):

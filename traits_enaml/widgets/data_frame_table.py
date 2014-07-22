@@ -49,13 +49,13 @@ class ColumnCache(object):
         del self.columns
 
 
-class DataFrameModel(QAbstractTableModel):
+class QDataFrameModel(QAbstractTableModel):
     def __init__(self, data_frame, *args, **kwds):
         self.data_frame = data_frame
         self.cache = ColumnCache(data_frame)
         self.argsort_indices = None
         self.default_decimals = 6
-        super(DataFrameModel, self).__init__(*args, **kwds)
+        super(QDataFrameModel, self).__init__(*args, **kwds)
 
     def headerData(self, section, orientation, role):
         if role == Qt.TextAlignmentRole:
@@ -178,7 +178,7 @@ class QDataFrameTableView(QTableView):
         """ Instantiate a DataFrameTableView directly from a DataFrame.
 
         """
-        df_model = DataFrameModel(df)
+        df_model = QDataFrameModel(df)
         self = cls(df_model, **kwds)
         return self
 
@@ -245,6 +245,6 @@ class DataFrameTable(RawWidget):
 
         """
         if self._table:
-            df_model = DataFrameModel(change['value'])
+            df_model = QDataFrameModel(change['value'])
             self._table.df_model = df_model
             self._table.setModel(df_model)

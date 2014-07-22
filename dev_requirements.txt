@@ -10,3 +10,4 @@ coveralls
 -e git+http://github.com/enthought/traitsui.git#egg=traitsui
 -e git+http://github.com/enthought/enable.git#egg=enable
 -e git+http://github.com/enthought/mayavi.git#egg=mayavi
+-e git+http://github.com/pydata/pandas.git#egg=pandas

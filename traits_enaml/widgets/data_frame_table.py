@@ -141,7 +141,7 @@ class DataFrameModel(QAbstractTableModel):
             len(self.data_frame.index) - 1,
         )
 
-    def format_value(self, value, column):
+    def format_value(self, value):
         """ Return a nice unicode formatting of the given value.
 
         """
@@ -154,7 +154,7 @@ class DataFrameModel(QAbstractTableModel):
         if self.argsort_indices is not None:
             i = self.argsort_indices[i]
         value = self.cache[i, j]
-        formatted = self.format_value(value, j)
+        formatted = self.format_value(value)
         return formatted
 
 

@@ -148,7 +148,9 @@ class QDataFrameModel(QAbstractTableModel):
         if isinstance(value, (float, np.floating)):
             if np.isnan(value):
                 return u'--'
-        return unicode(value, encoding='latin1')
+        if isinstance(value, str):
+            value = value.decode('latin1')
+        return unicode(value)
 
     def _get_formatted_value(self, i, j):
         if self.argsort_indices is not None:

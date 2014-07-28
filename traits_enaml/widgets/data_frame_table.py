@@ -64,11 +64,11 @@ class QDataFrameModel(QAbstractTableModel):
             return int(Qt.AlignRight | Qt.AlignVCenter)
         elif role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
-                return unicode(self.data_frame.columns[section])
+                return self._get_unicode_string(self.data_frame.columns[section])
             else:
                 if self.argsort_indices is not None:
                     section = self.argsort_indices[section]
-                return unicode(self.data_frame.index[section])
+                return self._get_unicode_string(self.data_frame.index[section])
         else:
             return None
 
@@ -148,9 +148,7 @@ class QDataFrameModel(QAbstractTableModel):
         if isinstance(value, (float, np.floating)):
             if np.isnan(value):
                 return u'--'
-        if isinstance(value, str):
-            value = value.decode('latin1')
-        return unicode(value)
+        return self._get_unicode_string(value)
 
     def _get_formatted_value(self, i, j):
         if self.argsort_indices is not None:
@@ -158,6 +156,15 @@ class QDataFrameModel(QAbstractTableModel):
         value = self.cache[i, j]
         formatted = self.format_value(value)
         return formatted
+
+    def _get_unicode_string(self, value):
+        if isinstance(value, str):
+            try:
+                return unicode(value, encoding='utf-8')
+            except UnicodeDecodeError:
+                return unicode(value, encoding='latin-1')
+        else:
+            return unicode(value)
 
 
 class QDataFrameTableView(QTableView):

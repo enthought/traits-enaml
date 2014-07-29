@@ -103,6 +103,10 @@ class QDataFrameModel(QAbstractTableModel):
                 self.argsort_indices = None
                 self._emit_all_data_changed()
             return
+
+        if len(self.cache.columns) == 0:
+            return
+
         ascending = (order == Qt.AscendingOrder)
         data = self.cache.columns[column]
         # If things are currently sorted, we will try to be stable

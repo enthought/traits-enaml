@@ -61,3 +61,12 @@ To embed a Mayavi 3D scene inside an Enaml component, one should use the
 :class:`~traits_enaml.widgets.mayavi_canvas.MayaviCanvas` widget.
 
 .. autoclass:: traits_enaml.widgets.mayavi_canvas.MayaviCanvas
+
+
+GLCanvas
+--------
+
+To embed an OpenGL 3D scene inside an Enaml component, one should use the
+:class:`~traits_enaml.widgets.gl_canvas.GLCanvas` widget.
+
+.. autoclass:: traits_enaml.widgets.gl_canvas.GLCanvas

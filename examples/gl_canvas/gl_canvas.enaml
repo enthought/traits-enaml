@@ -13,7 +13,7 @@
 #----------------------------------------------------------------------------
 from OpenGL import GL as gl, GLU as glu
 
-from enaml.widgets.api import MainWindow, Container
+from enaml.widgets.api import Container, MainWindow
 from traits_enaml.widgets.gl_canvas import GLCanvas
 
 

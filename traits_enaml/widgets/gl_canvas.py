@@ -46,11 +46,16 @@ class GLCanvas(RawWidget):
     #--------------------------------------------------------------------------
     # Initialization API
     #--------------------------------------------------------------------------
+
     def create_widget(self, parent):
         """ Create the underlying QWidget object.
 
         """
         return _GLWidget(parent, self)
+
+    #--------------------------------------------------------------------------
+    # Declarative methods
+    #--------------------------------------------------------------------------
 
     @d_func
     def draw_gl(self):
@@ -77,3 +82,12 @@ class GLCanvas(RawWidget):
 
         """
         pass
+
+    #--------------------------------------------------------------------------
+    # Public interface
+    #--------------------------------------------------------------------------
+
+    def update(self):
+        """ Force the draw_gl() method to be called.
+        """
+        self.get_widget().updateGL()

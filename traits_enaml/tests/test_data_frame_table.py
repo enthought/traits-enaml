@@ -1,23 +1,9 @@
-#----------------------------------------------------------------------------
-#
-#  Copyright (c) 2013-14, Enthought, Inc.
-#  All rights reserved.
-#
-#  This software is provided without warranty under the terms of the BSD
-#  license included in /LICENSE.txt and may be redistributed only
-#  under the conditions described in the aforementioned license.  The license
-#  is also available online at http://www.enthought.com/licenses/BSD.txt
-#
-#  Thanks for using Enthought open source!
-#
-#----------------------------------------------------------------------------
 import unittest
 
 import pandas
 
-from pyface.qt.QtCore import Qt
+from enaml.qt.QtCore import Qt
 
-from traits_enaml.widgets.data_frame_table import ColumnCache
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
 
@@ -53,7 +39,7 @@ enamldef MainView(MainWindow):
         new_df = pandas.DataFrame()
         table.data_frame = new_df
 
-        self.assert_(table.proxy.widget.model().data_frame is new_df)
+        self.assertIs(table.proxy.widget.model().data_frame, new_df)
 
     def test_column_cache(self):
         cache = ColumnCache(self.data_frame)
@@ -68,11 +54,12 @@ enamldef MainView(MainWindow):
         qtable = self.table.proxy.widget
         qtable.sortByColumn(0, Qt.DescendingOrder)
         qmodel = qtable.model()
-        self.assert_(int(qmodel.data(qmodel.createIndex(0, 0))) == 3)
+        self.assertEqual(int(qmodel.data(qmodel.createIndex(0, 0))), 3)
 
     def test_invalid_index(self):
         qmodel = self.table.proxy.widget.model()
-        self.assert_(qmodel.data(qmodel.createIndex(-1, -1)) is None)
+        self.assertIsNone(qmodel.data(qmodel.createIndex(-1, -1)))
+
 
 if __name__ == "__main__":
     unittest.main()

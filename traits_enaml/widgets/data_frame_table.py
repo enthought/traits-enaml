@@ -17,9 +17,8 @@ from pandas import DataFrame
 from atom.api import Typed, set_default, observe
 from enaml.core.declarative import d_
 from enaml.widgets.api import RawWidget
-
-from pyface.qt.QtCore import QAbstractTableModel, QModelIndex, Qt
-from pyface.qt.QtGui import (
+from enaml.qt.QtCore import QAbstractTableModel, QModelIndex, Qt
+from enaml.qt.QtGui import (
     QTableView, QHeaderView, QAbstractItemView, QFontMetrics)
 
 from traits_enaml.utils import get_unicode_string, format_value
@@ -137,15 +136,10 @@ class QDataFrameModel(QAbstractTableModel):
         """
         self.dataChanged.emit(
             self.index(0, 0),
-            self.index(len(self.data_frame.index) - 1,
-                       len(self.data_frame.columns) - 1),
-        )
+            self.index(
+                len(self.data_frame.index) - 1,
+                len(self.data_frame.columns) - 1),)
         self.headerDataChanged.emit(
-            Qt.Vertical,
-            0,
-            len(self.data_frame.index) - 1,
-        )
-
             Qt.Vertical, 0, len(self.data_frame.index) - 1)
 
     def _get_formatted_value(self, i, j):

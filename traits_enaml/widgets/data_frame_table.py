@@ -1,10 +1,16 @@
+#----------------------------------------------------------------------------
 #
-# (C) Copyright 2014 Enthought, Inc., Austin, TX
-# All right reserved.
+#  Copyright (c) 2014, Enthought, Inc.
+#  All rights reserved.
 #
-# This file is open source software distributed according to the terms in
-# LICENSE.txt
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
 #
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 import numpy as np
 from pandas import DataFrame
 
@@ -13,8 +19,8 @@ from enaml.core.declarative import d_
 from enaml.widgets.api import RawWidget
 
 from pyface.qt.QtCore import QAbstractTableModel, QModelIndex, Qt
-from pyface.qt.QtGui import (QTableView, QHeaderView, QAbstractItemView,
-                             QFontMetrics)
+from pyface.qt.QtGui import (
+    QTableView, QHeaderView, QAbstractItemView, QFontMetrics)
 
 
 class ColumnCache(object):
@@ -64,7 +70,8 @@ class QDataFrameModel(QAbstractTableModel):
             return int(Qt.AlignRight | Qt.AlignVCenter)
         elif role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
-                return self._get_unicode_string(self.data_frame.columns[section])
+                return self._get_unicode_string(
+                    self.data_frame.columns[section])
             else:
                 if self.argsort_indices is not None:
                     section = self.argsort_indices[section]
@@ -236,9 +243,6 @@ class DataFrameTable(RawWidget):
     #: The data frame to display
     data_frame = d_(Typed(DataFrame))
 
-    #: Internal storage for the DataFrameTableView
-    _table = Typed(QDataFrameTableView)
-
     #: Expand the table by default
     hug_width = set_default('weak')
     hug_height = set_default('weak')
@@ -247,17 +251,17 @@ class DataFrameTable(RawWidget):
         """ Create the DataFrameTable Qt widget.
 
         """
-        self._table = QDataFrameTableView.from_data_frame(self.data_frame,
-                                                          parent=parent)
-
-        return self._table
+        return QDataFrameTableView.from_data_frame(
+            self.data_frame, parent=parent)
 
     @observe('data_frame')
     def _data_frame_changed(self, change):
         """ Proxy changes in `data_frame` down to the Qt widget.
 
         """
-        if self._table:
+        table = self.get_widget()
+        if table is not None:
             df_model = QDataFrameModel(change['value'])
-            self._table.df_model = df_model
-            self._table.setModel(df_model)
+            table = self.get_widget()
+            table.df_model = df_model
+            table.setModel(df_model)

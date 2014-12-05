@@ -15,6 +15,9 @@
 
 """
 from collections import defaultdict
+from math import isnan
+
+import numpy
 
 
 class abstractclassmethod(classmethod):
@@ -170,3 +173,27 @@ class LoopbackGuard(object):
                     del locked_items[item]
             if not locked_items:
                 self.locked_items = None
+
+
+def format_value(value):
+    """ Return a nice unicode formatting of the given value.
+
+    """
+    if isinstance(value, (float, numpy.floating)):
+        if isnan(value):
+            return u'--'
+    return get_unicode_string(value)
+
+
+def get_unicode_string(value, encoding='utf-8'):
+    """ Try to re-encode/convert a string to unicode.
+
+    """
+    if isinstance(value, str):
+        try:
+            return unicode(value, encoding=encoding)
+        except UnicodeDecodeError:
+            # Fallback to 'latin-1'
+            return unicode(value, encoding='latin-1')
+    else:
+        return unicode(value)

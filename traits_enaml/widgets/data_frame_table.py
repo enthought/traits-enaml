@@ -22,6 +22,8 @@ from pyface.qt.QtCore import QAbstractTableModel, QModelIndex, Qt
 from pyface.qt.QtGui import (
     QTableView, QHeaderView, QAbstractItemView, QFontMetrics)
 
+from traits_enaml.utils import get_unicode_string, format_value
+
 
 class ColumnCache(object):
     """ Pull out a view for each column for quick element access.
@@ -63,12 +65,11 @@ class QDataFrameModel(QAbstractTableModel):
             return int(Qt.AlignRight | Qt.AlignVCenter)
         elif role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
-                return self._get_unicode_string(
-                    self.data_frame.columns[section])
+                return get_unicode_string(self.data_frame.columns[section])
             else:
                 if self.argsort_indices is not None:
                     section = self.argsort_indices[section]
-                return self._get_unicode_string(self.data_frame.index[section])
+                return get_unicode_string(self.data_frame.index[section])
         else:
             return None
 
@@ -145,30 +146,13 @@ class QDataFrameModel(QAbstractTableModel):
             len(self.data_frame.index) - 1,
         )
 
-    def format_value(self, value):
-        """ Return a nice unicode formatting of the given value.
-
-        """
-        if isinstance(value, (float, np.floating)):
-            if np.isnan(value):
-                return u'--'
-        return self._get_unicode_string(value)
+            Qt.Vertical, 0, len(self.data_frame.index) - 1)
 
     def _get_formatted_value(self, i, j):
         if self.argsort_indices is not None:
             i = self.argsort_indices[i]
         value = self.cache[i, j]
-        formatted = self.format_value(value)
-        return formatted
-
-    def _get_unicode_string(self, value):
-        if isinstance(value, str):
-            try:
-                return unicode(value, encoding='utf-8')
-            except UnicodeDecodeError:
-                return unicode(value, encoding='latin-1')
-        else:
-            return unicode(value)
+        return format_value(value)
 
 
 class QDataFrameTableView(QTableView):

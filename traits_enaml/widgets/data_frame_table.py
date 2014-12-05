@@ -47,13 +47,6 @@ class ColumnCache(object):
             for i, ref_loc in enumerate(data_block.mgr_locs):
                 self.columns[ref_loc] = data_block.values[i, :]
 
-    def clear(self):
-        """ Clear out the cache entirely.
-
-        """
-        del self.data_frame
-        del self.columns
-
 
 class QDataFrameModel(QAbstractTableModel):
     def __init__(self, data_frame, *args, **kwds):

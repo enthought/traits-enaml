@@ -41,15 +41,6 @@ enamldef MainView(MainWindow):
 
         self.assertIs(table.proxy.widget.model().data_frame, new_df)
 
-    def test_column_cache(self):
-        cache = ColumnCache(self.data_frame)
-
-        self.assert_(cache[1, 0] == 2)
-
-        cache.clear()
-        self.assert_(not hasattr(cache, 'data_frame') and
-                     not hasattr(cache, 'columns'))
-
     def test_sort(self):
         qtable = self.table.proxy.widget
         qtable.sortByColumn(0, Qt.DescendingOrder)

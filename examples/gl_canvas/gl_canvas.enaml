@@ -13,18 +13,20 @@
 #----------------------------------------------------------------------------
 from OpenGL import GL as gl, GLU as glu
 
-from enaml.widgets.api import Container, MainWindow
+from enaml.widgets.api import Container, MainWindow, PushButton, Timer
 from traits_enaml.widgets.gl_canvas import GLCanvas
 
 
 enamldef MyGLCanvas(GLCanvas):
+
+    attr angle = 0.0
 
     init_gl => ():
         gl.glClearColor(1.0, 1.0, 1.0, 1.0)
         gl.glColor3f(0.0, 0.0, 0.0)
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
-        glu.gluOrtho2D(0.0, 1.0, 0.0, 1.0)
+        glu.gluOrtho2D(-1.0, 1.0, -1.0, 1.0)
 
     resize_gl => (width, height):
         pass
@@ -32,19 +34,36 @@ enamldef MyGLCanvas(GLCanvas):
     draw_gl => ():
         gl.glClear(gl.GL_COLOR_BUFFER_BIT)
 
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glLoadIdentity()
+        gl.glRotatef(self.angle, 0.0, 0.0, 1.0)
+        self.angle += 1.0
+
         gl.glBegin(gl.GL_TRIANGLES)
         gl.glColor3f(1.0, 0.0, 0.0)
-        gl.glVertex2f(0, 0)
-        gl.glVertex2f(0.5, 1.0)
-        gl.glVertex2f(1.0, 0)
+        gl.glVertex2f(-.625, -.625)
+        gl.glVertex2f(0.0, 1.0)
+        gl.glVertex2f(.625, -.625)
         gl.glEnd()
 
 
 enamldef Main(MainWindow): main:
+    attr _running = False
     initial_size = (600, 400)
-
     title = "OpenGL Example"
 
+
     Container:
+        Timer: timer:
+            interval = 50
+            timeout :: canvas.update()
+        PushButton:
+            text << 'Stop!' if main._running else 'Animate!'
+            clicked ::
+                if timer.is_active():
+                    timer.stop()
+                else:
+                    timer.start()
+                main._running = timer.is_active()
         MyGLCanvas: canvas:
             pass

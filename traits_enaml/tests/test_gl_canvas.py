@@ -13,6 +13,8 @@
 #----------------------------------------------------------------------------
 import unittest
 
+import numpy as np
+
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
 
@@ -23,12 +25,17 @@ class GLCanvasTestCase(EnamlTestAssistant, unittest.TestCase):
         EnamlTestAssistant.setUp(self)
 
         enaml_source = """
+from OpenGL import GL
+
 from enaml.widgets.api import MainWindow
 from traits_enaml.widgets.gl_canvas import GLCanvas
 
 enamldef MainView(MainWindow): main:
     GLCanvas: canvas:
-        pass
+        init_gl => ():
+            GL.glClearColor(0.0, 1.0, 0.0, 1.0)
+        draw_gl => ():
+            GL.glClear(GL.GL_COLOR_BUFFER_BIT)
 """
         view, toolkit_view = self.parse_and_create(enaml_source)
         self.view = view
@@ -44,3 +51,20 @@ enamldef MainView(MainWindow): main:
         canvas = self.view.children[0]
         # Check that the proxy is strictly a QtRawWidget (not a subclass).
         self.assertEqual(type(canvas.proxy), QtRawWidget)
+
+    def test_gl_canvas_draw(self):
+        canvas = self.view.children[0]
+        widget = canvas.get_widget()
+
+        with self.event_loop():
+            canvas.update()
+
+        image = widget.grabFrameBuffer()
+        width, height = image.width(), image.height()
+        arr = np.array(image.constBits()).reshape(height, width, 4)
+
+        expected = np.zeros((height, width, 4), dtype='uint8')
+        expected[:, :, 1] = 255
+        expected[:, :, 3] = 255
+
+        np.testing.assert_array_equal(arr, expected)

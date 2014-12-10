@@ -3,6 +3,11 @@
 #  All rights reserved.
 #------------------------------------------------------------------------------
 from atom.api import set_default
+
+from enaml.version import version_info as enaml_version
+if enaml_version < (0, 9, 6):
+    raise ImportError('This widget requires enaml >= 0.9.6')
+
 from enaml.widgets.api import RawWidget
 from enaml.core.declarative import d_func
 
@@ -28,6 +33,7 @@ class _GLWidget(QGLWidget):
 
 class GLCanvas(RawWidget):
     """ A widget that displays OpenGL content.
+    Note: This widget requires an enaml version >= 0.9.6 to run!
 
     :Methods:
         **draw_gl** = *d_func(draw_gl())*
@@ -39,9 +45,11 @@ class GLCanvas(RawWidget):
 
     """
 
-    #: GL canvas' expand freely in width and height by default
-    hug_width = set_default('ignore')
+    #: Expand freely in height by default
     hug_height = set_default('ignore')
+
+    #: Expand freely in width by default
+    hug_width = set_default('ignore')
 
     #--------------------------------------------------------------------------
     # Initialization API

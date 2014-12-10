@@ -15,9 +15,23 @@ import unittest
 
 import numpy as np
 
+import enaml
+from enaml.version import version_info as enaml_version
+
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
+ENAML_TOO_OLD = enaml_version < (0, 9, 6)
 
+
+@unittest.skipIf(not ENAML_TOO_OLD, "Requires enaml < 0.9.6")
+class GLCanvasImportTestCase(unittest.TestCase):
+    def test_import_failure(self):
+        with self.assertRaises(ImportError):
+            with enaml.imports():
+                from traits_enaml.widgets.gl_canvas import GLCanvas  # noqa
+
+
+@unittest.skipIf(ENAML_TOO_OLD, "Requires enaml >= 0.9.6")
 class GLCanvasTestCase(EnamlTestAssistant, unittest.TestCase):
 
     def setUp(self):

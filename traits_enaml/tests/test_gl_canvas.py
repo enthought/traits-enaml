@@ -74,11 +74,21 @@ enamldef MainView(MainWindow): main:
             canvas.update()
 
         image = widget.grabFrameBuffer()
-        width, height = image.width(), image.height()
-        arr = np.array(image.constBits()).reshape(height, width, 4)
+        arr = _qimage_to_ndarray(image)
 
+        width, height = image.width(), image.height()
         expected = np.zeros((height, width, 4), dtype='uint8')
         expected[:, :, 1] = 255
         expected[:, :, 3] = 255
 
         np.testing.assert_array_equal(arr, expected)
+
+
+def _qimage_to_ndarray(img):
+    width, height = img.width(), img.height()
+    bits = img.bits()
+
+    if not hasattr(img, 'constBits'):  # PyQt
+        bits.setsize(img.byteCount())
+
+    return np.array(bits).reshape(height, width, 4)

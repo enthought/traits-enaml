@@ -1,6 +1,11 @@
 Traits-Enaml CHANGELOG
 ======================
 
+Release 0.2.2
+-------------
+
+* Added a GLCanvas widget (#68)
+
 Release 0.2.1
 -------------
 

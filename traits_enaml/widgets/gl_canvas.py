@@ -1,7 +1,16 @@
-#------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#
 #  Copyright (c) 2014, Enthought, Inc.
 #  All rights reserved.
-#------------------------------------------------------------------------------
+#
+#  This software is provided without warranty under the terms of the BSD
+#  license included in /LICENSE.txt and may be redistributed only
+#  under the conditions described in the aforementioned license.  The license
+#  is also available online at http://www.enthought.com/licenses/BSD.txt
+#
+#  Thanks for using Enthought open source!
+#
+#----------------------------------------------------------------------------
 from atom.api import set_default
 
 from enaml.version import version_info as enaml_version
@@ -69,13 +78,11 @@ class GLCanvas(RawWidget):
     def draw_gl(self):
         """ A method invoked to draw the contents of the widget.
         """
-        pass
 
     @d_func
     def init_gl(self):
         """ A method invoked when a GL context is assigned to the widget.
         """
-        pass
 
     @d_func
     def resize_gl(self, width, height):
@@ -89,7 +96,6 @@ class GLCanvas(RawWidget):
             The new height of the context, in device pixels.
 
         """
-        pass
 
     #--------------------------------------------------------------------------
     # Public interface

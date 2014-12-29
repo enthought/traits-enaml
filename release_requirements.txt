@@ -13,3 +13,4 @@ traits
 enable
 traitsui
 mayavi
+pandas

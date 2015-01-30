@@ -10,13 +10,15 @@ from traitsui.api import View, Item
 from tvtk.pyface.scene_editor import SceneEditor
 from tvtk.pyface.scene_model import SceneModel
 
+from mayavi.core.ui.mayavi_scene import MayaviScene
+
 from .traits_view import TraitsView
 
 
 class MayaviModel(HasStrictTraits):
     scene = Instance(SceneModel, args=())
     view = View(
-        Item('scene', editor=SceneEditor(), resizable=True, show_label=False),
+        Item('scene', editor=SceneEditor(scene_class=MayaviScene), resizable=True, show_label=False),
         resizable=True)
 
 

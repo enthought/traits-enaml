@@ -11,5 +11,6 @@ enaml==0.8.9
 atom==0.3.5
 traits
 traitsui
-enable
 mayavi
+kiwisolver
+enable

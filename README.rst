@@ -19,7 +19,9 @@ Status
 .. image:: https://api.travis-ci.org/enthought/traits-enaml.png?branch=master
    :target: https://travis-ci.org/enthought/traits-enaml
    :alt: Build status
+   
 
-.. image:: https://coveralls.io/repos/enthought/traits-enaml/badge.png
-   :target: https://coveralls.io/r/enthought/traits-enaml
+.. image:: https://coveralls.io/repos/enthought/traits-enaml/badge.svg?branch=master
+   :target: https://coveralls.io/r/enthought/traits-enaml?branch=master
    :alt: Coverage status
+

@@ -3,7 +3,7 @@ python:
   - "2.7"
 env:
   - REQUIREMENTS=dev_requirements.txt
-  - REQUIREMENTS=released_requirements.txt
+  - REQUIREMENTS=release_requirements.txt
   - REQUIREMENTS=enaml_0_8_9_requirements.txt
 virtualenv:
   system_site_packages: true

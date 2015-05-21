@@ -4,9 +4,10 @@ unittest2
 ply
 coverage
 coveralls
--e git+http://github.com/nucleic/enaml.git#egg=enaml
--e git+http://github.com/nucleic/atom.git#egg=atom
--e git+http://github.com/enthought/traits.git#egg=traits
--e git+http://github.com/enthought/traitsui.git#egg=traitsui
--e git+http://github.com/enthought/enable.git#egg=enable
--e git+http://github.com/enthought/mayavi.git#egg=mayavi
+git+http://github.com/nucleic/enaml.git#egg=enaml
+git+http://github.com/nucleic/atom.git#egg=atom
+git+http://github.com/nucleic/kiwi.git#egg=kiwisolver
+git+http://github.com/enthought/traits.git#egg=traits
+git+http://github.com/enthought/traitsui.git#egg=traitsui
+git+http://github.com/enthought/enable.git#egg=enable
+git+http://github.com/enthought/mayavi.git#egg=mayavi

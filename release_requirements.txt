@@ -5,7 +5,6 @@
 unittest2
 ply
 coverage
-coveralls
 enaml
 atom
 kiwisolver

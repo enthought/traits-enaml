@@ -16,8 +16,9 @@ before_install:
 install:
   - pip install traits # see issue https://github.com/enthought/enable/issues/197
   - pip install -r $REQUIREMENTS
+  - pip install codecov
   - python setup.py develop
 script:
   - coverage run -m unittest2 discover -v
 after_success:
-  coveralls
+  codecov

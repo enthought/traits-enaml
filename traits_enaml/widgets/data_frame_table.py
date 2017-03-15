@@ -58,19 +58,20 @@ class QDataFrameModel(QAbstractTableModel):
         super(QDataFrameModel, self).__init__(*args, **kwds)
 
     def headerData(self, section, orientation, role):
-        if role == Qt.TextAlignmentRole:
-            if orientation == Qt.Horizontal:
+        if orientation == Qt.Horizontal:
+            if role == Qt.TextAlignmentRole:
                 return int(Qt.AlignHCenter | Qt.AlignVCenter)
-            return int(Qt.AlignRight | Qt.AlignVCenter)
-        elif role == Qt.DisplayRole:
-            if orientation == Qt.Horizontal:
+            elif role == Qt.DisplayRole:
                 return get_unicode_string(self.data_frame.columns[section])
+        elif orientation == Qt.Vertical:
+            if role == Qt.TextAlignmentRole:
+                return int(Qt.AlignRight | Qt.AlignVCenter)
             else:
+                section = int(section)
                 if self.argsort_indices is not None:
                     section = self.argsort_indices[section]
                 return get_unicode_string(self.data_frame.index[section])
-        else:
-            return None
+        return None
 
     def data(self, index, role=Qt.DisplayRole):
         if not index.isValid() or \

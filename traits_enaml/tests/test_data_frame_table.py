@@ -7,7 +7,7 @@ from enaml.qt.QtCore import Qt
 from traits_enaml.testing.enaml_test_assistant import EnamlTestAssistant
 
 
-class DataFrameTableTestCase(EnamlTestAssistant, unittest.TestCase):
+class TestDataFrameTable(EnamlTestAssistant, unittest.TestCase):
 
     def setUp(self):
         EnamlTestAssistant.setUp(self)

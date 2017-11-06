@@ -25,8 +25,8 @@ before_install:
   - sh -e /etc/init.d/xvfb start
 install:
   - pip install traits # see issue https://github.com/enthought/enable/issues/197
+  - easy_install distribute
   - pip install --upgrade cython setuptools
-  - pip install distribute
   - pip install -r $REQUIREMENTS
   - pip install codecov haas
   - python setup.py develop

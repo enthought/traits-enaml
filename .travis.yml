@@ -1,24 +1,24 @@
 language: python
 python:
   - "2.7"
+sudo: false
 env:
   - REQUIREMENTS=dev_requirements.txt
   - REQUIREMENTS=release_requirements.txt
   - REQUIREMENTS=enaml_0_8_9_requirements.txt
-virtualenv:
-  system_site_packages: true
-before_install:
-  - sudo add-apt-repository ppa:cython-dev/master-ppa -y
-  - sudo apt-get update -qq
-  - sudo apt-get install cython python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
+addons:
+  apt:
+    packages:
+    - python-vtk
+    - python-qt4
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 install:
   - pip install traits # see issue https://github.com/enthought/enable/issues/197
   - pip install -r $REQUIREMENTS
-  - pip install codecov
+  - pip install codecov haas
   - python setup.py develop
 script:
-  - coverage run -m unittest2 discover -v
+  - coverage run -m haas -v
 after_success:
   codecov

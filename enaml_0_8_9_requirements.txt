@@ -1,9 +1,5 @@
---allow-external enable
---allow-unverified enable
---allow-external PIL
---allow-unverified PIL
-unittest2
 ply
+cython
 coverage
 casuarius
 enaml==0.8.9

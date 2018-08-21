@@ -16,7 +16,7 @@ import threading
 
 from enaml.application import deferred_call
 from enaml.qt.qt_application import QtApplication
-from enaml.qt.QtGui import QApplication
+from enaml.qt.QtWidgets import QApplication
 from traits.testing.unittest_tools import UnittestTools
 from traits.testing.unittest_tools import _TraitsChangeCollector as \
     TraitsChangeCollector

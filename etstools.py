@@ -79,6 +79,7 @@ import os
 import shlex
 import subprocess
 import sys
+import time
 from shutil import rmtree, copy as copyfile
 from tempfile import mkdtemp
 from contextlib import contextmanager
@@ -94,6 +95,7 @@ dependencies = {
     "traits",
     "enable",
     "traitsui",
+    "wheel",
     "mayavi"}
 
 toolkits = {
@@ -114,17 +116,21 @@ def cli():
 @cli.command()
 @click.option('--runtime', default='2.7')
 @click.option('--toolkit', default='pyside')
-@click.option('--enaml', default=None)
-def install(runtime, toolkit, enaml):
+@click.option('--environment', default=None)
+@click.option('--enaml', default='edm-latest')
+def install(runtime, toolkit, environment, enaml):
     """ Install project and dependencies into a clean EDM environment.
 
     """
-    parameters = get_parameters(runtime, toolkit, enaml)
+    parameters = get_parameters(runtime, toolkit, environment, enaml)
     # edm commands to setup the development environment
     commands = [
         "edm environments create {environment} --force --version={runtime}",
-        "edm install -y -e {environment} {packages}",
-        "edm run -e {environment} -- python setup.py install"]
+        "edm install -y -e {environment} {edm_packages}",
+        "edm run -e {environment} -- pip install ."]
+    if len(parameters['pip_packages']) > 0:
+        commands.insert(
+            2, "edm run -e {environment} -- pip install {pip_packages}")
     click.echo("Creating environment '{environment}'".format(**parameters))
     execute(commands, parameters)
     click.echo('Done install')
@@ -142,7 +148,7 @@ def test(runtime, toolkit, environment):
     environ = environment_vars.get(toolkit, {}).copy()
     environ['PYTHONUNBUFFERED'] = "1"
     commands = [
-        "edm run -e {environment} -- coverage run -p -m nose.core -v traitsui.tests --nologcapture"]
+        "edm run -e {environment} -- coverage run -p -m nose.core -v traits_enaml --nologcapture"]
 
     # We run in a tempdir to avoid accidentally picking up wrong traitsui
     # code from a local dir.  We need to ensure a good .coveragerc is in
@@ -221,17 +227,21 @@ def test_all():
 
 def get_parameters(runtime, toolkit, environment ,enaml=None):
     """ Set up parameters dictionary for format() substitution """
-    packages = dependencies | toolkits.get(toolkit, set())
-    if enaml is None:
-        packages.add('enaml')
+    edm_packages = dependencies | toolkits.get(toolkit, set())
+    pip_packages = []
+    if enaml == 'edm-latest' or enaml is None:
+        edm_packages.add('enaml')
+    elif enaml == 'pypi-latest':
+        pip_packages = ['enaml']
     else:
-        packages.add('enaml=={}'.format(enaml))
+        edm_packages.add('enaml=={}'.format(enaml))
     if environment is None:
         environment = 'traits-enaml-{runtime}-{toolkit}'.format(
             runtime=runtime, toolkit=toolkit)
     return {
         'runtime': runtime,
-        'packages': ' '.join(packages),
+        'edm_packages': ' '.join(edm_packages),
+        'pip_packages': ' '.join(pip_packages),
         'environment': environment}
 
 
@@ -272,11 +282,16 @@ def do_in_tempdir(files=(), capture_files=()):
 
 def execute(commands, parameters):
     for command in commands:
-        print "[EXECUTING]", command.format(**parameters)
+        start = time.clock()
+        arguments = command.format(**parameters)
+        click.echo("[EXECUTING] {}".format(arguments))
         try:
-            subprocess.check_call(shlex.split(command.format(**parameters)))
+            subprocess.check_call(shlex.split(arguments))
         except subprocess.CalledProcessError:
             sys.exit(1)
+        finally:
+            duration = time.clock() - start
+            click.echo("DURATION: {:.2g} s".format(duration))
 
 
 if __name__ == '__main__':

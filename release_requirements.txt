@@ -1,9 +1,0 @@
-ply
-coverage
-enaml
-atom
-kiwisolver
-traits
-enable
-traitsui
-mayavi

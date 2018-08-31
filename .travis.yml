@@ -4,10 +4,12 @@ env:
   global:
     - INSTALL_EDM_VERSION=1.9.2
       PYTHONUNBUFFERED="1"
-marix:
-  - env: ENAML='pypi-latest'
-  - env: ENAML='edm-latest'
-  - env: ENAML='0.8.9'
+  matrix:
+    - ENAML='pypi-latest'
+    - ENAML='edm-latest'
+    - ENAML='0.8.9'
+
+matrix:
   allow_failures:
     - env: ENAML='pypi-latest'
 

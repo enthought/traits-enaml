@@ -292,7 +292,7 @@ def execute(commands, parameters):
             sys.exit(1)
         finally:
             duration = time.clock() - start
-            click.echo("DURATION: {:.2g} s".format(duration))
+            click.echo("[DURATION] {:.2f} s".format(duration))
 
 
 if __name__ == '__main__':

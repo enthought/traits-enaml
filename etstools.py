@@ -88,17 +88,19 @@ from contextlib import contextmanager
 import click
 
 dependencies = {
-    "nose",
     "ply",
-    "coverage",
     "atom",
     "kiwisolver",
     "traits",
     "enable",
     "traitsui",
-    "wheel",
     "pyopengl",
     "mayavi"}
+
+test_dependencies = {
+    "nose",
+    "coverage",
+    "wheel"}
 
 toolkits = {
     'pyside': {'pyside'},
@@ -134,6 +136,7 @@ def install(runtime, toolkit, environment, enaml, source):
     # edm commands to setup the development environment
     commands = [
         "edm environments create {environment} --force --version={runtime}",
+        "edm install -y -e {environment} {test_packages}",
         "edm install -y -e {environment} {edm_packages}",
         "edm run -e {environment} -- pip install ."]
     if source == 'pypi':
@@ -254,6 +257,7 @@ def get_parameters(runtime, toolkit, environment ,enaml='latest', source='edm'):
             runtime=runtime, toolkit=toolkit)
     return {
         'runtime': runtime,
+        'test_packages': ' '.join(test_dependencies),
         'edm_packages': ' '.join(edm_packages),
         'pip_packages': ' '.join(pip_packages),
         'environment': environment}

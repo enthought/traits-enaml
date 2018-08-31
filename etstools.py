@@ -147,10 +147,12 @@ def install(runtime, toolkit, environment, enaml, source):
     click.echo('Done install')
 
 
-@cli.command()
-@click.option('--runtime', default='2.7')
-@click.option('--toolkit', default='pyside')
-@click.option('--environment', default=None)
+@click.option('--runtime', default='2.7', help='The python runtime version')
+@click.option(
+    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    default='pyside', help='The gui toolkit to use')
+@click.option(
+    '--environment', default=None, help='Override the default environment name')
 def test(runtime, toolkit, environment):
     """ Run the test suite in a given environment with the specified toolkit.
 
@@ -173,9 +175,12 @@ def test(runtime, toolkit, environment):
 
 
 @cli.command()
-@click.option('--runtime', default='3.5')
-@click.option('--toolkit', default='pyside')
-@click.option('--environment', default=None)
+@click.option('--runtime', default='2.7', help='The python runtime version')
+@click.option(
+    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    default='pyside', help='The gui toolkit to use')
+@click.option(
+    '--environment', default=None, help='Override the default environment name')
 def cleanup(runtime, toolkit, environment):
     """ Remove a development environment.
 
@@ -190,8 +195,12 @@ def cleanup(runtime, toolkit, environment):
 
 
 @cli.command()
-@click.option('--runtime', default='3.5')
-@click.option('--toolkit', default='pyside')
+@click.option('--runtime', default='2.7', help='The python runtime version')
+@click.option(#
+    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    default='pyside', help='The gui toolkit to use')
+@click.option(
+    '--environment', default=None, help='Override the default environment name')
 def test_clean(runtime, toolkit):
     """ Run tests in a clean environment, cleaning up afterwards
 
@@ -205,9 +214,12 @@ def test_clean(runtime, toolkit):
 
 
 @cli.command()
-@click.option('--runtime', default='3.5')
-@click.option('--toolkit', default='pyside')
-@click.option('--environment', default=None)
+@click.option('--runtime', default='2.7', help='The python runtime version')
+@click.option(
+    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    default='pyside', help='The gui toolkit to use')
+@click.option(
+    '--environment', default=None, help='Override the default environment name')
 def update(runtime, toolkit, environment):
     """ Update/Reinstall package into environment.
 

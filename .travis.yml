@@ -10,7 +10,8 @@ matrix:
   include:
     - env: ENAML='pypi-latest'
     - env: ENAML='edm-latest'
-    - env: ENAML='0.8.9'
+    - env: ENAML='edm-0.9.8'  # The earliest version on EDS for rh6
+    - env: ENAML='pypi-0.8.9' # The earliest supported
   allow_failures:
     - env: ENAML='pypi-latest'
 

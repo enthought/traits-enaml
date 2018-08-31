@@ -231,12 +231,27 @@ def get_parameters(runtime, toolkit, environment ,enaml=None):
     """ Set up parameters dictionary for format() substitution """
     edm_packages = dependencies | toolkits.get(toolkit, set())
     pip_packages = []
-    if enaml == 'edm-latest' or enaml is None:
-        edm_packages.add('enaml')
-    elif enaml == 'pypi-latest':
-        pip_packages = ['enaml']
+    if enaml is not None:
+        try:
+            source, version = enaml.split('-')
+        except ValueError:
+            source = 'edm'
+            version = enaml
     else:
-        edm_packages.add('\"enaml^={}\"'.format(enaml))
+        source = 'edm'
+        version = 'latest'
+
+    if source == 'edm' and version == 'latest':
+        edm_packages.add('enaml')
+    elif source == 'edm':
+        edm_packages.add('enaml^={}'.format(version))
+    elif source == 'pypi' and version == 'latest':
+        pip_packages = ['enaml']
+    elif source:
+        pip_packages.add('enaml=={}'.format(version))
+    else:
+        raise ValueError('Invalid value for the enaml version: {}'.format(enaml))
+
     if environment is None:
         environment = 'traits-enaml-{runtime}-{toolkit}'.format(
             runtime=runtime, toolkit=toolkit)

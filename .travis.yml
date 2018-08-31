@@ -9,7 +9,8 @@ marix:
   - env: ENAML='edm-latest'
   - env: ENAML='0.8.9'
   allow_failures:
-  - env: ENAML='pypi-latest'
+    - env: ENAML='pypi-latest'
+
 addons:
   apt:
     packages:

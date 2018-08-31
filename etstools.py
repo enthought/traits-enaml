@@ -96,6 +96,7 @@ dependencies = {
     "enable",
     "traitsui",
     "wheel",
+    "pyopengl",
     "mayavi"}
 
 toolkits = {

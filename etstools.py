@@ -116,23 +116,29 @@ def cli():
 
 
 @cli.command()
-@click.option('--runtime', default='2.7')
-@click.option('--toolkit', default='pyside')
-@click.option('--environment', default=None)
-@click.option('--enaml', default='edm-latest')
-def install(runtime, toolkit, environment, enaml):
+@click.option('--runtime', default='2.7', help='The python runtime version')
+@click.option(#
+    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    default='pyside', help='The gui toolkit to use')
+@click.option(
+    '--environment', default=None, help='Override the default environment name')
+@click.option('--enaml', default='latest', help='The enaml version to build against')
+@click.option(
+    '--source', type=click.Choice(['edm', 'pypi']),
+    default=edm, help='The package source to use')
+def install(runtime, toolkit, environment, enaml, source):
     """ Install project and dependencies into a clean EDM environment.
 
     """
-    parameters = get_parameters(runtime, toolkit, environment, enaml)
+    parameters = get_parameters(runtime, toolkit, environment, enaml, source)
     # edm commands to setup the development environment
     commands = [
         "edm environments create {environment} --force --version={runtime}",
         "edm install -y -e {environment} {edm_packages}",
         "edm run -e {environment} -- pip install ."]
-    if len(parameters['pip_packages']) > 0:
+    if source == 'pypi':
         commands.insert(
-            2, "edm run -e {environment} -- pip install {pip_packages}")
+            2, "edm run -e {environment} -- pip install -U {pip_packages}")
     click.echo("Creating environment '{environment}'".format(**parameters))
     execute(commands, parameters)
     click.echo('Done install')
@@ -227,26 +233,17 @@ def test_all():
 # ----------------------------------------------------------------------------
 
 
-def get_parameters(runtime, toolkit, environment ,enaml=None):
+def get_parameters(runtime, toolkit, environment ,enaml='latest', source='edm'):
     """ Set up parameters dictionary for format() substitution """
     edm_packages = dependencies | toolkits.get(toolkit, set())
-    pip_packages = []
-    if enaml is not None:
-        try:
-            source, version = enaml.split('-')
-        except ValueError:
-            source = 'edm'
-            version = enaml
-    else:
-        source = 'edm'
-        version = 'latest'
+    pip_packages = dependencies
 
     if source == 'edm' and version == 'latest':
         edm_packages.add('enaml')
     elif source == 'edm':
         edm_packages.add('enaml^={}'.format(version))
     elif source == 'pypi' and version == 'latest':
-        pip_packages = ['enaml']
+        pip_packages.add('enaml')
     elif source:
         pip_packages.add('enaml=={}'.format(version))
     else:

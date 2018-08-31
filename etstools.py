@@ -80,6 +80,7 @@ import shlex
 import subprocess
 import sys
 import time
+from timeit import default_timer
 from shutil import rmtree, copy as copyfile
 from tempfile import mkdtemp
 from contextlib import contextmanager
@@ -235,7 +236,7 @@ def get_parameters(runtime, toolkit, environment ,enaml=None):
     elif enaml == 'pypi-latest':
         pip_packages = ['enaml']
     else:
-        edm_packages.add('enaml^={}'.format(enaml))
+        edm_packages.add('\"enaml^={}\"'.format(enaml))
     if environment is None:
         environment = 'traits-enaml-{runtime}-{toolkit}'.format(
             runtime=runtime, toolkit=toolkit)
@@ -283,7 +284,7 @@ def do_in_tempdir(files=(), capture_files=()):
 
 def execute(commands, parameters):
     for command in commands:
-        start = time.clock()
+        start = default_timer()
         arguments = command.format(**parameters)
         click.echo("[EXECUTING] {}".format(arguments))
         try:
@@ -291,7 +292,7 @@ def execute(commands, parameters):
         except subprocess.CalledProcessError:
             sys.exit(1)
         finally:
-            duration = time.clock() - start
+            duration = default_timer() - start
             click.echo("[DURATION] {:.2f} s".format(duration))
 
 

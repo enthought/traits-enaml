@@ -234,7 +234,7 @@ def get_parameters(runtime, toolkit, environment ,enaml=None):
     elif enaml == 'pypi-latest':
         pip_packages = ['enaml']
     else:
-        edm_packages.add('enaml=={}'.format(enaml))
+        edm_packages.add('enaml^={}'.format(enaml))
     if environment is None:
         environment = 'traits-enaml-{runtime}-{toolkit}'.format(
             runtime=runtime, toolkit=toolkit)

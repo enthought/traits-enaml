@@ -8,11 +8,16 @@ env:
 
 matrix:
   include:
-    - env: ENAML='0.9.8'  SOURCE='edm'  # The earliest version on EDS for rh6
-    - env: ENAML='0.8.9'  SOURCE='pypi' # The earliest supported
-    - env: ENAML='latest' SOURCE='edm'
-    - env: ENAML='latest' SOURCE='pypi'
+    - name: "Minimum requirements in EDS"
+      env: ENAML='0.9.8'  SOURCE='edm'  # The earliest version on EDS for rh6
+    - name: "Minimum requirements"
+      env: ENAML='0.8.9'  SOURCE='pypi' # The earliest supported
+    - name: "Latest requirements in EDS"
+      env: ENAML='latest' SOURCE='edm'
+    - name: "Latest requirements released"
+      env: ENAML='latest' SOURCE='pypi'
     - if: type = cron
+      name: "Cutting edge (unreleased) requirements"
       env: ENAML='latest' SOURCE='github'
   allow_failures:
     - env: ENAML='latest' SOURCE='pypi'
@@ -28,7 +33,6 @@ cache:
   directories:
     - $HOME/.ccache
     - $HOME/.cache/edm
-    - $HOME/.edm/runtimes
 
 before_install:
   - mkdir -p "${HOME}/.cache/download"

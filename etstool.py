@@ -73,7 +73,6 @@ import os
 import shlex
 import subprocess
 import sys
-import time
 from timeit import default_timer
 from shutil import rmtree, copy as copyfile
 from tempfile import mkdtemp
@@ -132,8 +131,11 @@ def cli():
     '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
-    '--environment', default=None, help='Override the default environment name')
-@click.option('--enaml', default='latest', help='The enaml version to build against')
+    '--environment', default=None,
+    help='Override the default environment name')
+@click.option(
+    '--enaml', default='latest',
+    help='The enaml version to build against')
 @click.option(
     '--source', type=click.Choice(['edm', 'pypi', 'github']),
     default='edm', help='The package source to use')
@@ -162,7 +164,8 @@ def install(runtime, toolkit, environment, enaml, source):
     '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
-    '--environment', default=None, help='Override the default environment name')
+    '--environment', default=None,
+    help='Override the default environment name')
 def test(runtime, toolkit, environment):
     """ Run the test suite in a given environment with the specified toolkit.
 
@@ -171,7 +174,7 @@ def test(runtime, toolkit, environment):
     environ = environment_vars.get(toolkit, {}).copy()
     environ['PYTHONUNBUFFERED'] = "1"
     commands = [
-        "edm run -e {environment} -- coverage run -p -m nose.core -v traits_enaml --nologcapture"]
+        "edm run -e {environment} -- coverage run -p -m nose.core -v traits_enaml --nologcapture"]  # noqa
 
     # We run in a tempdir to avoid accidentally picking up wrong traitsui
     # code from a local dir.  We need to ensure a good .coveragerc is in
@@ -190,7 +193,8 @@ def test(runtime, toolkit, environment):
     '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
-    '--environment', default=None, help='Override the default environment name')
+    '--environment', default=None,
+    help='Override the default environment name')
 def cleanup(runtime, toolkit, environment):
     """ Remove a development environment.
 
@@ -210,7 +214,8 @@ def cleanup(runtime, toolkit, environment):
     '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
-    '--environment', default=None, help='Override the default environment name')
+    '--environment', default=None,
+    help='Override the default environment name')
 def test_clean(runtime, toolkit):
     """ Run tests in a clean environment, cleaning up afterwards
 
@@ -229,7 +234,8 @@ def test_clean(runtime, toolkit):
     '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
-    '--environment', default=None, help='Override the default environment name')
+    '--environment', default=None,
+    help='Override the default environment name')
 def update(runtime, toolkit, environment):
     """ Update/Reinstall package into environment.
 
@@ -247,9 +253,11 @@ def update(runtime, toolkit, environment):
 # ----------------------------------------------------------------------------
 
 
-def get_parameters(runtime, toolkit, environment ,version='latest', source='edm'):
+def get_parameters(
+        runtime, toolkit, environment, version='latest', source='edm'):
     """ Set up parameters dictionary for format() substitution """
-    edm_packages = test_dependencies | dependencies | toolkits.get(toolkit, set())
+    edm_packages = (
+        test_dependencies | dependencies | toolkits.get(toolkit, set()))
 
     if source == 'edm':
         pip_packages = set()
@@ -266,7 +274,8 @@ def get_parameters(runtime, toolkit, environment ,version='latest', source='edm'
     elif source == 'github':
         pip_packages = repo_dependencies
     else:
-        raise ValueError('Invalid value for the package source: {}'.format(source))
+        raise ValueError(
+            'Invalid value for the package source: {}'.format(source))
 
     if environment is None:
         environment = 'traits-enaml-{runtime}-{toolkit}'.format(

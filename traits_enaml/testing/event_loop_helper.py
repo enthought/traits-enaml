@@ -15,8 +15,10 @@ import contextlib
 import threading
 
 from enaml.application import deferred_call
-from enaml.qt import QtCore, QtWidgets
+from enaml.qt import QtCore
 from traits.api import HasStrictTraits, Instance
+
+from traits_enaml.compat import QApplication
 
 
 class ConditionTimeoutError(RuntimeError):
@@ -25,7 +27,7 @@ class ConditionTimeoutError(RuntimeError):
 
 class EventLoopHelper(HasStrictTraits):
 
-    qt_app = Instance(QtWidgets.QApplication)
+    qt_app = Instance(QApplication)
 
     def event_loop_with_timeout(self, repeat=2, timeout=10.0):
         """Helper function to send all posted events to the event queue and

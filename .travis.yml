@@ -28,8 +28,7 @@ cache:
   directories:
     - $HOME/.ccache
     - $HOME/.cache/edm
-    - $HOME/.edm/pkgs
-    - $HOME/.edm/pkg
+    - $HOME/.edm/runtimes
 
 before_install:
   - mkdir -p "${HOME}/.cache/download"

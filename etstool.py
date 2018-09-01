@@ -106,7 +106,7 @@ pypi_dependencies = {
     "pyopengl",
     "mayavi"}
 
-# cutting edge dependencies that can be retrieved from source reposistories.
+# cutting edge dependencies that can be retrieved from source repositories.
 repo_dependencies = {
     "git+https://github.com/nucleic/enaml.git#egg=enaml",
     "git+https://github.com/enthought/traits.git#egg=traits",
@@ -176,10 +176,10 @@ def test(runtime, toolkit, environment):
     commands = [
         "edm run -e {environment} -- coverage run -p -m nose.core -v traits_enaml --nologcapture"]  # noqa
 
-    # We run in a tempdir to avoid accidentally picking up wrong traitsui
-    # code from a local dir.  We need to ensure a good .coveragerc is in
-    # that directory, plus coverage has a bug that means a non-local coverage
-    # file doesn't get populated correctly.
+    # We run in a tempdir to avoid accidentally picking up wrong
+    # traits_enaml code from a local dir. We need to ensure a good
+    # .coveragerc is in that directory, plus coverage has a bug that
+    # means a non-local coverage file doesn't get populated correctly.
     click.echo("Running tests in '{environment}'".format(**parameters))
     with do_in_tempdir(files=['.coveragerc'], capture_files=['./.coverage*']):
         os.environ.update(environ)

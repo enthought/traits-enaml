@@ -8,12 +8,16 @@ env:
 
 matrix:
   include:
-    - env: ENAML='pypi-latest'
-    - env: ENAML='edm-latest'
-    - env: ENAML='edm-0.9.8'  # The earliest version on EDS for rh6
-    - env: ENAML='pypi-0.8.9' # The earliest supported
+    - env: ENAML='0.9.8'  SOURCE='edm'  # The earliest version on EDS for rh6
+    - env: ENAML='0.8.9'  SOURCE='pypi' # The earliest supported
+    - env: ENAML='latest' SOURCE='edm'
+    - env: ENAML='latest' SOURCE='pypi'
+    - if: type = cron
+      env: ENAML='latest' SOURCE='github'
   allow_failures:
-    - env: ENAML='pypi-latest'
+    - if: type = pull_request
+      env: ENAML='latest' SOURCE='pypi'
+    - env: ENAML='latest' SOURCE='github'
 
 addons:
   apt:

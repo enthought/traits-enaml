@@ -48,12 +48,6 @@ You can run all three tasks at once with::
 
     python etstool.py test_clean --runtime=... --toolkit=...
 
-which will create, install, run tests, and then clean-up the environment.  And
-you can run tests in all supported runtimes and toolkits (with cleanup)
-using::
-
-    python etstool.py test_all
-
 Currently supported runtime values are ``2.7``, and currently
 supported toolkits are ``pyqt``, ``pyside``.
 
@@ -246,17 +240,6 @@ def update(runtime, toolkit, environment):
     execute(commands, parameters)
     click.echo('Done update')
 
-
-@cli.command()
-def test_all():
-    """ Run test_clean across all supported environment combinations.
-
-    """
-    for runtime, toolkits in supported_combinations.items():
-        for toolkit in toolkits:
-            args = [
-                '--toolkit={}'.format(toolkit), '--runtime={}'.format(runtime)]
-            test_clean(args, standalone_mode=True)
 
 # ----------------------------------------------------------------------------
 # Utility routines

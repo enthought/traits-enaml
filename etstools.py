@@ -160,6 +160,7 @@ def install(runtime, toolkit, environment, enaml, source):
     click.echo('Done install')
 
 
+@cli.command()
 @click.option('--runtime', default='2.7', help='The python runtime version')
 @click.option(
     '--toolkit', type=click.Choice(['pyside', 'pyqt4']),

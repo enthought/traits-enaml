@@ -95,6 +95,7 @@ dependencies = {
 
 # test dependencies that will be installed with edm
 test_dependencies = {
+    "cython",
     "nose",
     "coverage",
     "wheel"}

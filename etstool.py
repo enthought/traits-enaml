@@ -109,6 +109,7 @@ pypi_dependencies = {
 
 # cutting edge dependencies that can be retrieved from source reposistories.
 repo_dependencies = {
+    "git+https://github.com/nucleic/enaml.git#egg=enaml",
     "git+https://github.com/enthought/traits.git#egg=traits",
     "git+https://github.com/enthought/traitsui.git#egg=traitsui",
     "git+https://github.com/mcfletch/pyopengl.git#egg=pyopengl",
@@ -264,8 +265,6 @@ def get_parameters(runtime, toolkit, environment ,version='latest', source='edm'
             pip_packages.add('enaml=={}'.format(version))
     elif source == 'github':
         pip_packages = repo_dependencies
-        pip_packages.add(
-            'git+https://github.com/nucleic/enaml.git#egg=enaml')
     else:
         raise ValueError('Invalid value for the package source: {}'.format(source))
 

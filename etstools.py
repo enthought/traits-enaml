@@ -119,8 +119,8 @@ def cli():
 
 @cli.command()
 @click.option('--runtime', default='2.7', help='The python runtime version')
-@click.option(#
-    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+@click.option(
+    '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
     '--environment', default=None, help='Override the default environment name')
@@ -149,7 +149,7 @@ def install(runtime, toolkit, environment, enaml, source):
 
 @click.option('--runtime', default='2.7', help='The python runtime version')
 @click.option(
-    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
     '--environment', default=None, help='Override the default environment name')
@@ -177,7 +177,7 @@ def test(runtime, toolkit, environment):
 @cli.command()
 @click.option('--runtime', default='2.7', help='The python runtime version')
 @click.option(
-    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
     '--environment', default=None, help='Override the default environment name')
@@ -196,8 +196,8 @@ def cleanup(runtime, toolkit, environment):
 
 @cli.command()
 @click.option('--runtime', default='2.7', help='The python runtime version')
-@click.option(#
-    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+@click.option(
+    '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
     '--environment', default=None, help='Override the default environment name')
@@ -216,7 +216,7 @@ def test_clean(runtime, toolkit):
 @cli.command()
 @click.option('--runtime', default='2.7', help='The python runtime version')
 @click.option(
-    '--toolkit', click.Choice(['pyside', 'pyqt4']),
+    '--toolkit', type=click.Choice(['pyside', 'pyqt4']),
     default='pyside', help='The gui toolkit to use')
 @click.option(
     '--environment', default=None, help='Override the default environment name')

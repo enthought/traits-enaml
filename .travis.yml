@@ -15,8 +15,7 @@ matrix:
     - if: type = cron
       env: ENAML='latest' SOURCE='github'
   allow_failures:
-    - if: type = pull_request
-      env: ENAML='latest' SOURCE='pypi'
+    - env: ENAML='latest' SOURCE='pypi'
     - env: ENAML='latest' SOURCE='github'
 
 addons:

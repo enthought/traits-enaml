@@ -80,6 +80,7 @@ from contextlib import contextmanager
 
 import click
 
+
 # core dependencies that will be installed with edm
 dependencies = {
     "enable",
@@ -242,7 +243,7 @@ def update(runtime, toolkit, environment):
     """
     parameters = get_parameters(runtime, toolkit, environment)
     commands = [
-        "edm run -e {environment} -- python setup.py install"]
+        "edm run -e {environment} -- pip install ."]
     click.echo("Re-installing in  '{environment}'".format(**parameters))
     execute(commands, parameters)
     click.echo('Done update')

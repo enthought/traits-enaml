@@ -87,25 +87,38 @@ from contextlib import contextmanager
 
 import click
 
+# core dependencies that will be installed with edm
 dependencies = {
-    "ply",
-    "atom",
-    "kiwisolver",
-    "traits",
     "enable",
-    "traitsui",
     "pyopengl",
     "mayavi"}
 
+# test dependencies that will be installed with edm
 test_dependencies = {
     "nose",
     "coverage",
     "wheel"}
 
+# toolkit dependencies that will be installed with edm
 toolkits = {
     'pyside': {'pyside'},
     'pyqt': {'pyqt<4.12'},  # FIXME: build of 4.12-1 appears to be bad
 }
+
+# latest dependencies that can be retrieved from pypi.
+pypi_dependencies = {
+    "traits",
+    "traitsui",
+    "pyopengl",
+    "mayavi"}
+
+# cutting edge dependencies that can be retrieved from source reposistories.
+repo_dependencies = {
+    "git+https://github.com/enthought/traits.git#egg=traits",
+    "git+https://github.com/enthought/traitsui.git#egg=traitsui",
+    "git+https://github.com/mcfletch/pyopengl.git#egg=pyopengl",
+    "git+https://github.com/nucleic/atom.git#egg=atom",
+    "git+https://github.com/enthought/mayavi.git#egg=mayavi"}
 
 environment_vars = {
     'pyside': {'ETS_TOOLKIT': 'qt4', 'QT_API': 'pyside'},
@@ -126,8 +139,8 @@ def cli():
     '--environment', default=None, help='Override the default environment name')
 @click.option('--enaml', default='latest', help='The enaml version to build against')
 @click.option(
-    '--source', type=click.Choice(['edm', 'pypi']),
-    default=edm, help='The package source to use')
+    '--source', type=click.Choice(['edm', 'pypi', 'github']),
+    default='edm', help='The package source to use')
 def install(runtime, toolkit, environment, enaml, source):
     """ Install project and dependencies into a clean EDM environment.
 
@@ -136,12 +149,12 @@ def install(runtime, toolkit, environment, enaml, source):
     # edm commands to setup the development environment
     commands = [
         "edm environments create {environment} --force --version={runtime}",
-        "edm install -y -e {environment} {test_packages}",
-        "edm install -y -e {environment} {edm_packages}",
+        "edm install -y -e {environment} {test_packages} {edm_packages}",
         "edm run -e {environment} -- pip install ."]
-    if source == 'pypi':
+    if source in ('pypi', 'github'):
         commands.insert(
             2, "edm run -e {environment} -- pip install -U {pip_packages}")
+
     click.echo("Creating environment '{environment}'".format(**parameters))
     execute(commands, parameters)
     click.echo('Done install')
@@ -248,21 +261,28 @@ def test_all():
 # ----------------------------------------------------------------------------
 
 
-def get_parameters(runtime, toolkit, environment ,enaml='latest', source='edm'):
+def get_parameters(runtime, toolkit, environment ,version='latest', source='edm'):
     """ Set up parameters dictionary for format() substitution """
-    edm_packages = dependencies | toolkits.get(toolkit, set())
-    pip_packages = dependencies
+    edm_packages = test_dependencies | dependencies | toolkits.get(toolkit, set())
 
-    if source == 'edm' and version == 'latest':
-        edm_packages.add('enaml')
-    elif source == 'edm':
-        edm_packages.add('enaml^={}'.format(version))
-    elif source == 'pypi' and version == 'latest':
-        pip_packages.add('enaml')
-    elif source:
-        pip_packages.add('enaml=={}'.format(version))
+    if source == 'edm':
+        pip_packages = set()
+        if version == 'latest':
+            edm_packages.add('enaml')
+        else:
+            edm_packages.add('enaml^={}'.format(version))
+    elif source == 'pypi':
+        pip_packages = pypi_dependencies
+        if version == 'latest':
+            pip_packages.add('enaml')
+        else:
+            pip_packages.add('enaml=={}'.format(version))
+    elif source == 'github':
+        pip_packages = repo_dependencies
+        pip_packages.add(
+            'git+https://github.com/nucleic/enaml.git#egg=enaml')
     else:
-        raise ValueError('Invalid value for the enaml version: {}'.format(enaml))
+        raise ValueError('Invalid value for the package source: {}'.format(source))
 
     if environment is None:
         environment = 'traits-enaml-{runtime}-{toolkit}'.format(

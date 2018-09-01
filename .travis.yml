@@ -1,24 +1,54 @@
-language: python
-python:
-  - "2.7"
+language: generic
+sudo: false
 env:
-  - REQUIREMENTS=dev_requirements.txt
-  - REQUIREMENTS=release_requirements.txt
-  - REQUIREMENTS=enaml_0_8_9_requirements.txt
-virtualenv:
-  system_site_packages: true
+  global:
+    - INSTALL_EDM_VERSION=1.9.2
+      PYTHONUNBUFFERED="1"
+
+
+matrix:
+  include:
+    - name: "Minimum requirements in EDS"
+      env: ENAML='0.9.8'  SOURCE='edm'  # The earliest version on EDS for rh6
+    - name: "Minimum requirements"
+      env: ENAML='0.8.9'  SOURCE='pypi' # The earliest supported
+    - name: "Latest requirements in EDS"
+      env: ENAML='latest' SOURCE='edm'
+    - name: "Latest requirements released"
+      env: ENAML='latest' SOURCE='pypi'
+    - if: type = cron
+      name: "Cutting edge (unreleased) requirements"
+      env: ENAML='latest' SOURCE='github'
+  allow_failures:
+    - env: ENAML='latest' SOURCE='pypi'
+    - env: ENAML='latest' SOURCE='github'
+
+addons:
+  apt:
+    packages:
+    - swig
+    - ccache
+cache:
+  pip: true
+  directories:
+    - $HOME/.ccache
+    - $HOME/.cache/edm
+
 before_install:
-  - sudo add-apt-repository ppa:cython-dev/master-ppa -y
-  - sudo apt-get update -qq
-  - sudo apt-get install cython python-vtk python-qt4 python-qt4-dev python-sip python-qt4-gl libqt4-scripttools swig
+  - mkdir -p "${HOME}/.cache/download"
+  - export PATH="/usr/lib/ccache/usr/local/bin:${HOME}/edm/bin:${PATH}"
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+  - ccache -s
 install:
-  - pip install traits # see issue https://github.com/enthought/enable/issues/197
-  - pip install -r $REQUIREMENTS
-  - pip install codecov
-  - python setup.py develop
+  - ./install-edm-linux.sh
+  - edm install -y click coverage
+  - edm run -- python -m etstool install --enaml=${ENAML} --source=${SOURCE} --toolkit=pyside
+  - edm run -- python -m etstool install --enaml=${ENAML} --source=${SOURCE} --toolkit=pyqt4
 script:
-  - coverage run -m unittest2 discover -v
+  - edm run -- python -m etstool test --toolkit=pyside
+  - edm run -- python -m etstool test --toolkit=pyqt4
 after_success:
-  codecov
+  - edm run -- coverage combine
+  - edm run -- pip install codecov
+  - edm run -- codecov

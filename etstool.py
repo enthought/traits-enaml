@@ -180,7 +180,6 @@ def test(runtime, toolkit, environment):
     with do_in_tempdir(files=['.coveragerc'], capture_files=['./.coverage*']):
         os.environ.update(environ)
         execute(commands, parameters)
-    execute(["edm run -e {environment} -- coverage report"], parameters)
     click.echo('Done test')
 
 

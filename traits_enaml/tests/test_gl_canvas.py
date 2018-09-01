@@ -87,8 +87,6 @@ enamldef MainView(MainWindow): main:
 def _qimage_to_ndarray(img):
     width, height = img.width(), img.height()
     bits = img.bits()
-
-    if not hasattr(img, 'constBits'):  # PyQt
-        bits.setsize(img.byteCount())
+    bits.setsize(img.byteCount())
 
     return np.array(bits).reshape(height, width, 4)

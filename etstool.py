@@ -153,7 +153,8 @@ def install(runtime, toolkit, environment, enaml, source):
     commands = [
         "edm environments create {environment} --force --version={runtime}",
         "edm install -y -e {environment} {test_packages} {edm_packages}",
-        "edm run -e {environment} -- pip install ."]
+        "edm run -e {environment} -- pip install ."
+    ]
     if len(parameters['pip_packages']) > 0:
         commands.insert(
             2, "edm run -e {environment} -- pip install -U {pip_packages}")
@@ -179,7 +180,8 @@ def test(runtime, toolkit, environment):
     environ = environment_vars.get(toolkit, {}).copy()
     environ['PYTHONUNBUFFERED'] = "1"
     commands = [
-        "edm run -e {environment} -- coverage run -p -m nose.core -v traits_enaml --nologcapture"]  # noqa
+        "edm run -e {environment} -- coverage run -p -m nose.core -v traits_enaml --nologcapture"  # noqa
+    ]
 
     # We run in a tempdir to avoid accidentally picking up wrong
     # traits_enaml code from a local dir. We need to ensure a good
@@ -207,7 +209,8 @@ def cleanup(runtime, toolkit, environment):
     parameters = get_parameters(runtime, toolkit, environment)
     commands = [
         "edm run -e {environment} -- python setup.py clean",
-        "edm environments remove {environment} --purge -y"]
+        "edm environments remove {environment} --purge -y"
+    ]
     click.echo("Cleaning up environment '{environment}'".format(**parameters))
     execute(commands, parameters)
     click.echo('Done cleanup')
@@ -247,7 +250,8 @@ def update(runtime, toolkit, environment):
     """
     parameters = get_parameters(runtime, toolkit, environment)
     commands = [
-        "edm run -e {environment} -- pip install ."]
+        "edm run -e {environment} -- pip install ."
+    ]
     click.echo("Re-installing in  '{environment}'".format(**parameters))
     execute(commands, parameters)
     click.echo('Done update')

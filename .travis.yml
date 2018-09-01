@@ -28,6 +28,7 @@ cache:
   directories:
     - $HOME/.ccache
     - $HOME/.cache/edm
+    - $HOME/.edm/pkgs
     - $HOME/.edm/pkg
 
 before_install:

@@ -145,12 +145,16 @@ def install(runtime, toolkit, environment, enaml, source):
 
     """
     parameters = get_parameters(runtime, toolkit, environment, enaml, source)
+    if source == 'edm':
+        # We should not have dependencies installed by pip when
+        # source is edm.
+        assert len(parameters['pip_packages']) == 0
     # edm commands to setup the development environment
     commands = [
         "edm environments create {environment} --force --version={runtime}",
         "edm install -y -e {environment} {test_packages} {edm_packages}",
         "edm run -e {environment} -- pip install ."]
-    if source in ('pypi', 'github'):
+    if len(parameters['pip_packages']) > 0:
         commands.insert(
             2, "edm run -e {environment} -- pip install -U {pip_packages}")
 

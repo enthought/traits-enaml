@@ -39,7 +39,7 @@ before_install:
 install:
   - ./install-edm-linux.sh
   - edm install -y click
-  - edm run -- python -m etstools install --enaml=${ENAML}
+  - edm run -- python -m etstools install --enaml=${ENAML} --source=${SOURCE}
 script:
   - edm run -- python -m etstools test
 after_success:

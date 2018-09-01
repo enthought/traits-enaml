@@ -97,7 +97,7 @@ test_dependencies = {
 # toolkit dependencies that will be installed with edm
 toolkits = {
     'pyside': {'pyside'},
-    'pyqt': {'pyqt<4.12'},  # FIXME: build of 4.12-1 appears to be bad
+    'pyqt4': {'pyqt<4.12'},  # FIXME: build of 4.12-1 appears to be bad
 }
 
 # latest dependencies that can be retrieved from pypi.

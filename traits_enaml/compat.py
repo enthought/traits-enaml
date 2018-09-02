@@ -14,9 +14,14 @@
 """ Compatibility module to support a wider range of enaml versions.
 
 """
-__all__ = ['QApplication']
+__all__ = ['QApplication', 'QGLWidget']
 
 try:
     from enaml.qt.QtGui import QApplication
 except ImportError:
     from enaml.qt.QtWidgets import QApplication
+
+try:
+    from enaml.qt.QtOpenGL import QGLWidget
+except:
+    from qtpy.QtOpenGL import QGLWidget

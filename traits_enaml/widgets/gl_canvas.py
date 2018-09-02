@@ -20,7 +20,7 @@ if enaml_version < (0, 9, 6):
 from enaml.widgets.api import RawWidget
 from enaml.core.declarative import d_func
 
-from enaml.qt.QtOpenGL import QGLWidget
+from traits_enaml.compat import QGLWidget
 
 
 class _GLWidget(QGLWidget):

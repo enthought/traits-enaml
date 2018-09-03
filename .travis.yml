@@ -14,6 +14,8 @@ matrix:
       env: ENAML='0.8.9'  SOURCE='pypi' # The earliest supported
     - name: "Latest requirements in EDS"
       env: ENAML='latest' SOURCE='edm'
+    - name: "Latest requirements supported"
+      env: ENAML='0.10.2' SOURCE='pypi'
     - name: "Latest requirements released"
       env: ENAML='latest' SOURCE='pypi'
     - if: type = cron

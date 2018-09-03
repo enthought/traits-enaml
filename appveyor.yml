@@ -1,0 +1,40 @@
+build: false
+shallow_clone: true
+skip_branch_with_pr: true
+environment:
+
+  global:
+    PYTHONUNBUFFERED: "1"
+    INSTALL_EDM_VERSION: "1.9.2"
+
+  matrix:
+
+    - ENAML: '0.8.9'
+      SOURCE: 'edm'
+    - ENAML: '0.10.2'
+      SOURCE: 'pypi'
+    - ENAML: 'latest'
+      SOURCE: 'pypi'
+
+matrix:
+  fast_finish: True
+
+branches:
+  only:
+    - master
+
+cache:
+  - C:\Users\appveyor\.cache -> appveyor-cache.txt
+  - C:\Users\appveyor\AppData\Local\pip\Cache -> appveyor-cache.txt
+
+init:
+  - ps: $Env:path = "C:/Enthought/edm;" + $Env:path
+  - ps: md C:/Users/appveyor/.cache -Force
+  - ps: $WarningPreference = 'SilentlyContinue'
+  - ps: $ErrorActionPreference = "SilentlyContinue"
+install:
+  - install-edm-windows.cmd
+  - edm install -y wheel click coverage
+script:
+  - edm run -- python -m etstool install --enaml=%ENAML% --source=%SOURCE% --toolkit=pyqt4
+  - edm run -- python -m etstool install --enaml=%ENAML% --source=%SOURCE% --toolkit=pyside

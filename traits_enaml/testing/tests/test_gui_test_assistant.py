@@ -104,7 +104,7 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 
     def test_find_qt_widget(self):
         app = self.qt_app
-        self.assertIsNone(self.find_qt_widget(app, QtGui.QDockWidget))
+        self.assertIsNone(self.find_qt_widget(app, QtGui.QBitmap))
         self.assertIsInstance(
             self.find_qt_widget(app, QtGui.QSessionManager),
             QtGui.QSessionManager)

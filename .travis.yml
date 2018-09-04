@@ -8,18 +8,18 @@ env:
 
 matrix:
   include:
-    - name: "Minimum requirements in EDS"
+    - name: "Minimum enaml in EDS"
       env: ENAML='0.9.8'  SOURCE='edm'  # The earliest version on EDS for rh6
-    - name: "Minimum requirements"
+    - name: "Minimum enaml supported"
       env: ENAML='0.8.9'  SOURCE='pypi' # The earliest supported
-    - name: "Latest requirements in EDS"
+    - name: "Latest enaml in EDS"
       env: ENAML='latest' SOURCE='edm'
-    - name: "Latest requirements supported"
+    - name: "Max enaml supported"
       env: ENAML='0.10.2' SOURCE='pypi'
-    - name: "Latest requirements released"
+    - name: "Latest enaml released on pypi"
       env: ENAML='latest' SOURCE='pypi'
     - if: type = cron
-      name: "Cutting edge (unreleased) requirements"
+      name: "Cutting edge (unreleased) enaml"
       env: ENAML='latest' SOURCE='github'
   allow_failures:
     - env: ENAML='latest' SOURCE='pypi'

@@ -18,9 +18,10 @@ from atom.api import Typed, set_default, observe
 from enaml.core.declarative import d_
 from enaml.widgets.api import RawWidget
 from enaml.qt.QtCore import QAbstractTableModel, QModelIndex, Qt
+from enaml.qt.QtGui import QFontMetrics
 
 from traits_enaml.compat import (
-    QTableView, QHeaderView, QAbstractItemView, QFontMetrics)
+    QTableView, QHeaderView, QAbstractItemView)
 from traits_enaml.utils import get_unicode_string, format_value
 
 

@@ -19,16 +19,15 @@ __all__ = [
     'QGLWidget',
     'QTableView',
     'QHeaderView',
-    'QAbstractItemView',
-    'QFontMetrics']
+    'QAbstractItemView']
 
 
 try:
     from enaml.qt.QtGui import (
-        QApplication, QTableView, QHeaderView, QAbstractItemView, QFontMetrics)
+        QApplication, QTableView, QHeaderView, QAbstractItemView)
 except ImportError:
     from enaml.qt.QtWidgets import (
-        QTableView, QHeaderView, QAbstractItemView, QFontMetrics)
+        QApplication, QTableView, QHeaderView, QAbstractItemView)
 try:
     from enaml.qt.QtOpenGL import QGLWidget
 except ImportError:

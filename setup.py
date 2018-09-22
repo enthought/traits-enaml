@@ -32,7 +32,7 @@ setup(
         'pyqt': ['pyqt<4.12'],
         'mayavi': ['mayavi'],
         'pandas': ['pandas'],
-        'pyopengl': ['pyopengl']},
+        'opengl': ['pyopengl']},
     classifiers=[c.strip() for c in """\
         Development Status :: 5 - Production/Stable
         Intended Audience :: Developers

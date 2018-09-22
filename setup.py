@@ -24,8 +24,9 @@ setup(
     description='Utilities for interoperation between Traits and Enaml',
     long_description=open('README.rst').read(),
     packages=find_packages(),
-    package_data={'traits_enaml.testing.tests': ['*.enaml'],
-                  'traits_enaml.widgets': ['*.enaml']},
+    package_data={
+        'traits_enaml.testing.tests': ['*.enaml'],
+        'traits_enaml.widgets': ['*.enaml']},
     install_requires=['enaml>=0.8.9', 'traitsui>=5.0.0', 'traits>=4.5.0'],
     extras_require={
         'pyside': ['pyside'],

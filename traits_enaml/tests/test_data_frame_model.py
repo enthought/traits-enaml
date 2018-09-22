@@ -19,6 +19,7 @@ import numpy
 from enaml.qt.QtCore import Qt
 
 from traits_enaml.widgets.data_frame_table import QDataFrameModel
+from traits_enaml.utils import format_value
 
 
 def create_data_frame(nrows, ncols):
@@ -178,10 +179,41 @@ class TestQDataFrameModel(unittest.TestCase):
         index = model.index(1, 1)
         self.assertEqual(model.rowCount(index), 0)
 
-    def test_sort_ascending(self):
+    def test_sort(self):
         # given
         model = self.q_model
         data_frame = self.data_frame
+
+        # when ascending
+        model.sort(1)
+
+        # then
+        expected = [
+            format_value(value)
+            for value in sorted(data_frame[data_frame.columns[1]])]
+        values = [model.data(model.index(i, 1)) for i in xrange(len(expected))]
+        self.assertEqual(values, expected)
+
+        # when descending
+        model.sort(1, order=Qt.DescendingOrder)
+
+        # then
+        expected = [
+            format_value(value)
+            for value in sorted(
+                    data_frame[data_frame.columns[1]], reverse=True)]
+        values = [model.data(model.index(i, 1)) for i in xrange(len(expected))]
+        self.assertEqual(values, expected)
+
+        # when unsort
+        model.sort(-1, order=Qt.DescendingOrder)
+
+        # then
+        expected = [
+            format_value(value)
+            for value in data_frame[data_frame.columns[1]]]
+        values = [model.data(model.index(i, 1)) for i in xrange(len(expected))]
+        self.assertEqual(values, expected)
 
 
 if __name__ == "__main__":

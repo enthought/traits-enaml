@@ -26,7 +26,7 @@ setup(
     packages=find_packages(),
     package_data={'traits_enaml.testing.tests': ['*.enaml'],
                   'traits_enaml.widgets': ['*.enaml']},
-    requires=['enaml>=0.8.9', 'traitsui>=5.0.0', 'traits>=4.5.0'],
+    install_requires=['enaml>=0.8.9', 'traitsui>=5.0.0', 'traits>=4.5.0'],
     extras_require={
         'pyside': ['pyside'],
         'pyqt': ['pyqt<4.12'],

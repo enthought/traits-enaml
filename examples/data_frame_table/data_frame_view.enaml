@@ -1,0 +1,21 @@
+#
+# (C) Copyright 2014 Enthought, Inc., Austin, TX
+# All right reserved.
+#
+# This file is open source software distributed according to the terms in
+# LICENSE.txt
+#
+
+""" This example fails on wx. It must be run with ETS_TOOLKIT=qt4. """
+
+from enaml.widgets.api import MainWindow, Container
+
+from traits_enaml.widgets.data_frame_table import DataFrameTable
+
+
+enamldef Main(MainWindow):
+    attr df
+
+    Container:
+        DataFrameTable:
+            data_frame = df

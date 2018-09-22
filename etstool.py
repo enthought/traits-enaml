@@ -85,7 +85,8 @@ import click
 dependencies = {
     "enable",
     "pyopengl",
-    "mayavi"}
+    "mayavi",
+    "pandas"}
 
 # test dependencies that will be installed with edm
 test_dependencies = {
@@ -105,7 +106,8 @@ pypi_dependencies = {
     "traits",
     "traitsui",
     "pyopengl",
-    "mayavi"}
+    "mayavi",
+    "pandas"}
 
 # cutting edge dependencies that can be retrieved from source repositories.
 repo_dependencies = {
@@ -114,7 +116,8 @@ repo_dependencies = {
     "git+https://github.com/enthought/traitsui.git#egg=traitsui",
     "git+https://github.com/mcfletch/pyopengl.git#egg=pyopengl",
     "git+https://github.com/nucleic/atom.git#egg=atom",
-    "git+https://github.com/enthought/mayavi.git#egg=mayavi"}
+    "git+https://github.com/enthought/mayavi.git#egg=mayavi",
+    "git+https://github.com/pandas-dev/pandas.git#egg=pandas"}
 
 environment_vars = {
     'pyside': {'ETS_TOOLKIT': 'qt4', 'QT_API': 'pyside'},

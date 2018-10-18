@@ -15,6 +15,8 @@
 Unit tests for the LoopbackGuard class and LoopbackContext context manager.
 
 """
+from builtins import range
+from builtins import object
 import unittest
 
 from traits.api import HasTraits, Instance, List, on_trait_change
@@ -34,14 +36,14 @@ class TestLoopbackGuard(unittest.TestCase):
         guard = LoopbackGuard()
 
         # Acquire the guard for the items in to_add.
-        for obj, times in to_add.items():
+        for obj, times in list(to_add.items()):
             for _ in range(times):
                 guard.acquire([obj])
 
         self.assertDictEqual(guard.locked_items, to_add)
 
         # Release the guard.
-        for obj, times in to_add.items():
+        for obj, times in list(to_add.items()):
             for _ in range(times):
                 guard.release([obj])
 
@@ -60,7 +62,7 @@ class TestLoopbackContext(unittest.TestCase):
         # the items are properly released when the context is exited.
 
         with cm:
-            self.assertItemsEqual(guard.locked_items, items)
+            self.assertEqual(sorted(guard.locked_items), sorted(items))
             for item in items:
                 self.assertIn(item, guard)
 

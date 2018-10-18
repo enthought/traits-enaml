@@ -11,6 +11,8 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
+from __future__ import print_function
+
 import contextlib
 import threading
 
@@ -39,12 +41,12 @@ def print_qt_widget_tree(widget, level=0):
     """
     level = level + 4
     if level == 0:
-        print
-    print ' '*level, widget
+        print()
+    print(' '*level, widget)
     for child in widget.children():
         print_qt_widget_tree(child, level=level)
     if level == 0:
-        print
+        print()
 
 
 class GuiTestAssistant(UnittestTools):
@@ -211,14 +213,14 @@ class GuiTestAssistant(UnittestTools):
         for trait in traits:
             handlers[trait] = lambda: set_event(trait)
 
-        for trait, handler in handlers.iteritems():
+        for trait, handler in handlers.items():
             traits_object.on_trait_change(handler, trait)
         try:
             with self.event_loop_until_condition(
                     condition=condition.is_set, timeout=timeout):
                 yield
         finally:
-            for trait, handler in handlers.iteritems():
+            for trait, handler in handlers.items():
                 traits_object.on_trait_change(handler, trait, remove=True)
 
     def find_qt_widget(self, start, type_, test=None):

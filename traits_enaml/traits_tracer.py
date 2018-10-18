@@ -11,6 +11,8 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
+import six
+
 from traits.api import HasTraits, Disallow, TraitListObject, TraitDictObject
 
 from enaml.core.standard_tracer import StandardTracer, SubscriptionObserver
@@ -105,7 +107,7 @@ class TraitsTracer(StandardTracer):
         nkwargs = (argspec >> 8) & 0xFF
         if (func is getattr and (nargs == 2 or nargs == 3) and nkwargs == 0):
             obj, attr = argtuple[0], argtuple[1]
-            if isinstance(obj, HasTraits) and isinstance(attr, basestring):
+            if isinstance(obj, HasTraits) and isinstance(attr, six.string_types):
                 self._trace_trait(obj, attr)
 
     def binary_subscr(self, obj, idx):

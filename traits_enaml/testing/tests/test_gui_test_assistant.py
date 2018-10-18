@@ -1,5 +1,7 @@
 # Copyright (c) 2012 by Enthought Inc.
-import StringIO
+from future import standard_library
+standard_library.install_aliases()
+import io
 import sys
 import time
 import unittest
@@ -127,7 +129,7 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
 
     def test_print_qt_widget_tree(self):
-        stream = StringIO.StringIO()
+        stream = io.StringIO()
         old_stdout = sys.stdout
         try:
             sys.stdout = stream
@@ -135,6 +137,6 @@ class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
         finally:
             sys.stdout = old_stdout
             stream.close()
-        lines = ''.join(stream.buflist).splitlines()
+        lines = stream.readlines()
         # basic check we should have four items in the hierarchy.
         self.assertEqual(len(lines), 4)

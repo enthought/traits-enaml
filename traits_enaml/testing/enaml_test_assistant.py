@@ -11,6 +11,9 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
+from __future__ import print_function
+
+import six
 import types
 
 from enaml.core.parser import parse
@@ -37,12 +40,12 @@ def print_enaml_widget_tree(widget, level=0):
     """
     level = level + 4
     if level == 0:
-        print
-    print ' '*level, widget
+        print()
+    print(' '*level, widget)
     for child in widget.children:
         print_enaml_widget_tree(child, level=level)
     if level == 0:
-        print
+        print()
 
 
 class EnamlTestAssistant(GuiTestAssistant, AtomTestAssistant):
@@ -115,7 +118,7 @@ class EnamlTestAssistant(GuiTestAssistant, AtomTestAssistant):
         ns = enaml_module.__dict__
 
         with traits_enaml.imports():
-            exec code in ns
+            six.exec_(code, ns, ns)
         View = ns['MainView']
 
         enaml_view = View(**kwargs)

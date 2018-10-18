@@ -14,6 +14,7 @@
 """ An amalgamation of utilities used throughout the Traits Enaml framework.
 
 """
+from builtins import object
 from collections import defaultdict
 
 

@@ -11,6 +11,8 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
+import six
+
 from enaml.core.dynamicscope import DynamicScope
 from enaml.core.expression_engine import HandlerPair, ReadHandler
 from enaml.core.funchelper import call_func
@@ -31,7 +33,7 @@ class TraitsTracedReadHandler(ReadHandler, HandlerMixin):
 
         """
         func = self.func
-        f_globals = func.func_globals
+        f_globals = func.__globals__
         f_builtins = f_globals['__builtins__']
         f_locals = self.get_locals(owner)
         tr = TraitsTracer(owner, name)

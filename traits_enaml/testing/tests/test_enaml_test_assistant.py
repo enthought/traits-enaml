@@ -1,5 +1,7 @@
 # Copyright (c) 2013 by Enthought Inc.
-import StringIO
+from future import standard_library
+standard_library.install_aliases()
+import io
 import sys
 import unittest
 
@@ -72,7 +74,7 @@ class TestEnamlTestHelperFunctions(EnamlTestAssistant, unittest.TestCase):
 
     def test_print_enaml_widget_tree(self):
         view, _ = self.parse_and_create(ENAML_SOURCE)
-        stream = StringIO.StringIO()
+        stream = io.StringIO()
         old_stdout = sys.stdout
         try:
             sys.stdout = stream

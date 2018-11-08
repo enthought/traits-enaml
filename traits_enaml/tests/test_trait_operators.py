@@ -221,7 +221,7 @@ enamldef MainView(MainWindow):
         # check on replace
         with self.assertAtomChanges(enaml_widget, 'text', count=1):
             self.model.set_values = {'1'}
-            self.assertEquals(enaml_widget.text, "TraitSetObject(['1'])")
+            self.assertEquals(enaml_widget.text, "TraitSetObject({'1'})")
 
         # check on append
         with self.assertAtomChanges(enaml_widget, 'text', count=1):

@@ -138,6 +138,7 @@ class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
 
     def test_print_qt_widget_tree(self):
         print_qt_widget_tree(self.qt_app)
+        self.stream.seek(0)
         lines = self.stream.readlines()
         # basic check we should have four items in the hierarchy.
         self.assertEqual(len(lines), 4)

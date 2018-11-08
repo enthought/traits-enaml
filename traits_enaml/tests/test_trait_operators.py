@@ -11,7 +11,6 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
-from builtins import str
 import unittest
 
 from traits.api import (

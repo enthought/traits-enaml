@@ -1,6 +1,4 @@
 # Copyright (c) 2012 by Enthought Inc.
-from future import standard_library
-standard_library.install_aliases()
 import io
 import sys
 import time

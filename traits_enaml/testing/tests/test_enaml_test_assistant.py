@@ -1,6 +1,4 @@
 # Copyright (c) 2013 by Enthought Inc.
-from future import standard_library
-standard_library.install_aliases()
 import io
 import sys
 import unittest

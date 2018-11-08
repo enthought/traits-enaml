@@ -13,7 +13,7 @@ matrix:
     - name: "Minimum requirements"
       env: ENAML='0.8.9'  SOURCE='pypi' RUNTIME='2.7' # The earliest supported
     - name: "Latest requirements in EDS"
-      env: ENAML='latest' SOURCE='edm'i RUNTIME='2.7'
+      env: ENAML='latest' SOURCE='edm' RUNTIME='2.7'
     - name: "Latest requirements released"
       env: ENAML='latest' SOURCE='pypi' RUNTIME='2.7'
     - name: "Latest requirements released on python 3.6"

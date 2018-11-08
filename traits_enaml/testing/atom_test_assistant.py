@@ -11,7 +11,6 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
-from builtins import object
 from collections import namedtuple
 
 from traits.testing.unittest_tools import reverse_assertion

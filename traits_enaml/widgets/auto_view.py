@@ -6,7 +6,6 @@
 # LICENSE.txt
 #
 
-from builtins import zip
 from collections import namedtuple
 from datetime import date, time
 from string import capwords
@@ -62,7 +61,7 @@ def _get_editor(model, trait_desc):
         return trait_desc.editor(**kwargs)
     else:
         trait_type = trait_desc.trait_type
-        for key, factory in list(TRAIT2ENAML.items()):
+        for key, factory in TRAIT2ENAML.items():
             if isinstance(trait_type, key):
                 break
         else:

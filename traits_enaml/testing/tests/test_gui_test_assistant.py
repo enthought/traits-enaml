@@ -1,4 +1,5 @@
 # Copyright (c) 2012 by Enthought Inc.
+import contextlib
 import io
 import sys
 import time
@@ -128,10 +129,9 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
     def test_print_qt_widget_tree(self):
         stream = io.StringIO()
-        with redirect_stdout(stream):
+        with redirect_stdout(stream), contextlib.closing(stream):
             print_qt_widget_tree(self.qt_app)
             stream.seek(0)
             lines = stream.readlines()
             # basic check we should have four items in the hierarchy.
             self.assertEqual(len(lines), 4)
-        stream.close()

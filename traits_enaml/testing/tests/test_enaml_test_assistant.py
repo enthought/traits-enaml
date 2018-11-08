@@ -83,10 +83,9 @@ class TestEnamlTestHelperFunctions(EnamlTestAssistant, unittest.TestCase):
     def test_print_enaml_widget_tree(self):
         view, _ = self.parse_and_create(ENAML_SOURCE)
         stream = io.StringIO()
-        with redirect_stdout(stream):
+        with redirect_stdout(stream), contextlib.closing(stream):
             print_enaml_widget_tree(view)
             stream.seek(0)
             lines = stream.readlines()
             # basic check we should have four items in the hierarchy.
             self.assertEqual(len(lines), 4)
-        stream.close()

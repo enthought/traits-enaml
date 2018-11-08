@@ -11,6 +11,7 @@ from traits.api import Float, HasTraits, Int, List, on_trait_change
 from traits.testing.unittest_tools import reverse_assertion
 from traits_enaml.testing.gui_test_assistant import (
     GuiTestAssistant, print_qt_widget_tree)
+from traits_enaml.testing.tests.test_enaml_test_assistant import redirect_stdout
 
 
 class MyClass(HasTraits):
@@ -125,20 +126,12 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 
 
 class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
-    def setUp(self):
-        super(TestGuiTestHelperFunctions, self).setUp()
-        self.stream = io.StringIO()
-        self.old_stdout = sys.stdout
-        sys.stdout = self.stream
-
-    def tearDown(self):
-        sys.stdout = self.old_stdout
-        self.stream.close()
-        super(TestGuiTestHelperFunctions, self).tearDown()
-
     def test_print_qt_widget_tree(self):
-        print_qt_widget_tree(self.qt_app)
-        self.stream.seek(0)
-        lines = self.stream.readlines()
-        # basic check we should have four items in the hierarchy.
-        self.assertEqual(len(lines), 4)
+        stream = io.StringIO()
+        with redirect_stdout(stream):
+            print_qt_widget_tree(self.qt_app)
+            stream.seek(0)
+            lines = stream.readlines()
+            # basic check we should have four items in the hierarchy.
+            self.assertEqual(len(lines), 4)
+        stream.close()

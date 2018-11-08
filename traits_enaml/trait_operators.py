@@ -11,8 +11,6 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
-import six
-
 from enaml.core.dynamicscope import DynamicScope
 from enaml.core.expression_engine import HandlerPair, ReadHandler
 from enaml.core.funchelper import call_func

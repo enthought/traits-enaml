@@ -1,4 +1,5 @@
 # Copyright (c) 2013 by Enthought Inc.
+import contextlib
 import io
 import sys
 import unittest
@@ -20,6 +21,16 @@ enamldef MainView(MainWindow):
     EnamlTestContainer:
         name = "test_container 3"
 """
+
+
+@contextlib.contextmanager
+def redirect_stdout(stream):
+    try:
+        old_stdout = sys.stdout
+        sys.stdout = stream
+        yield
+    finally:
+        sys.stdout = old_stdout
 
 
 class TestEnamlTestAssistant(unittest.TestCase):
@@ -69,22 +80,13 @@ class TestEnamlTestAssistant(unittest.TestCase):
 
 
 class TestEnamlTestHelperFunctions(EnamlTestAssistant, unittest.TestCase):
-
-    def setUp(self):
-        super(TestEnamlTestHelperFunctions, self).setUp()
-        self.old_stdout = sys.stdout
-        self.stream = io.StringIO()
-        sys.stdout = self.stream
-
-    def tearDown(self):
-        sys.stdout = self.old_stdout
-        self.stream.close()
-        super(TestEnamlTestHelperFunctions, self).tearDown()
-
     def test_print_enaml_widget_tree(self):
         view, _ = self.parse_and_create(ENAML_SOURCE)
-        print_enaml_widget_tree(view)
-        self.stream.seek(0)
-        lines = self.stream.readlines()
-        # basic check we should have four items in the hierarchy.
-        self.assertEqual(len(lines), 4)
+        stream = io.StringIO()
+        with redirect_stdout(stream):
+            print_enaml_widget_tree(view)
+            stream.seek(0)
+            lines = stream.readlines()
+            # basic check we should have four items in the hierarchy.
+            self.assertEqual(len(lines), 4)
+        stream.close()

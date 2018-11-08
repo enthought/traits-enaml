@@ -41,7 +41,7 @@ class TestLoopbackGuard(unittest.TestCase):
         self.assertDictEqual(guard.locked_items, to_add)
 
         # Release the guard.
-        for obj, times in list(to_add.items()):
+        for obj, times in to_add.items():
             for _ in range(times):
                 guard.release([obj])
 

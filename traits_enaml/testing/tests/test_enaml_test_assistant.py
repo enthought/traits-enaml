@@ -70,16 +70,20 @@ class TestEnamlTestAssistant(unittest.TestCase):
 
 class TestEnamlTestHelperFunctions(EnamlTestAssistant, unittest.TestCase):
 
+    def setUp(self):
+        super(TestEnamlTestHelperFunctions, self).setUp()
+        self.old_stdout = sys.stdout
+        self.stream = io.StringIO()
+        sys.stdout = self.stream
+
+    def tearDown(self):
+        sys.stdout = self.old_stdout
+        self.stream.close()
+        super(TestEnamlTestHelperFunctions, self).tearDown()
+
     def test_print_enaml_widget_tree(self):
         view, _ = self.parse_and_create(ENAML_SOURCE)
-        stream = io.StringIO()
-        old_stdout = sys.stdout
-        try:
-            sys.stdout = stream
-            print_enaml_widget_tree(view)
-        finally:
-            sys.stdout = old_stdout
-            stream.close()
-        lines = ''.join(stream.buflist).splitlines()
+        print_enaml_widget_tree(view)
+        lines = self.stream.readlines()
         # basic check we should have four items in the hierarchy.
         self.assertEqual(len(lines), 4)

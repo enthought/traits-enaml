@@ -43,7 +43,7 @@ def print_qt_widget_tree(widget, level=0):
     level = level + 4
     if level == 0:
         print()
-    print(six.text_type(' '*level), six.text_type(widget))
+    print(six.text_type(u' '*level), six.text_type(widget))
     for child in widget.children():
         print_qt_widget_tree(child, level=level)
     if level == 0:

@@ -125,16 +125,19 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 
 
 class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
+    def setUp(self):
+        super(TestGuiTestHelperFunctions, self).setUp()
+        self.stream = io.StringIO()
+        self.old_stdout = sys.stdout
+        sys.stdout = self.stream
+
+    def tearDown(self):
+        sys.stdout = self.old_stdout
+        self.stream.close()
+        super(TestGuiTestHelperFunctions, self).tearDown()
 
     def test_print_qt_widget_tree(self):
-        stream = io.StringIO()
-        old_stdout = sys.stdout
-        try:
-            sys.stdout = stream
-            print_qt_widget_tree(self.qt_app)
-        finally:
-            sys.stdout = old_stdout
-            stream.close()
-        lines = stream.readlines()
+        print_qt_widget_tree(self.qt_app)
+        lines = self.stream.readlines()
         # basic check we should have four items in the hierarchy.
         self.assertEqual(len(lines), 4)

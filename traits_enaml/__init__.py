@@ -25,3 +25,5 @@ ETSConfig.toolkit = 'qt4'
 
 def imports():
     return enaml.imports(operators=TRAIT_OPERATORS)
+
+from traits_enaml._version import full_version as __version__, git_revision as __git_revision__  # noqa

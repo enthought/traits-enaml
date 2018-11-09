@@ -83,9 +83,12 @@ import click
 
 # core dependencies that will be installed with edm
 dependencies = {
+    "apptools",
     "enable",
     "pyopengl",
-    "mayavi"}
+    "six",
+    "mayavi",
+    "vtk"}
 
 # test dependencies that will be installed with edm
 test_dependencies = {

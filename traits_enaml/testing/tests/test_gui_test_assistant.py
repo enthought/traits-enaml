@@ -1,5 +1,6 @@
 # Copyright (c) 2012 by Enthought Inc.
-import StringIO
+import contextlib
+import io
 import sys
 import time
 import unittest
@@ -11,6 +12,7 @@ from traits.api import Float, HasTraits, Int, List, on_trait_change
 from traits.testing.unittest_tools import reverse_assertion
 from traits_enaml.testing.gui_test_assistant import (
     GuiTestAssistant, print_qt_widget_tree)
+from traits_enaml.testing.tests.test_enaml_test_assistant import redirect_stdout
 
 
 class MyClass(HasTraits):
@@ -125,16 +127,11 @@ class TestGuiTestAssistant(GuiTestAssistant, unittest.TestCase):
 
 
 class TestGuiTestHelperFunctions(GuiTestAssistant, unittest.TestCase):
-
     def test_print_qt_widget_tree(self):
-        stream = StringIO.StringIO()
-        old_stdout = sys.stdout
-        try:
-            sys.stdout = stream
+        stream = io.StringIO()
+        with redirect_stdout(stream), contextlib.closing(stream):
             print_qt_widget_tree(self.qt_app)
-        finally:
-            sys.stdout = old_stdout
-            stream.close()
-        lines = ''.join(stream.buflist).splitlines()
-        # basic check we should have four items in the hierarchy.
-        self.assertEqual(len(lines), 4)
+            stream.seek(0)
+            lines = stream.readlines()
+            # basic check we should have four items in the hierarchy.
+            self.assertEqual(len(lines), 4)

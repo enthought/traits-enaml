@@ -60,7 +60,7 @@ class TestLoopbackContext(unittest.TestCase):
         # the items are properly released when the context is exited.
 
         with cm:
-            self.assertItemsEqual(guard.locked_items, items)
+            self.assertListEqual(sorted(guard.locked_items), sorted(items))
             for item in items:
                 self.assertIn(item, guard)
 

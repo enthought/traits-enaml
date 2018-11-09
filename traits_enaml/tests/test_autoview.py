@@ -89,4 +89,4 @@ class TestAutoView(EnamlTestAssistant, unittest.TestCase):
         components = self.find_all_enaml_widgets(view, 'Label')
         self.assertEqual(len(components), 12)
         components_text = [component.text for component in components]
-        self.assertItemsEqual(components_text, labels)
+        self.assertListEqual(sorted(components_text), sorted(labels))

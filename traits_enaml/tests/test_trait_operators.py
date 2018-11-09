@@ -11,6 +11,7 @@
 #  Thanks for using Enthought open source!
 #
 #----------------------------------------------------------------------------
+import six
 import unittest
 
 from traits.api import (
@@ -221,17 +222,29 @@ enamldef MainView(MainWindow):
         # check on replace
         with self.assertAtomChanges(enaml_widget, 'text', count=1):
             self.model.set_values = {'1'}
-            self.assertEquals(enaml_widget.text, "TraitSetObject(['1'])")
+            if six.PY2:
+                expected = "TraitSetObject(['1'])"
+            elif six.PY3:
+                expected = "TraitSetObject({'1'})"
+            self.assertEquals(enaml_widget.text, expected)
 
         # check on append
         with self.assertAtomChanges(enaml_widget, 'text', count=1):
             self.model.set_values.add('2')
-            self.assertEquals(enaml_widget.text, "TraitSetObject(['1', '2'])")
+            if six.PY2:
+                expected = "TraitSetObject(['1', '2'])"
+            elif six.PY3:
+                expected = "TraitSetObject({'1', '2'})"
+            self.assertEquals(enaml_widget.text, expected)
 
         # check on remove
         with self.assertAtomChanges(enaml_widget, 'text', count=1):
             self.model.set_values.remove('1')
-            self.assertEquals(enaml_widget.text, "TraitSetObject(['2'])")
+            if six.PY2:
+                expected = "TraitSetObject(['2'])"
+            elif six.PY3:
+                expected = "TraitSetObject({'2'})"
+            self.assertEquals(enaml_widget.text, expected)
 
     def test_property_subscribe(self):
 

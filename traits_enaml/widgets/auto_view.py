@@ -61,7 +61,7 @@ def _get_editor(model, trait_desc):
         return trait_desc.editor(**kwargs)
     else:
         trait_type = trait_desc.trait_type
-        for key, factory in TRAIT2ENAML.iteritems():
+        for key, factory in TRAIT2ENAML.items():
             if isinstance(trait_type, key):
                 break
         else:

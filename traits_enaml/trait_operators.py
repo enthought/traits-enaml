@@ -31,7 +31,7 @@ class TraitsTracedReadHandler(ReadHandler, HandlerMixin):
 
         """
         func = self.func
-        f_globals = func.func_globals
+        f_globals = func.__globals__
         f_builtins = f_globals['__builtins__']
         f_locals = self.get_locals(owner)
         tr = TraitsTracer(owner, name)

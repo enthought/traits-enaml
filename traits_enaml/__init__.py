@@ -17,10 +17,11 @@ import enaml
 
 from .trait_operators import TRAIT_OPERATORS
 
-if ETSConfig.toolkit not in ['', 'qt4']:
+if ETSConfig.toolkit not in ['', 'qt4', 'null']:
     raise ValueError('traits-enaml does not support WX')
 
-ETSConfig.toolkit = 'qt4'
+if ETSConfig.toolkit != 'null':
+    ETSConfig.toolkit = 'qt4'
 
 
 def imports():

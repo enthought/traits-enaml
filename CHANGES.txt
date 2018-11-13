@@ -1,6 +1,14 @@
 Traits-Enaml CHANGELOG
 ======================
 
+Release 0.3.0
+-------------
+
+* Allow the ``null`` ets toolkit (#81).
+* Support python 3 (#80).
+* Fix problems with recent enaml versions that use qtpy (#79).
+
+
 Release 0.2.2
 -------------
 

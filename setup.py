@@ -26,7 +26,7 @@ setup(
     packages=find_packages(),
     package_data={'traits_enaml.testing.tests': ['*.enaml'],
                   'traits_enaml.widgets': ['*.enaml']},
-    requires=['enaml', 'six', 'traits', 'traitsui'],
+    requires=['enaml>=0.8.9', 'six', 'traits', 'traitsui'],
     extras_require={
         'enable': ['enable'],
         'mayavi': ['mayavi'],

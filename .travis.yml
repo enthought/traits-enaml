@@ -16,8 +16,8 @@ matrix:
       env: ENAML='latest' SOURCE='edm' RUNTIME='2.7'
     - name: "Latest requirements released"
       env: ENAML='latest' SOURCE='pypi' RUNTIME='2.7'
-    - name: "Latest requirements released on python 3.6"
-      env: ENAML='latest' SOURCE='pypi' RUNTIME='3.6'
+    - name: "Stable requirements released on python 3.6"
+      env: ENAML='0.10.2' SOURCE='pypi' RUNTIME='3.6'
     - if: type = cron
       name: "Cutting edge (unreleased) requirements"
       env: ENAML='latest' SOURCE='github' RUNTIME='3.6'

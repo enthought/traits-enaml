@@ -17,7 +17,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='traits-enaml',
-    version='0.3.0dev',
+    version='0.4.0.dev',
     author='Enthought, Inc',
     author_email='info@enthought.com',
     url='https://github.com/enthought/traits-enaml',
@@ -26,6 +26,8 @@ setup(
     packages=find_packages(),
     package_data={'traits_enaml.testing.tests': ['*.enaml'],
                   'traits_enaml.widgets': ['*.enaml']},
-    requires=[
-    ],
-)
+    install_requires=['enaml>=0.8.9', 'six', 'traits', 'traitsui'],
+    extras_require={
+        'enable': ['enable'],
+        'mayavi': ['mayavi'],
+        'opengl': ['pyopengl']})

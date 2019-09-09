@@ -2,6 +2,10 @@ language: generic
 dist: xenial
 services:
   - xvfb
+addons:
+  apt:
+    packages:
+      - libglu1-mesa
 env:
   global:
     - INSTALL_EDM_VERSION=1.9.2

@@ -154,7 +154,7 @@ def install(runtime, toolkit, environment, enaml, source):
         assert len(parameters['pip_packages']) == 0
     # edm commands to setup the development environment
     commands = [
-        "edm environments create {environment} --force --version={runtime}",
+        "edm environments create {environment} --force --version={runtime} --platform=rh6-x86_64",
         "edm install -y -e {environment} {test_packages} {edm_packages}",
         "edm run -e {environment} -- pip install ."
     ]

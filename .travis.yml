@@ -1,8 +1,11 @@
 language: generic
-sudo: false
+dist: xenial
+services:
+  - xvfb
+
 env:
   global:
-    - INSTALL_EDM_VERSION=1.9.2
+    - INSTALL_EDM_VERSION=3.2.3
       PYTHONUNBUFFERED="1"
 
 
@@ -39,8 +42,6 @@ cache:
 before_install:
   - mkdir -p "${HOME}/.cache/download"
   - export PATH="/usr/lib/ccache/usr/local/bin:${HOME}/edm/bin:${PATH}"
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
   - ccache -s
 install:
   - ./install-edm-linux.sh
